@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 """
 Django settings for agile project.
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'agileApp',
 )
 
 MIDDLEWARE_CLASSES = (

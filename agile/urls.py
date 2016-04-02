@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 """agile URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,4 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'agileApp.views.inicio'),
+    url(r'^ingresar/$','agileApp.views.ingresar'),
+    url(r'^index/$','agileApp.views.index'),
+    url(r'^cerrar/$', 'agileApp.views.cerrar'),
 ]
