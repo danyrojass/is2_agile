@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Index Usuarios{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agile_app:modificar_contrasena' %}">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/sgpa/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/sgpa/roles/index/'>Roles</a></li>
+		  		<li><a href='/sgpa/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<style type="text/css">
+		<!--
+		.Estilo4 {font-family: Ubuntu, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; }
+		.Estilo6 {font-size: 15px; font-family: Ubuntu, Arial, Helvetica, sans-serif;}
+		-->
+		</style>
+		<table width="90%" border="0" align="center">
+			<tr><td><div align="center" class="Estilo4">
+			AgilePro Copyright © 2016 Alfredo Leopoldo Barrios Villanueva, Luis Maria Soto Bovó, Daniel Rojas Simón, Christian Daniel Perez Lopez
+			</div></td><tr>
+			<tr><td><div align="center" class="Estilo6">
+			This file is part of AgilePro.
+			</div></td><tr>
+			<tr><td><div align="center" class="Estilo6">
+			AgilePro is a free software: you can redistribute it and/or modify
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			it under the terms of the GNU General Public License as published by
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			the Free Software Foundation, either version 3 of the License, or
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			(at your option) any later version.
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			AgilePro is distributed in the hope that it will be useful,
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			GNU General Public License for more details.
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			You should have received a copy of the GNU General Public License
+			</div></td><tr><tr><td><div align="center" class="Estilo6">
+			along with AgilePro.  If not, see <a href='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a>.
+			</div></td><tr>
+		</table>
+
+{% endblock content %}

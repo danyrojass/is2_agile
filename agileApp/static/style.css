@@ -1,0 +1,156 @@
+@font-face
+{
+ font-family: 'Ubuntu';
+ src: url('fonts/ubuntu-mono/Ubuntu-L.ttf'),
+	  url('fonts/ubuntu-mono/Ubuntu-LI.ttf'),
+	  url('fonts/ubuntu-mono/Ubuntu-M.ttf'),
+	  url('fonts/ubuntu-mono/Ubuntu-MI.ttf'),
+	  url('fonts/ubuntu-mono/Ubuntu-R.ttf'),
+	  url('fonts/ubuntu-mono/Ubuntu-RI.ttf');
+}
+body {
+    background: #ffffff;
+    font-family: Ubuntu,Verdana,Arial,sans-serif;
+    color: #040404;
+}
+
+d {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+a {
+    color: #060606;
+    font-weight: bold;
+}
+
+span1 {
+    font-weight: 300;
+    color: #f58220;
+}
+
+.mlogin {
+    margin: 25px auto 0;
+}
+
+.mregister {
+    margin: 0px auto 0;
+}
+
+.error {
+	margin: 40px auto 10px;
+	border: 1px solid #F58220;
+	padding: 3px;
+    color: #fff;
+    text-align: center;
+    width: 650px;
+    background: #f58220;
+}
+
+.regtext {
+    font-size: 12px;
+    margin-top: 26px;
+    color: #040404;
+}
+
+/*= CONTAINERS
+--------------------------------------------------------*/
+.container {
+    padding: 15px 16px 0px 10px;
+    font-weight: 400;
+    overflow: hidden;
+    width: 330px;
+    height: auto;
+    background: #fff;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.13);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.13);
+    box-shadow: 0 1px 3px rgba(0,0,0,.13);
+}
+
+#welcome {
+    width: 650px;
+    padding: 0px;
+    background: #fff;
+    margin: 65px 600px 0;
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.13);
+    font-weight: bold;
+}
+
+.container h1 {
+    color: #040404;
+    text-align: center;
+    font-weight: 300;
+    border: 1px dashed #777;
+    margin-top: 13px;
+}
+
+.container label {
+    color: #040404;
+    font-size: 12px;
+}
+
+#login {
+    width: 320px;
+    margin: auto;
+    padding-bottom: 15px;
+}
+
+.container form .input,.container input[type=text],.container input[type=password],.container input[type=e] {
+    background: #fbfbfb;
+    font-size: 20px;
+    line-height: 1;
+    width: 100%;
+    padding: 3px;
+    margin: 0 6px 5px 0;
+    outline: none;
+    border: 1px solid #d9d9d9;
+}
+
+.container form .input:focus {
+    border: 1px solid #f58220;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.13);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.13);
+    box-shadow: 0 1px 3px rgba(0,0,0,.13);
+}
+
+
+/*= BUTTONS
+--------------------------------------------------------*/
+
+.button{
+border: solid 1px #da7c0c;
+	background: #f78d1d;
+	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+	color: #fff;
+padding: 7px 45px;
+-webkit-border-radius:4px;
+   -moz-border-radius:4px;
+        border-radius:4px;
+float: none;
+margin-left: 95px;
+cursor: pointer;
+font-family: Ubuntu,Verdana,Arial,sans-serif;
+font-size: 15px;
+font-weight: bold;
+}
+
+
+.button:hover{
+background: #f47c20;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
+	background: -moz-linear-gradient(top,  #f88e11,  #f06015);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
+}
+
+
+
+/*= FOOTER
+--------------------------------------------------------*/
+footer {
+    color: #040404;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 110px;
+}

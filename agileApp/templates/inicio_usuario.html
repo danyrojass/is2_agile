@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock title %}
+{% block content %}
+	<link href="/static/style.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agile_app:modificar_contrasena' %}">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+{% endblock content %}

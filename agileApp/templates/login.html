@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="UTF-8" /> 
+		<title>SGPA | Sistema Gerenciador de Proyectos Ágiles</title>
+		<table width="0%" border="0" align="center">
+			<tr height="0px"></tr>
+			<tr height="0px">
+				<td>&nbsp;</td>
+				<td><div align="center"><img src="/static/img/sgpa.png" alt="SGPA" width="475" height="120" border="0" /></div></td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</head>	
+{% block content %}
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/static/formoid-solid-orange.css" type="text/css" />
+		<form class="formoid-solid-orange" style="background-color:#ffffff;font-size:14px;font-family:Ubuntu,Arial,Helvetica,sans-serif;color:#34495E;max-width:480px;min-width:150px" method="post"><div class="title"><h2>Login</h2></div>{% csrf_token %}
+			<div class="element-input"><label class="title" for="user_login"></label><div class="item-cont"><input class="large" type="text" name="username" id="username" value="" placeholder="Nombre de Usuario"/><span class="icon-place"></span></div></div>
+			<div class="element-password"><label class="title" for="user_pass"></label><div class="item-cont"><input class="large" type="password" name="password" id="password" value="" placeholder="Password"/><span class="icon-place"></span></div></div>
+			<div class="submit"><input type="submit" name="login" value="Entrar"/></div></form>
+		</form>
+{% endblock content %}
+    <body>
+		<footer><img src="/static/img/sgpa1.png" width="75" height="20" alt="sgpa"> 
+			<td><div align="center">Versi&oacute;n Beta</div></td>
+			<td><div align="center">&copy; 2016</div></td>
+		</footer>	
+	</body>
+</html>
