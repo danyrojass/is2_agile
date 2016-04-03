@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^$', 'agileApp.views.inicio'),
     url(r'^ingresar/$','agileApp.views.ingresar'),
     url(r'^index/$','agileApp.views.index'),
+    url(r'^creditos/$', 'agileApp.views.creditos'),
     url(r'^cerrar/$', 'agileApp.views.cerrar'),
 ]
