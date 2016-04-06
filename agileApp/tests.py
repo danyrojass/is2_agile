@@ -5,7 +5,6 @@ from django.test.client import Client
 from django.contrib.auth import authenticate, login
 from django.test.client import Client, RequestFactory
 from django.test import TestCase, RequestFactory
-from agileApp.views import ingresar
 
 class test_templates(TestCase):
     
