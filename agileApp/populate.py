@@ -1,16 +1,15 @@
-
+# -*- encoding: utf-8 -*-
 import os
 import sys
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'agile.settings')
 
 def start_populating(tipoAmbiente, nombreTag):
     
     if(tipoAmbiente==1):
+        print "tu hermana"
         os.system("source ../agileEnv/bin/activate")
-        os.system("cd ..")
-        os.system("python manage.py runserver")
-        os.system("firefox 127.0.0.1")
+        os.system("python ../manage.py runserver")
+
 
 
 
@@ -26,12 +25,13 @@ def start_populating(tipoAmbiente, nombreTag):
 
 if __name__ == '__main__':
     print "Populating the data base..."
-    if(len(sys.argv==2)):
+    if(len(sys.argv)==3):
         ambiente=int(sys.argv[1])
         nombre=sys.argv[2]
         while(ambiente!=1 and ambiente !=2):
             ambiente=int(input("Ingrese 1 para ambiente Des o 2 para ambiente Pro: "))
     else:
+        print len(sys.argv)
         print "La cantidad de argumentos no es válida!!!"
         
         ambiente=int(input("Ingrese 1 para ambiente Pro o 2 para ambiente Des: "))
@@ -39,8 +39,6 @@ if __name__ == '__main__':
             ambiente=int(input("Ingrese 1 para ambiente Pro o 2 para ambiente Des: "))
         
         nombre=input("Ingrese el nombre del tag:")
-    
-    start_populating(nombre, ambiente)
+    print ambiente
+    start_populating(ambiente, nombre)
     print "We are Done... Thanks for wait :-)"
-    
-6+9+696
