@@ -6,7 +6,7 @@ import sys
 def start_populating(tipoAmbiente, nombreTag):
     
     if(tipoAmbiente==1):
-        print "tu hermana"
+        
         os.system("source ../agileEnv/bin/activate")
         os.system("python ../manage.py runserver")
 
