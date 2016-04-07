@@ -1,0 +1,13 @@
+agileApp	agileApp-module.html
+agileApp.admin	agileApp.admin-module.html
+agileApp.migrations	agileApp.migrations-module.html
+agileApp.models	agileApp.models-module.html
+agileApp.tests	agileApp.tests-module.html
+agileApp.views	agileApp.views-module.html
+agileApp.views.saludo_dia	agileApp.views-module.html#saludo_dia
+agileApp.views.cerrar	agileApp.views-module.html#cerrar
+agileApp.views.index	agileApp.views-module.html#index
+agileApp.views.creditos	agileApp.views-module.html#creditos
+agileApp.views.inicio	agileApp.views-module.html#inicio
+agileApp.views.comprobar	agileApp.views-module.html#comprobar
+agileApp.views.ingresar	agileApp.views-module.html#ingresar

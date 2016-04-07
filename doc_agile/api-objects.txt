@@ -1,0 +1,5 @@
+agile	agile-module.html
+agile.urls	agile.urls-module.html
+agile.urls.urlpatterns	agile.urls-module.html#urlpatterns
+agile.wsgi	agile.wsgi-module.html
+agile.wsgi.application	agile.wsgi-module.html#application
