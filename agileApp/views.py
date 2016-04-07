@@ -8,14 +8,31 @@ from django.template import RequestContext
 from datetime import datetime
 
 
-"""Ingreso al sistema."""
-def inicio(request):    
+
+def inicio(request): 
+    """
+    Ingreso al sistema.
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @return: render a index.html con el Usuario
+    """    
+       
     if request.user.is_anonymous():
         return HttpResponseRedirect('/ingresar')
     else:
         return HttpResponseRedirect('/index')
 
 def ingresar(request):
+    """
+    Metodo que permite el inicio de sesion en el sistema.
+    Verifica que el usuario este activo y lo redirige a su template correspondiente
+    segun su rol en el sistema 
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @return: render a template correspondiente segun rol del usuario en el sistema, contexto
+    """
+    
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     request.session['last_activity'] = str(now)
     
@@ -38,15 +55,36 @@ def ingresar(request):
                 return render_to_response('nousuario.html', context_instance=RequestContext(request))
     else:
         formulario = AuthenticationForm()
-    return render_to_response('login.html',{'formulario':formulario}, context_instance=RequestContext(request))
+        return render_to_response('login.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 @login_required(login_url='/ingresar')
 def cerrar(request):
+    """
+    Recibe un request y cierra la sesion correspondiente.
+    
+    @param request:Http request
+    @type  request:HtpptRequest 
+    @return: render al template de login
+    
+    """
+
+    
+    
     logout(request)
     return HttpResponseRedirect('/ingresar')
 
 @login_required(login_url='/ingresar')
 def index(request):
+    """
+    Método que verifica el tipo de usuario y lo redirige a su template correspondiente
+    dependiendo si es es un tipo administrador o un usuario normal.
+    
+    @param request:Http request
+    @type  request:HtpptRequest 
+    @return: renderiza los datos del usuario con el template correspondiente.
+    
+    """
+    
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -64,6 +102,15 @@ def index(request):
         return render_to_response('inicio_usuario.html', {'usuario':usuario, 'saludo':saludo}, context_instance=RequestContext(request))   
 
 def creditos(request):
+    """
+    Método que se encarga de mostrar los créditos del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @return: render al template de creditos.html
+    
+    """
+        
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -74,8 +121,12 @@ def creditos(request):
     saludo = saludo_dia()
     return render_to_response('creditos.html', {'usuario':usuario, 'saludo':saludo}, context_instance=RequestContext(request))    
 
-"""Funciones de saludo y comprobación de última actividad."""
+
 def saludo_dia():
+    """
+    Funciones de saludo y comprobación de última actividad.
+    
+    """
     hora = datetime.now().hour
     if hora >= 0 and hora < 6:
         saludo= "Buenas madrugadas"
@@ -91,6 +142,16 @@ def saludo_dia():
     return saludo
 
 def comprobar(request):
+    """
+    Verifica si el usuario a estado más de diez minutos inactivo,
+    si es así se cierra la sesión.
+    
+    @param request:Http request    
+    @type  request:HtpptRequest
+    @return: redirige al template ingresar.html    
+    
+    """
+    
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     now_object = datetime.strptime(now, '%Y-%m-%d %H:%M:%S')
 
