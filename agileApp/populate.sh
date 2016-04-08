@@ -12,11 +12,19 @@ if [ "$#" -eq "2" ]; then
 		if [ "$1" -eq "1" ]; then
 			source ../agileEnv/bin/activate
 			python ../manage.py populate_db
-			firefox 127.0.0.1:8000
 			python ../manage.py runserver
 			deactivate
-		else
+
+		elif [ "$1" -eq "2" ]; then
 			python ../manage.py populate_db
+			firefox 0.0.0.0
+
+		elif [ "$1" -eq "3" ]; then
+			source ../agileEnv/bin/activate
+			python ../manage.py runserver
+			deactivate
+
+		elif [ "$1" -eq "4" ]; then
 			firefox 0.0.0.0
 		fi
 	fi
