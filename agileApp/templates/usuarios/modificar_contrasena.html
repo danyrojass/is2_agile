@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Modificar contraseña{% endblock title %}
+{% block content %}
+	<link href="/static/style.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, {{usuario.username}}
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						<div id="tituloForm" class="header">MODIFICAR USUARIO </div>
+							<div id="frmBusqueda">
+								<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }}
+									<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+										<tr>
+											<td><b>ID</b></td>
+											<td>{{usuario.id}}</td>
+							    			<td width="42%" rowspan="13" align="left" valign="top"><ul></ul></td>
+										</tr>
+										
+										<tr>
+											<td width="15%"><b>Contraseña Actual</b></td>
+							    			<td width="43%"><input NAME="actual_password" type="password" class="cajaGrande" id="actual_password" size="45" minlength="10" value=""></td>
+					        			</tr>
+										
+										<tr>
+											<td width="15%"><b>Contraseña Nueva</b></td>
+							    			<td width="43%"><input NAME="password" type="password" class="cajaGrande" id="password" size="45" minlength="10" value=""></td>
+					        			</tr>
+					        			
+					       				<tr>
+											<td width="15%"><b>Contraseña Nueva</b></td>
+							    			<td width="43%"><input NAME="password2" type="password" class="cajaGrande" id="password2" size="45" minlength="10" value=""></td>
+					        			</tr>
+					        			
+									</table>
+								</div>
+						
+								<div id="botonBusqueda">
+									<button class="button" type="submit">ACTUALIZAR</button>
+        							<a href="/" class="button" type="submit">CANCELAR</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock content %}

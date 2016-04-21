@@ -19,9 +19,12 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^agile/', include('agileApp.urls',namespace="agileApp")),
+    
     url(r'^$', 'agileApp.views.inicio'),
     url(r'^ingresar/$','agileApp.views.ingresar'),
     url(r'^index/$','agileApp.views.index'),
     url(r'^creditos/$', 'agileApp.views.creditos'),
     url(r'^cerrar/$', 'agileApp.views.cerrar'),
+    
 ]

@@ -3,16 +3,16 @@
 {% block content %}
 	<link href="/static/style.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+			{{saludo}},{{usuario.username}}
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
-		  		<li><a href='/sgpa/usuarios/index/'>Usuarios</a></li>
-		  		<li><a href='/sgpa/roles/index/'>Roles</a></li>
-		  		<li><a href='/sgpa/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>

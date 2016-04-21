@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Registro de Usuario{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, {{usuario.username}}
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+    <link rel="stylesheet" href="/static/formoid-solid-orange2.css" type="text/css" />
+	<form class="formoid-solid-orange" style="background-color:#ffffff;font-size:14px;font-family:'Ubuntu',Arial,Helvetica,sans-serif;color:#34495E;max-width:480px;min-width:150px" method="post"><div class="title"><h2>Registro</h2></div>{% csrf_token %}	
+		{{ form.errors }} 
+		
+		<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="username" id="username" value="" placeholder="Nombre de Usuario"/><span class="icon-place"></span></div></div>
+
+		<div class="element-email"><label class="title"></label><div class="item-cont"><input class="large" type="email" name="email" id="email" value="" placeholder="Email"/><span class="icon-place"></span></div></div>
+
+		<div class="element-password"><label class="title"></label><div class="item-cont"><input class="large" type="password" name="password" id="password" value="" placeholder="Contraseña"/><span class="icon-place"></span></div></div>
+
+		<div class="element-password"><label class="title"></label><div class="item-cont"><input class="large" type="password" name="password2" id="password2" value="" placeholder="Contraseña"/><span class="icon-place"></span></div></div>
+
+		<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="first_name" id="first_name" value="" placeholder="Nombres"/><span class="icon-place"></span></div></div>
+
+		<div class="element-input"><label class="title"></label><div class="item-cont"><input class="large" type="text" name="last_name" id="last_name" value="" placeholder="Apellidos"/><span class="icon-place"></span></div></div>
+
+		<div class="element-phone"><label class="title"></label><div class="item-cont"><input class="large" type="tel" pattern="[+]?[\.\s\-\(\)\*\#0-9]{3,}" maxlength="24" name="telefono" id="telefono" value="" placeholder="Telefono"/><span class="icon-place"></span></div></div>
+
+		<div class="element-address"><label class="title"></label><span class="addr1"><input placeholder="Dirección" type="text" name="direccion" id="direccion" value="" /><span class="icon-place"></span></span></div>
+
+		<div class="element-textarea"><label class="title"></label><div class="item-cont"><input class="large" type="text" maxlength="50" name="observacion" id="observacion" value="" placeholder="Observación"/><span class="icon-place"></span></div></div>
+
+		<div class="element-select"><label class="title"></label><div class="item-cont"><div class="large"><span><select name="tipo" id="tipo">
+			<option selected="selected" disabled="disabled">--- Selecciona un Tipo de Usuario ---</option>
+			<option value="cl">Cliente</option>
+			<option value="ur">Usuario Regular</option>
+			</select><i></i><span class="icon-place"></span></span></div></div></div>
+					
+		<div class="submit"><input type="submit" name="register" id="register" class="button" value="Registrar" /></input></div>
+	
+	</form>
+{% endblock content %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Cambios guardados{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">
+			{{saludo}},{{usuario.username}}
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+					{% if aid < 4 %}
+						{% if aid == 1 %}
+							<div id="tituloForm" class="header">USUARIO CREADO</div>
+						{% elif aid == 2 %}
+							<div id="tituloForm" class="header">USUARIO MODIFICADO</div>
+						{% elif aid == 3 %}
+							<div id="tituloForm" class="header">USUARIO BORRADO</div>
+						{% endif %}
+								<div id="frmBusqueda">
+									<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+									
+										<tr>
+											<td width="15%"><b>ID</b></td>
+											<td width="85%" colspan="2">{{um.id}}</td>
+									    </tr>
+									    
+										<tr>
+											<td width="15%"><b>Nombre de Usuario</b></td>
+										    <td width="85%" colspan="2">{{um.username}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Email</b></td>
+										    <td width="85%" colspan="2">{{um.email}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Nombres</b></td>
+										    <td width="85%" colspan="2">{{um.first_name}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Apellidos</b></td>
+										    <td width="85%" colspan="2">{{um.last_name}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Tipo de Usuario</b></td>
+											{% if up.tipo == 'ur' %}
+												<td width="85%" colspan="2">Usuario Regular</td>
+											{% else %}
+												<td width="85%" colspan="2">Cliente</td>
+											{% endif %}
+									    </tr>
+	
+										<tr>
+											<td width="15%"><b>Dirección</b></td>
+										    <td width="85%" colspan="2">{{up.direccion}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Teléfono</b></td>
+										    <td width="85%" colspan="2">{{up.telefono}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Observación</b></td>
+										    <td width="85%" colspan="2">{{up.observacion}}</td>
+									    </tr>
+									</table>
+								</div>
+								<div id="botonBusqueda">
+	        							<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
+	        					</div>
+	        					<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit" align="center">Ok</a>
+	        		{% elif aid == 4%}
+						<div id="tituloForm" class="header">CONTRASEÑA ACTUALIZADA</div>
+							<div id="botonBusqueda">
+	        					<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
+	        				</div>
+	        				<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit" align="center">Ok</a>	        				
+						</div>
+					{% elif aid == 5%}
+						<div id="tituloForm" class="header">ROL ASIGNADO</div>
+							<div id="botonBusqueda">
+	        					<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
+	        					<a href="{#}" class="button" type="submit" align="center">Ok</a>
+       
+	        				</div>
+						</div>
+					{% endif %}
+					</div>
+				</div>
+			</div>
+			
+{% endblock content %}

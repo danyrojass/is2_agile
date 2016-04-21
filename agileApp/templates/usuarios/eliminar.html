@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Usuario{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, {{usuario.username}}
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						<div id="tituloForm" class="header">ELIMINAR USUARIO </div>
+							<div id="frmBusqueda">
+								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								
+									<tr>
+										<tr>
+										<td width="15%"><b>ID</b></td>
+										<td width="85%" colspan="2">{{user.id}}</td>
+								    </tr>
+								    
+									<tr>
+										<td width="15%"><b>Nombre de Usuario</b></td>
+									    <td width="85%" colspan="2">{{user.username}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td width="15%"><b>Email</b></td>
+									    <td width="85%" colspan="2">{{user.email}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td width="15%"><b>Nombres</b></td>
+									    <td width="85%" colspan="2">{{user.first_name}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td width="15%"><b>Apellidos</b></td>
+									    <td width="85%" colspan="2">{{user.last_name}}</td>
+								    </tr>
+
+								</table>
+							</div>
+							<div id="botonBusqueda">
+									<a href="{% url 'agileApp:delete_usuarios' user.id %}" class="button">ELIMINAR</a>
+        							<a href="{% url 'agileApp:index_usuarios'%}" class="button">CANCELAR</a>
+        					</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+{% endblock content %}
