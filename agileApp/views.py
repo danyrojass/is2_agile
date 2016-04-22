@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from datetime import datetime
+from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm, EditarRolForm, ModificarContrasenaForm
+from .models import Usuarios, Permisos, Roles, Permisos_Roles, Roles_Usuarios
+
 
 
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm
@@ -369,3 +372,219 @@ def ver_usuarios(request, user_id):
     user_profile = get_object_or_404(Usuarios, id=user_id)
     
     return render_to_response('usuarios/ver.html', {'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
+
+"""Administración de Roles"""
+def crear_roles(request):
+    usuario = request.user
+    aid = 1
+    comprobar(request)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    permisos1 = Permisos.objects.all().filter(nivel=1)
+    permisos2 = Permisos.objects.all().filter(nivel=2)
+    permisos3 = Permisos.objects.all().filter(nivel=3)
+    permisos = map(None, permisos1, permisos2, permisos3)
+            
+    if request.method == 'POST':
+        form = CrearRolForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            nombre = cleaned_data.get('nombre')
+            tipo = cleaned_data.get('tipo')
+            observacion = cleaned_data.get('observacion')
+        
+            rol = Roles()
+            rol.nombre = nombre
+            rol.tipo = tipo
+            rol.observacion = observacion
+            rol.estado = True
+            rol.save()
+                
+            rol_id = rol.id
+            lista_permisos = request.POST.getlist(u'permisos')
+                
+            asignar_permisos_rol(request, rol_id, lista_permisos)
+            pr1 = rol.permisos.all().filter(nivel=1)
+            pr2 = rol.permisos.all().filter(nivel=2)
+            pr3 = rol.permisos.all().filter(nivel=3)
+            pr = map(None, pr1, pr2, pr3)
+               
+            return render_to_response('roles/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'pr':pr, 'rol':rol}, context_instance=RequestContext(request))
+    else:
+        form = CrearRolForm()
+        
+    return render(request, 'roles/crear.html', {'usuario':usuario, 'saludo':saludo, 'form': form, 'permisos':permisos})
+    
+    
+def asignar_permisos_rol(request, rol_id, lista_permisos):    
+    rol = get_object_or_404(Roles, id=rol_id)
+    
+    for p in lista_permisos:
+        
+        permiso = Permisos.objects.get(pk=p)   
+        pr = Permisos_Roles(permisos=permiso, roles=rol)
+        pr.save()
+       
+    return pr
+
+def editar_roles(request, rol_id):
+    usuario = request.user
+    
+    aid = 2
+    comprobar(request)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    permisos1 = Permisos.objects.all().filter(nivel=1)
+    permisos2 = Permisos.objects.all().filter(nivel=2)
+    permisos3 = Permisos.objects.all().filter(nivel=3)
+    permisos = map(None, permisos1, permisos2, permisos3)
+        
+    rol = get_object_or_404(Roles, id=rol_id)
+    p1 = rol.permisos.all().filter(nivel=1)
+    p2 = rol.permisos.all().filter(nivel=2)
+    p3 = rol.permisos.all().filter(nivel=3)
+    lista = map(None, p1, p2, p3)
+    
+    if request.method == 'POST':
+        form = EditarRolForm(request.POST, rol_id=rol_id)
+        if form.is_valid():
+                rol.nombre = form.cleaned_data['nombre']
+                rol.tipo = form.cleaned_data['tipo']
+                rol.observacion = form.cleaned_data['observacion']
+                rol.save()
+                
+                rol_id = rol.id
+                lista_permisos = request.POST.getlist(u'permisos')
+                
+                editar_permisos_rol(request, rol_id, lista_permisos)
+                pr1 = rol.permisos.all().filter(nivel=1)
+                pr2 = rol.permisos.all().filter(nivel=2)
+                pr3 = rol.permisos.all().filter(nivel=3)
+                pr = map(None, pr1, pr2, pr3)
+                
+                return render_to_response('roles/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'pr':pr, 'rol':rol}, context_instance=RequestContext(request))
+    else:
+        form = EditarRolForm(rol_id=rol_id)
+    return render(request, 'roles/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'lista':lista, 'permisos':permisos})
+    
+def editar_permisos_rol(request, rol_id, lista_permisos):
+    
+    rol = get_object_or_404(Roles, id=rol_id)
+    rp = rol.permisos.all() 
+    existe = False
+    
+    for pe in rp:
+        for p in lista_permisos:
+            if pe.id == p:
+                existe = True
+        if existe == False:
+            permiso = get_object_or_404(Permisos, id=pe.id)
+            roles = get_object_or_404(Roles, id=rol_id)
+            permisosRoles = Permisos_Roles.objects.get(permisos=permiso, roles=roles)
+            permisosRoles.delete()
+        existe = False
+            
+    for p in lista_permisos:
+        for pe in rp:
+            if p != pe.id:         
+                permiso = Permisos.objects.get(pk=p)   
+                per = Permisos_Roles(permisos=permiso, roles=rol)
+                per.save()
+                break
+       
+    return per
+
+def ver_roles(request, rol_id):
+    usuario = request.user
+    
+    
+    comprobar(request)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    rol = get_object_or_404(Roles, id=rol_id)
+    permisos1 = rol.permisos.all().filter(nivel=1)
+    permisos2 = rol.permisos.all().filter(nivel=2)
+    permisos3 = rol.permisos.all().filter(nivel=3)
+    pr = map(None, permisos1, permisos2, permisos3)
+        
+    return render_to_response('roles/ver.html', {'usuario':usuario, 'saludo':saludo, 'rol':rol, 'pr':pr})
+    
+    
+def eliminar_roles(request, rol_id):
+    usuario = request.user
+    
+    comprobar(request)
+    if(request.user.is_anonymous()):
+        return HttpResponseRedirect('/ingresar')
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    request.session['last_activity'] = str(now)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    rol = get_object_or_404(Roles, id=rol_id)
+        
+    return render_to_response('roles/eliminar.html', {'usuario':usuario, 'saludo':saludo, 'rol':rol})
+    
+def delete_roles(request, rol_id):
+    usuario = request.user
+    
+    aid = 3
+    comprobar(request)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    rol = get_object_or_404(Roles, id=rol_id)
+    pr = rol.permisos.all()
+    rol.estado = False
+    rol.save()
+        
+    return render_to_response('roles/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'pr':pr})  
+    
+def index_roles(request):
+    usuario = request.user
+   
+    comprobar(request)
+        
+    usuario = request.user
+    saludo = saludo_dia()
+        
+    roles = Roles.objects.filter(estado=True).order_by('id')
+    roles = roles.exclude(nombre="Administrador")
+    filas= roles.count()
+        
+    if request.method == 'POST':
+        results = Roles.objects.all()
+        form = BuscarRolForm(request.POST)
+            
+        if form.is_valid():
+            rid = request.POST.get('id', None)
+            if rid:
+                results = results.filter(id=rid)
+                
+            rnombre = request.POST.get('nombre', None)
+            if rnombre:
+                results = results.filter(nombre__contains=rnombre)
+                
+            robservacion = request.POST.get('observacion', None)
+            if robservacion:
+                results = results.filter(observacion__contains=robservacion)
+                        
+                if not rid and not rnombre and not robservacion:
+                    results = None
+                
+                if results:
+                    results.order_by('id')
+                return render_to_response('roles/results.html', {'usuario':usuario, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+    else:
+        form = BuscarRolForm()
+        
+    return render(request, 'roles/index.html', {'usuario':usuario, 'saludo':saludo, 'roles':roles, 'filas':filas})
