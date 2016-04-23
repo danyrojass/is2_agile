@@ -1,34 +1,43 @@
 #!/bin/bash
+echo "Por favor, ingrese el número de la opción que desee."
+echo "1. Desplegar ambiente de desarrollo. Generar población para la base de datos."
+echo "2. Desplegar ambiente de producción. Generar población para la base de datos."
+echo "3. Desplegar ambiente de desarrollo."
+echo "4. Desplegar ambiente de producción."
 
-if [ "$#" -eq "2" ]; then
-	re='^[0-9]+$'
-	if ! [[ $1 =~ $re ]] ; then
-  		echo "El primer parámetro no es un número." >&2;
-	else
-		nombreTag=$2
-		
-		git checkout $nombreTag;
+read ambiente
 
-		if [ "$1" -eq "1" ]; then
-			source ../agileEnv/bin/activate
-			python ../manage.py populate_db
-			python ../manage.py runserver
-			deactivate
+echo "Por favor, ingrese el nombre del Tag."
 
-		elif [ "$1" -eq "2" ]; then
-			python ../manage.py populate_db
-			firefox 0.0.0.0
+read nombreTag
+	
+	git checkout $nombreTag;
 
-		elif [ "$1" -eq "3" ]; then
-			source ../agileEnv/bin/activate
-			python ../manage.py runserver
-			deactivate
+	if [ "$ambiente" -eq "1" ]; then
+		source ../agileEnv/bin/activate
+		python ../manage.py populate_db
+		python ../manage.py runserver
+		deactivate
 
-		elif [ "$1" -eq "4" ]; then
-			firefox 0.0.0.0
-		fi
+	elif [ "$ambiente" -eq "2" ]; then
+		python ../manage.py populate_db
+		echo laluzdelsol | sudo -S command
+		mkdir /home/dany/AmbienteProduccion
+		cp -a  /home/dany/agile /home/dany/AmbienteProduccion
+		sudo chown :www-data /home/dany/AmbienteProduccion
+		sudo a2ensite agile.conf
+		sudo service apache2 restart
+
+	elif [ "$ambiente" -eq "3" ]; then
+		source ../agileEnv/bin/activate
+		python ../manage.py runserver
+		deactivate
+
+	elif [ "$ambiente" -eq "4" ]; then
+		echo laluzdelsol | sudo -S command
+		mkdir /home/dany/AmbienteProduccion
+		cp -a  /home/dany/agile /home/dany/AmbienteProduccion
+		sudo chown :www-data /home/dany/AmbienteProduccion
+		sudo a2ensite agile.conf
+		sudo service apache2 restart
 	fi
-
-else
-	echo "La cantidad de parámetros es diferente a dos (2).";
-fi
