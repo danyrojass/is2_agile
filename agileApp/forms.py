@@ -2,10 +2,10 @@
 from django import forms
 from django.contrib.auth.models import User
 import string
-from .models import Roles, Roles_Usuarios
+from .models import Roles, Roles_Usuarios, Proyectos, Usuarios_Proyectos
 from django.shortcuts import get_object_or_404
 
-
+ 
 TIPOS = ( 
     ( 'cl', 'Cliente' ),
     ( 'ur', 'Usuario Regular'),
@@ -205,5 +205,39 @@ class EditarRolForm(forms.Form):
         if Roles.objects.filter(nombre=nombre).exclude(id=self.rol_id):
             raise forms.ValidationError('Nombre de rol ya registrado.')
         return nombre
+class CrearProyectoForm(forms.Form):
+    nombre_largo = forms.CharField(max_length=25)
+    
+    def clean_nombre_largo(self):
+        """Comprueba que no exista un nombre igual en la db"""
+        nombre_largo = self.cleaned_data['nombre_largo']
+        
+        if Proyectos.objects.filter(nombre_largo=nombre_largo):
+            raise forms.ValidationError('Nombre de proyecto ya registrado.')
+        return nombre_largo
+    
+class DefinirProyectoForm(forms.Form):
+    nombre_corto = forms.CharField(max_length=10)
+    tipo = forms.BooleanField()
+    descripcion = forms.CharField(max_length=50)
+    fecha_inicio = forms.DateField()
+    fecha_fin_estimado = forms.DateField()
+    observaciones = forms.CharField(max_length=50, required=False)
 
+class BuscarProyectoForm(forms.Form):
+    id = forms.IntegerField(required=False)
+    nombre_largo = forms.CharField(required=False)
+    nombre_corto = forms.CharField(required=False)
+    descripcion = forms.CharField(required=False)
+    
+class EditarProyectoForm(forms.Form):
+    nombre_corto = forms.CharField(max_length=10)
+    tipo = forms.BooleanField()
+    descripcion = forms.CharField(max_length=50)
+    fecha_inicio = forms.DateField()
+    fecha_fin_estimado = forms.DateField()
+    observaciones = forms.CharField(max_length=50, required=False)
+
+class ElegirProyectoForm(forms.Form):
+    proyecto_id = forms.IntegerField(required=False)
 

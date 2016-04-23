@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Visualizar Proyecto{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						<div id="tituloForm" class="header">VISUALIZAR PROYECTO </div>
+							<div id="frmBusqueda">
+								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+									<colgroup>
+										<col width="7%">
+										<col width="15%">
+										<col width="10%">
+										<col width="10%">
+										<col width="19%">
+										<col width="19%">
+										<col width="10%">
+										<col width="10%">
+									</colgroup>
+									<tr>
+										<td><b>ID</b></td>
+										<td colspan="2">{{proyecto.id}}</td>
+								    </tr>
+								    
+									<tr>
+										<td><b>Nombre Largo</b></td>
+									    <td colspan="2">{{proyecto.nombre_largo}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Nombre Corto</b></td>
+									    <td colspan="2">{{proyecto.nombre_corto}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Tipo</b></td>
+										{% if proyecto.tipo == True %}
+									    	<td colspan="2">Proyecto</td>
+									    {% else %}
+									    	<td colspan="2">Servicio</td>
+									    {% endif %}
+								    </tr>
+								    
+								    <tr>
+										<td><b>Descripción</b></td>
+									    <td colspan="2">{{proyecto.descripcion}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Fecha inicio</b></td>
+									    <td colspan="2">{{proyecto.fecha_inicio}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Fecha fin </b></td>
+									    <td colspan="2">{{proyecto.fecha_fin_estimado}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Observaciones</b></td>
+									    <td colspan="2">{{proyecto.observaciones}}</td>
+								    </tr>
+							</table>	
+						</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+							
+					<div id="tituloForm" class="header">EQUIPO</div>
+					<div id="frmBusqueda">
+						<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+							<colgroup>
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+							</colgroup>
+
+										{% if up %}
+											{% for u in up %}
+									    		<td width="10%">{{u}}</td>
+									    	{% endfor %}
+									    {% else %}
+									    	<td width="10%">Sin integrantes.</td>
+									    {% endif %}
+
+								
+						</table>
+					</div>
+							
+							<div id="botonBusqueda">
+        							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
+        					</div>
+						</div>
+					</div>
+				</div>
+			</div>
+{% endblock content %}

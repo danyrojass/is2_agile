@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}Index Proyectos{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<script language="javascript">
+			function nuevo_proyecto() {
+				location.href="{% url 'agileApp:crear_proyectos' %}";
+			}
+			
+			function limpiar() {
+				document.getElementById("form_busqueda").reset();
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<div id="pagina">
+			<div id="zonaContenidoPP">
+				<div align="center">
+				
+				<div id="tituloForm" class="header"> BUSCAR PROYECTO </div>
+				<div id="frmBusqueda">
+				<form id="form_busqueda" name="form_busqueda" method="post" action="">
+					{% csrf_token %}
+					<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+					{{ form.errors }}	
+								
+						<tr>
+							<td width="16%">ID del Pryecto </td>
+							<td width="68%"><input id="id" type="text" class="cajaPequena" NAME="id" maxlength="10" value=""></td>
+							<td width="5%">&nbsp;</td>
+							<td width="5%">&nbsp;</td>
+							<td width="6%" align="right"></td>
+						</tr>
+						
+						<tr>
+							<td>Nombre Largo del Proyecto</td>
+							<td><input id="nombre_largo" name="nombre_largo" type="text" class="cajaGrande" maxlength="25" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						
+						<tr>
+							<td>Nombre Corto del Proyecto</td>
+							<td><input id="nombre_corto" name="nombre_corto" type="text" class="cajaGrande" maxlength="10" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						
+						<tr>
+							<td>Descripción</td>
+							<td><input id="descripcion" name="descripcion" type="text" class="cajaGrande" maxlength="50" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+
+					</table>
+					
+					</div>
+					<div id="botonBusqueda">
+						<button class="button" type="submit">BUSCAR</button>
+        				<a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a>
+        				<a onClick="nuevo_proyecto()" onMouseOver="style.cursor=cursor" class="button">NUEVO PROYECTO</a>
+					</div>
+				</form>
+				
+			<div id="lineaResultado">
+			  <table class="fuente8" width="80%" cellspacing=0 cellpadding=3 border=0>
+			  	<tr>
+				<td width="50%" align="left">Nro. de Proyectos encontrados. <input id=filas type="text" class="cajaPequena" NAME=filas maxlength="5" value="{{filas}}"></td>
+			  </table>
+			</div>
+			
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+					<div id="cabeceraResultado" class="header">
+						LISTA DE PROYECTOS </div>
+						<div id="frmResultado">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								<tr class="cabeceraTabla">
+									<td width="8%">ÍTEM</td>
+									<td width="7%">ID</td>
+									<td width="25%">NOMBRE LARGO</td>
+									<td width="10%">NOMBRE CORTO </td>
+									<td width="35%">DESCRIPCIÓN</td>
+									<td width="5%">Define</td>
+									<td width="5%">Read</td>
+									<td width="5%">Update</td>
+									<td width="10%">&nbsp;</td>
+								</tr>
+							</table>
+							<div class="ScrollStyle">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								{% if proyectos and filas > 0 %}
+									{% for proyecto in proyectos %}
+										{% if forloop.counter|divisibleby:2  %}
+											<tr class="itemImparTabla">
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
+												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:definir_proyectos' proyecto.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Definir"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_proyectos' proyecto.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_proyectos' proyecto.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
+											</tr>
+										{% else %}
+											<tr class="itemParTabla"> 
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
+												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:definir_proyectos' proyecto.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Definir"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_proyectos' proyecto.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_proyectos' proyecto.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>																			
+											</tr>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<p>No hay proyectos registrados en la base de datos.</p>
+								{% endif %}
+								
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+{% endblock content %}

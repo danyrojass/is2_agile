@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Editar Proyectos{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<div id="pagina">
+			<div id="zonaContenido">
+				<div align="center">
+					<div id="tituloForm" class="header">EDITAR PROYECTO</div>
+					<div id="frmBusqueda">
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								<colgroup>
+									<col width="15%">
+									<col width="18%">
+									<col width="18%">
+									<col width="18%">
+									<col width="18%">
+									<col width="13%">
+								</colgroup>
+								<tr>
+									<td><b>ID</b></td>
+									<td colspan="2">{{proyecto.id}}</td>
+								</tr>
+								<tr>
+									<td><b>Nombre Corto</b></td>
+								    <td colspan="2"><input NAME="nombre_corto" type="text" class="cajaGrande" id="nombre_corto" size="50" maxlength="50" value="{{proyecto.nombre_corto}}"></td>
+								</tr>	
+										
+								<tr>
+									<td><b>Tipo</b></td>
+									<td colspan="2"> <input type="checkbox" name="tipo" id="tipo">¿Proyecto?<br></td>
+								</tr>
+								
+								<tr>
+									<td><b>Observación</b></td>
+									<td colspan="2"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{proyecto.descripcion}}"></td>
+								</tr>
+								
+								<tr>
+									<td><b>Fecha Inicio</b></td>
+									<td><input NAME="fecha_inicio" type="text" class="cajaPequena" id="fecha_inicio" size="10" maxlength="10" readonly> <img src="/static/img/calendario.png" name="Image1" id="Image1" width="16" height="16" border="0" id="Image1" onMouseOver="this.style.cursor=cursor">
+									<script type="text/javascript">
+										Calendar.setup(
+											{
+											inputField : "fecha_inicio",
+											ifFormat   : "%d/%m/%Y",
+											button     : "Image1"
+											}
+										);
+									</script></td>
+								</tr>
+								
+								<tr>
+									<td><b>Fecha Fin</b></td>
+									<td><input NAME="fecha_fin" type="text" class="cajaPequena" id="fecha_fin" size="10" maxlength="10" readonly> <img src="/static/img/calendario.png" name="Image1" id="Image1" width="16" height="16" border="0" id="Image1" onMouseOver="this.style.cursor=cursor">
+									<script type="text/javascript">
+										Calendar.setup(
+											{
+											inputField : "fecha_fin",
+											ifFormat   : "%d/%m/%Y",
+											button     : "Image1"
+											}
+										);
+									</script></td>
+								</tr>
+								
+								<tr>
+									<td><b>Observación</b></td>
+									<td colspan="2"><input NAME="observaciones" type="text" class="cajaGrande" id="observaciones" size="50" maxlength="50" value=""></td>
+								</tr>
+											
+							</table>	
+					</div>
+									
+					<div id="botonBusqueda">
+						<button class="button" type="submit">MODIFICAR PROYECTO</button>
+				  		<a href="{% url 'agileApp:index_proyectos'%}" class="button" type="submit">CANCELAR</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+			
+
+{% endblock content %}

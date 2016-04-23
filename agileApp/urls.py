@@ -2,7 +2,7 @@
 from django.conf.urls import url
 
 from . import views
-
+ 
 urlpatterns = [
     url(r'^usuarios/registro/$', views.registrar_usuarios, name='registrar_usuarios'),
     url(r'^usuarios/index/$', views.index_usuarios, name='index_usuarios'),
@@ -16,4 +16,9 @@ urlpatterns = [
     url(r'^roles/(?P<rol_id>\d+)/ver/$', views.ver_roles, name='ver_roles'),
     url(r'^roles/(?P<rol_id>\d+)/eliminar/$', views.eliminar_roles, name='eliminar_roles'),
     url(r'^roles/(?P<rol_id>\d+)/delete/$', views.delete_roles, name='delete_roles'),
+    url(r'^proyectos/crear/$', views.crear_proyectos, name='crear_proyectos'),
+    url(r'^proyectos/(?P<proyecto_id>\d+)/definir/$', views.definir_proyectos, name='definir_proyectos'),
+    url(r'^proyectos/(?P<proyecto_id>\d+)/editar/$', views.editar_proyectos, name='editar_proyectos'),
+    url(r'^proyectos/(?P<proyecto_id>\d+)/ver/$', views.ver_proyectos, name='ver_proyectos'),
+    url(r'^proyectos/index/$', views.index_proyectos, name='index_proyectos'),
 ]

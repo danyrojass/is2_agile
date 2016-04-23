@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Definir Proyectos{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+		</div>
+		
+	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<link href="/static/calendario/calendar-blue.css" rel="stylesheet" type="text/css">
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/calendar.js"></script>
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/lang/calendar-sp.js"></script>
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/calendar-setup.js"></script>
+		
+		<script language="javascript">
+		
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
+		<div id="pagina">
+			<div id="zonaContenido">
+				<div align="center">
+					<div id="tituloForm" class="header">DEFINIR PROYECTO</div>
+					<div id="frmBusqueda">
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								
+								<tr>
+									<td width="14%"><b>Nombre Corto</b></td>
+								    <td width="36%"><input NAME="nombre_corto" type="text" class="cajaGrande" id="nombre_corto" size="10" maxlength="10"></td>
+								</tr>	
+										
+								<tr>
+									<td width="14%"><b>Tipo</b></td>
+									<td width="36%"> <input type="checkbox" name="tipo" id="tipo">¿Proyecto?<br></td>
+								</tr>
+								
+								<tr>
+									<td><b>Descripción</b></td>
+									<td><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>
+								</tr>
+								
+								<tr>
+									<td><b>Fecha Inicio</b></td>
+									<td><input NAME="fecha_inicio" type="text" class="cajaPequena" id="fecha_inicio" size="10" maxlength="10" readonly> <img src="/static/img/calendario.png" name="Image1" id="Image1" width="16" height="16" border="0" id="Image1" onMouseOver="this.style.cursor=cursor">
+									<script type="text/javascript">
+										Calendar.setup(
+											{
+											inputField : "fecha_inicio",
+											ifFormat   : "%d/%m/%Y",
+											button     : "Image1"
+											}
+										);
+									</script></td>
+								</tr>
+								
+								<tr>
+									<td><b>Fecha Fin</b></td>
+									<td><input NAME="fecha_fin_estimado" type="text" class="cajaPequena" id="fecha_fin_estimado" size="10" maxlength="10" readonly> <img src="/static/img/calendario.png" name="Image2" id="Image2" width="16" height="16" border="0" id="Image2" onMouseOver="this.style.cursor=cursor">
+									<script type="text/javascript">
+										Calendar.setup(
+											{
+											inputField : "fecha_fin_estimado",
+											ifFormat   : "%d/%m/%Y",
+											button     : "Image2"
+											}
+										);
+									</script></td>
+								</tr>
+								
+								<tr>
+									<td><b>Observaciones</b></td>
+									<td><input NAME="observaciones" type="text" class="cajaGrande" id="observaciones" size="50" maxlength="50" value=""></td>
+								</tr>
+											
+							</table>	
+					</div>
+					
+					<div id="botonBusqueda">
+						<button class="button" type="submit">DEFINIR PROYECTO</button>
+				  		<a href="{% url 'agileApp:index_proyectos'%}" class="button" type="submit">CANCELAR</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+			
+
+{% endblock content %}

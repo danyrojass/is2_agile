@@ -55,3 +55,25 @@ class Permisos_Roles(models.Model):
 class Roles_Usuarios(models.Model):
     roles = models.ForeignKey(Roles)
     usuario = models.ForeignKey(Usuarios)
+    
+"""
+Clase Proyectos.
+"""
+class Proyectos(models.Model):
+    nombre_largo = models.CharField(max_length=25, default="")
+    nombre_corto = models.CharField(max_length=10, default="")
+    tipo = models.BooleanField(default=True) #True: Proyecto. False: Servicio.
+    descripcion = models.CharField(max_length=50, default="")
+    fecha_inicio = models.DateField(default=timezone.now)
+    fecha_fin_estimado = models.DateField(default=timezone.now)
+    fecha_fin_real = models.DateField(default=timezone.now)
+    observaciones = models.CharField(max_length=50, default="")
+    estado = models.IntegerField(default=1) #1: Pendiente. 2: Anulado. 3: Activo. 4: Finalizado.
+    usuarios = models.ManyToManyField(Usuarios, through='Usuarios_Proyectos')
+    
+    def __str__(self):
+        return self.nombre_largo
+    
+class Usuarios_Proyectos(models.Model):
+    proyecto = models.ForeignKey(Proyectos)
+    usuarios = models.ForeignKey(Usuarios)
