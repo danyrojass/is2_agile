@@ -205,6 +205,11 @@ class EditarRolForm(forms.Form):
         if Roles.objects.filter(nombre=nombre).exclude(id=self.rol_id):
             raise forms.ValidationError('Nombre de rol ya registrado.')
         return nombre
+
+class AsignarRolForm(forms.Form):
+    rol_id = forms.IntegerField()
+    proyecto_id = forms.IntegerField()
+    
 class CrearProyectoForm(forms.Form):
     nombre_largo = forms.CharField(max_length=25)
     
@@ -240,4 +245,3 @@ class EditarProyectoForm(forms.Form):
 
 class ElegirProyectoForm(forms.Form):
     proyecto_id = forms.IntegerField(required=False)
-

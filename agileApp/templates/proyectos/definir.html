@@ -3,7 +3,9 @@
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}}, <a href="#">{{usuario.username}}</a>!
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a>
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />

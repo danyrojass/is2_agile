@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from sgpa2016.models import Usuarios, Permisos, Roles, Roles_Usuarios, Permisos_Roles
+from agileApp.models import Usuarios, Permisos, Roles, Roles_Usuarios, Permisos_Roles
 
 class Command(BaseCommand):
 

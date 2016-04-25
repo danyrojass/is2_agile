@@ -2,11 +2,10 @@
 {% block title %}Cambios guardados{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
-		<div id="welcome" align="center">
-			{{saludo}},{{usuario.username}}
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a>
-			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
@@ -99,7 +98,7 @@
 						<div id="tituloForm" class="header">ROL ASIGNADO</div>
 							<div id="botonBusqueda">
 	        					<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
-	        					<a href="{#}" class="button" type="submit" align="center">Ok</a>
+	        					<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit">Ok</a>
        
 	        				</div>
 						</div>

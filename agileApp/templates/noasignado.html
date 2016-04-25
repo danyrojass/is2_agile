@@ -7,17 +7,22 @@
 			<tr height="0px"></tr>
 			<tr height="0px">
 				<td>&nbsp;</td>
-				<td><div align="center"><img src="/static/img/sgpa.png" alt="SGPA" width="475" height="120" border="0" /></div></td>
+				<td><div align="center"><img src="/static/img/sgpa.png" alt="agile" width="475" height="120" border="0" /></div></td>
 				<td>&nbsp;</td>
 			</tr>
 		</table>
-	</head>					
-		{% block content %}
-        {% endblock %}
+	</head>		
+	
+	<link href="/static/style.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, {{usuario.username}}.</br>
+			Aún no se encuentra asignado a ningún proyecto!</br>
+			<a href='/cerrar'>Salir</a></span>
+		</div>
     <body>
-		<footer><img src="/static/img/sgpa1.png" width="75" height="20" alt="sgpa"> 
+		<footer><img src="/static/img/sgpa.png" width="75" height="20" alt="agile"> 
 			<td><div align="center">Versi&oacute;n Beta</div></td>
-			<td><div align="center"><a href='/creditos'>Créditos</a> &copy; 2016</div></td>
+			<td><div align="center">&copy; 2016</div></td>
 		</footer>	
 	</body>
 </html>

@@ -3,11 +3,9 @@
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}},{{usuario.username}}
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a>
-			<a href="javascript:history.go(1)">Adelante</a>
-			
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
@@ -16,15 +14,14 @@
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
 		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
 		
 		<script language="javascript">
 			function nuevo_usuario() {
-		
-				location.href="{% url 'agileApp:registrar_usuarios' %} ";
-				
+				location.href="{% url 'agileApp:registrar_usuarios' %}";
 			}
 			
 			function limpiar() {
@@ -37,6 +34,7 @@
 				cursor='hand';
 			} else {
 				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
 			}
 		</script>
 		
@@ -82,13 +80,14 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 						</tr>
+						
 					</table>
 					
 					</div>
 					<div id="botonBusqueda">
-						<button class="button" type="submit">BUSCAR</button>
-        				<a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a>
-        				<a onClick="nuevo_usuario()" onMouseOver="style.cursor=cursor" class="button">NUEVO USUARIO</a>
+						<td style="text-align:right"><button class="button" type="submit">BUSCAR</button></td>
+        				<td style="text-align:right"><a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a></td>
+        				<td style="text-align:left"><a onClick="nuevo_usuario()" onMouseOver="style.cursor=cursor" class="button" >NUEVO USUARIO</a></td>
 					</div>
 				</form>
 					
@@ -108,49 +107,59 @@
 								<tr class="cabeceraTabla">
 									<td width="7%">ÍTEM</td>
 									<td width="8%">ID</td>
-									<td width="15%">NOMBRE DE USUARIO</td>
-									<td width="15%">NOMBRES </td>
-									<td width="15%">APELLIDOS </td>
-									<td width="20%">EMAIL</td>
-									<td width="5%">&nbsp;</td>
-									<td width="5%">&nbsp;</td>
-									<td width="5%">&nbsp;</td>
-									<td width="5%">&nbsp;</td>
+									<td width="14%">NOMBRE DE USUARIO</td>
+									<td width="14%">NOMBRES </td>
+									<td width="14%">APELLIDOS </td>
+									<td width="15%">EMAIL</td>
+									<td width="8%">EMAIL</td>
+									<td width="5%">Assign</td>
+									<td width="5%">Read</td>
+									<td width="5%">Update</td>
+									<td width="5%">Delete</td>
+									<td width="10%">&nbsp;</td>
 								</tr>
 							</table>
 							<div class="ScrollStyle">
 							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
 								{% if usuarios and filas > 0 %}
 									{% for user in usuarios %}
-										{% if user.is_active == True %}
-											{% if user.id != usuario.id %}
-												{% if forloop.counter|divisibleby:2  %}
-													<tr class="itemImparTabla">
-														<td class="aCentro" width="7%"><div align="center">{{forloop.counter0}}</div></td>
-														<td width="8%"><div align="center">{{user.id}}</div></td>
-														<td width="15%"><div align="center">{{user.username}}</div></td>
-														<td width="15%"><div align="center">{{user.first_name}}</div></td>
-														<td width="15%"><div align="center">{{user.last_name}}</div></td>
-														<td width="20%"><div align="center">{{user.email}}</div></td>
-														<td width="5%"><div align="center"><a href="#"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_usuarios' user.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
-													</tr>
-												{% else %}
-													<tr class="itemParTabla"> 
-														<td class="aCentro" width="7%"><div align="center">{{forloop.counter0}}</div></td>
-														<td width="8%"><div align="center">{{user.id}}</div></td>
-														<td width="15%"><div align="center">{{user.username}}</div></td>
-														<td width="15%"><div align="center">{{user.first_name}}</div></td>
-														<td width="15%"><div align="center">{{user.last_name}}</div></td>
-														<td width="20%"><div align="center">{{user.email}}</div></td>
-														<td width="5%"><div align="center"><a href="#"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_usuarios' user.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
-													</tr>
-												{% endif %}
+										{% if user.id != usuario.id %}
+											{% if forloop.counter|divisibleby:2  %}
+												<tr class="itemImparTabla">
+													<td class="aCentro" width="7%"><div align="center">{{forloop.counter0}}</div></td>
+													<td width="8%"><div align="center">{{user.id}}</div></td>
+													<td width="14%"><div align="center">{{user.username}}</div></td>
+													<td width="14%"><div align="center">{{user.first_name}}</div></td>
+													<td width="14%"><div align="center">{{user.last_name}}</div></td>
+													<td width="15%"><div align="center">{{user.email}}</div></td>
+													{% if user.is_active == True %}
+														<td width="8%"><div align="center">Activo</div></td>
+													{% else %}
+														<td width="8%"><div align="center">Inactivo</div></td>
+													{% endif %}	
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_roles_usuarios_proyecto' user.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_usuarios' user.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
+												</tr>
+											{% else %}
+												<tr class="itemParTabla">
+													<td class="aCentro" width="7%"><div align="center">{{forloop.counter0}}</div></td>
+													<td width="8%"><div align="center">{{user.id}}</div></td>
+													<td width="14%"><div align="center">{{user.username}}</div></td>
+													<td width="14%"><div align="center">{{user.first_name}}</div></td>
+													<td width="14%"><div align="center">{{user.last_name}}</div></td>
+													<td width="15%"><div align="center">{{user.email}}</div></td>
+													{% if user.is_active == True %}
+														<td width="8%"><div align="center">Activo</div></td>
+													{% else %}
+														<td width="8%"><div align="center">Inactivo</div></td>
+													{% endif %}	
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_roles_usuarios_proyecto' user.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_usuarios' user.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
+												</tr>
 											{% endif %}
 										{% endif %}
 									{% endfor %}

@@ -2,11 +2,10 @@
 {% block title %}Editar Usuario{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
-		<div id="welcome" align="center">
-			{{saludo}},{{usuario.username}}
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a>
-			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
@@ -32,7 +31,17 @@
 											<td>{{um.id}}</td>
 							    			<td width="42%" rowspan="13" align="left" valign="top"><ul></ul></td>
 										</tr>
-									
+										
+										<tr>
+											<td width="15%"><b>Contraseña</b></td>
+							    			<td width="43%"><input NAME="password" type="text" class="cajaGrande" id="password" size="45" minlength="10" value=""></td>
+					        			</tr>
+					        			
+					       				<tr>
+											<td width="15%"><b>Contraseña</b></td>
+							    			<td width="43%"><input NAME="password2" type="text" class="cajaGrande" id="password2" size="45" minlength="10" value=""></td>
+					        			</tr>
+					        			
 					        			<tr>
 											<td width="15%"><b>Email</b></td>
 							    			<td width="43%"><input NAME="email" type="text" class="cajaGrande" id="email" size="45" minlength="10" value={{um.email}}></td>
@@ -61,7 +70,18 @@
 								      	<tr>
 										  	<td><b>Observación</b></td>
 										 	<td><input NAME="observacion" type="text" class="cajaGrande" id="observacion" size="45" maxlength="50" value=""></td>
-								      	</tr>      	      	
+								      	</tr>
+								      	
+								      	<tr>
+								      		<td><b>Estado</b></td>
+								      		<td>
+										      	<select name="estado" id="estado">
+													<option selected="selected" disabled="disabled">--- Selecciona un Estado ---</option>
+													<option value="True">Activo</option>
+													<option value="False">No Activo</option>
+												</select> 
+											</td>
+										</tr>      	
 								      	
 									</table>
 								</div>
