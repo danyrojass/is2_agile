@@ -7,8 +7,11 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from datetime import datetime
-from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm, EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm, EditarProyectoForm, ElegirProyectoForm, AsignarRolForm
-from .models import Usuarios, Permisos, Roles, Permisos_Roles, Roles_Usuarios, Usuarios, Proyectos, Usuarios_Proyectos
+from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
+EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
+EditarProyectoForm, ElegirProyectoForm, AsignarRolForm
+from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
+Usuarios_Proyectos, Roles_Usuarios
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -149,7 +152,7 @@ def index_usuarios(request):
         filas= usuarios.count() - 1
         
         if request.method == 'POST':
-            results = User.objects.filter(is_active=True)
+            results = User.objects.all().exclude(id=1)
             form = BuscarUserForm(request.POST)
             
             if form.is_valid():
@@ -423,12 +426,16 @@ def asignar_roles_usuarios_proyecto(request, user_id):
                     proyecto_id = request.POST.get('proyecto_id', None)
                     
                     rol = get_object_or_404(Roles, id=rol_id) 
-                    ru = Roles_Usuarios(usuario=user_profile, roles=rol)
-                    ru.save()
-        
                     proyecto = get_object_or_404(Proyectos, id=proyecto_id)
+                    
+                    ru = Roles_Usuarios(roles=rol, usuario=user_profile)
+                    ru.save()
+                    
                     up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                     up.save()
+                    
+                    rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
+                    rup.save()
                     
                     return render_to_response('usuarios/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'p':proyecto, 'r':rol}, context_instance=RequestContext(request))
             else:
@@ -835,6 +842,8 @@ def ver_proyectos(request, proyecto_id):
     
     staff = verificar_permiso(usuario, accion)
     
+    roles=[]
+    
     if staff:
         comprobar(request)
             
@@ -842,9 +851,13 @@ def ver_proyectos(request, proyecto_id):
             
         proyecto = get_object_or_404(Proyectos, id=proyecto_id)
         up = proyecto.usuarios.all()
-        print up
-            
-        return render(request, 'proyectos/ver.html', {'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        for u in up:
+            rol = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=u)
+            r= get_object_or_404(Roles, nombre=rol.roles.nombre)
+            roles.append(r)
+        ur = map(None, up, roles)
+        
+        return render(request, 'proyectos/ver.html', {'ur':ur, 'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
     

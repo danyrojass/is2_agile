@@ -2,8 +2,9 @@
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from agileApp.models import Usuarios, Permisos, Roles, Roles_Usuarios, Permisos_Roles, Proyectos,\
-    Usuarios_Proyectos
+from agileApp.models import Usuarios, Permisos, Roles, Permisos_Roles, Proyectos, Roles_Usuarios_Proyectos,\
+Roles_Usuarios, Usuarios_Proyectos
+
 
 class Command(BaseCommand):
 
@@ -40,8 +41,8 @@ class Command(BaseCommand):
         
         crear_usuario('Alfredo', 'Barrios', 'abarrios', 'a123', 'alfbarrios2010@gmail.com', True)
         crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', True)
-        crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
         crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', False)
+        crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
         
         crear_proyecto("Proyecto de Prueba Nro. 1", "Proy1", "Escenario de prueba 1.")
         crear_proyecto("Proyecto de Prueba Nro. 2", "Proy2", "Escenario de prueba 2.")
@@ -111,15 +112,22 @@ def asignar_usuarios():
     proyecto2 = Proyectos.objects.get(nombre_largo="Proyecto de Prueba Nro. 2")
     
     for idx, usuario in enumerate(usuarios):
-        if idx%2 == 0: 
-            ru = Roles_Usuarios(usuario=usuario, roles=rol1)
+        if idx%2 == 0:
+            ru = Roles_Usuarios(roles=rol1, usuario=usuario)
             ru.save()
             
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
             up.save()
+            
+            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto1)
+            rup.save()
+
         else:
-            ru = Roles_Usuarios(usuario=usuario, roles=rol2)
+            ru = Roles_Usuarios(roles=rol2, usuario=usuario)
             ru.save()
             
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
             up.save()
+            
+            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto2)
+            rup.save()

@@ -51,11 +51,7 @@ class Usuarios(models.Model):
 class Permisos_Roles(models.Model):
     permisos = models.ForeignKey(Permisos)
     roles = models.ForeignKey(Roles)
-    
-class Roles_Usuarios(models.Model):
-    roles = models.ForeignKey(Roles)
-    usuario = models.ForeignKey(Usuarios)
-    
+   
 """
 Clase Proyectos.
 """
@@ -73,7 +69,16 @@ class Proyectos(models.Model):
     
     def __str__(self):
         return self.nombre_largo
+
+class Roles_Usuarios(models.Model):
+    roles = models.ForeignKey(Roles)
+    usuario = models.ForeignKey(Usuarios)
     
 class Usuarios_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     usuarios = models.ForeignKey(Usuarios)
+
+class Roles_Usuarios_Proyectos(models.Model):
+    proyecto = models.ForeignKey(Proyectos)
+    usuarios = models.ForeignKey(Usuarios)
+    roles = models.ForeignKey(Roles)

@@ -101,8 +101,8 @@
 							</colgroup>
 
 										{% if up %}
-											{% for u in up %}
-									    		<td width="10%">{{u}}</td>
+											{% for u,r in ur %}
+									    		<td width="10%">User: {{u}} Rol: {{r}}</td>
 									    	{% endfor %}
 									    {% else %}
 									    	<td width="10%">Sin integrantes.</td>
