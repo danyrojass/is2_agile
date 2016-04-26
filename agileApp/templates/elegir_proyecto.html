@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock title %}
+{% block content %}
+	<link href="/static/style.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a>{{usuario.username}}</a>!
+		</div>
+		
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	
+	<link rel="stylesheet" href="/static/formoid-solid-orange2.css" type="text/css" />
+	<form class="formoid-solid-orange" style="background-color:#ffffff;font-size:14px;font-family:'Ubuntu',Arial,Helvetica,sans-serif;color:#34495E;max-width:480px;min-width:150px" method="post"><div class="title"><h2>Selección de Proyecto</h2></div>{% csrf_token %}	
+		{{ form.errors }} 
+		<div class="element-select"><label class="title"></label><div class="item-cont"><div class="large"><span><select id="proyecto_id" name="proyecto_id" class="comboGrande">
+			<option selected="selected" disabled="disabled">--- Selecciona un Proyecto ---</option> 
+				{% if proyectos %}
+					{% for p in proyectos %}
+						<option value="{{p.id}}">{{p.nombre_largo}}</option>
+					{% endfor %}
+				{% endif %}
+			</select><i></i><span class="icon-place"></span></span></div></div></div>
+					
+		<div class="submit"><input type="submit" name="register" id="register" class="button" value="Seleccionar" /></input></div>
+	
+	</form>
+{% endblock content %}

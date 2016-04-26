@@ -12,8 +12,11 @@
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
-		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
-		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		{% if staff %}
+			  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
+			  		<li><a href='/agile/roles/index/'>Roles</a></li>
+			  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		{% endif %}
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>

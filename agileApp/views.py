@@ -109,14 +109,14 @@ def index(request):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 proyecto_id = cleaned_data.get('proyecto_id')
-                proyecto = get_object_or_404(Proyectos,id=proyecto_id)
-                   
+                proyecto = Proyectos.objects.filter(id=proyecto_id)
                 return render_to_response('inicio_usuario.html', {'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request))   
+
         else:
             form = ElegirProyectoForm()
             
         return render(request, 'elegir_proyecto.html', {'usuario':usuario, 'proyectos':proyectos, 'saludo':saludo, 'form': form})
-
+    
 def creditos(request):
     """
     Método que se encarga de mostrar los créditos del sistema.
@@ -398,25 +398,25 @@ def asignar_roles_usuarios_proyecto(request, user_id):
         user_model = get_object_or_404(User, id=user_id)
         roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador")
         proyectos = Proyectos.objects.all().exclude(usuarios__id=user_id)
-    
-        if request.method == 'POST':
-            form = AsignarRolForm(request.POST)
-            if form.is_valid():
-                rol_id = request.POST.get('rol_id', None)
-                proyecto_id = request.POST.get('proyecto_id', None)
-                
-                rol = get_object_or_404(Roles, id=rol_id) 
-                ru = Roles_Usuarios(usuario=user_profile, roles=rol)
-                ru.save()
-    
-                proyecto = get_object_or_404(Proyectos, id=proyecto_id)
-                up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
-                up.save()
-                
-                return render_to_response('usuarios/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'p':proyecto, 'r':rol}, context_instance=RequestContext(request))
-        else:
-            form = AsignarRolForm()
-        return render(request, 'usuarios/asignar.html', {'form': form, 'roles':roles, 'proyectos':proyectos, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
+        if user_model.is_active:
+            if request.method == 'POST':
+                form = AsignarRolForm(request.POST)
+                if form.is_valid():
+                    rol_id = request.POST.get('rol_id', None)
+                    proyecto_id = request.POST.get('proyecto_id', None)
+                    
+                    rol = get_object_or_404(Roles, id=rol_id) 
+                    ru = Roles_Usuarios(usuario=user_profile, roles=rol)
+                    ru.save()
+        
+                    proyecto = get_object_or_404(Proyectos, id=proyecto_id)
+                    up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
+                    up.save()
+                    
+                    return render_to_response('usuarios/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'p':proyecto, 'r':rol}, context_instance=RequestContext(request))
+            else:
+                form = AsignarRolForm()
+            return render(request, 'usuarios/asignar.html', {'form': form, 'roles':roles, 'proyectos':proyectos, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
     else:
         return HttpResponseRedirect('/index')
 
