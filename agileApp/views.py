@@ -342,8 +342,16 @@ def delete_usuarios(request, user_id):
         return render_to_response('usuarios/gracias.html', {'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile, 'aid':aid}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/index')
+    
 @login_required(login_url='/ingresar')
 def modificar_contrasena(request):
+    """
+    Método que permite modificar la contraseña, del usuario solicitante.
+    
+    @param request: Http request
+    @return: render al template usuarios/modificar_contrasena.html para la modificación. 
+             render al template usuarios/gracias.html cuando se ha modificado correctamente.
+    """
     aid = 4
     
     usuario = request.user
@@ -383,6 +391,15 @@ def ver_usuarios(request, user_id):
         return HttpResponseRedirect('/index')
 
 def asignar_roles_usuarios_proyecto(request, user_id):
+    """
+    Método que permite asignar un Rol a un Usuario en un Proyecto determinado.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @return: render al template usuarios/asignar.html para la asignación. 
+             render al template usuarios/gracias.html cuando se ha asignado correctamente.
+    """
+    
     usuario = request.user
     accion = "Asginar Rol a Usuarios en un Proyecto"
     
@@ -887,8 +904,8 @@ def index_proyectos(request):
     
 def saludo_dia():
     """
-    Funciones de saludo y comprobación de última actividad.
-    
+    Función de saludo. 
+    @return: saludo: retorna un saludo (string) diferente dependiendo la hora del día.
     """
     hora = datetime.now().hour
     if hora >= 0 and hora < 6:
@@ -908,6 +925,8 @@ def comprobar(request):
     """
     Verifica si el usuario a estado más de diez minutos inactivo,
     si es así se cierra la sesión.
+    Verifica, además, que el usuario se encuentre autentificado, 
+    si no es así, debe iniciar sesión.
     
     @param request:Http request    
     @type  request:HtpptRequest
@@ -932,6 +951,16 @@ def comprobar(request):
     request.session['last_activity'] = str(now)
 
 def verificar_permiso(usuario, accion):
+    """
+    Verifica si el usuario tiene un rol asociado, y si éste cuenta con el o los permisos necesarios,
+    para realizar una acción determinada.
+    
+    @param usuario: objeto User registrado en el sistema.
+    @param accion: string, que designa lo que quiere realizar el usuario.
+    @return: staff: retorna True o False, dependiendo de si el usuario tiene o no permiso de realizar la acción. 
+    
+    """
+    
     staff = None
     us = Usuarios.objects.get(id=usuario.id)
     
