@@ -2,7 +2,8 @@
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from agileApp.models import Usuarios, Permisos, Roles, Roles_Usuarios, Permisos_Roles
+from agileApp.models import Usuarios, Permisos, Roles, Roles_Usuarios, Permisos_Roles, Proyectos,\
+    Usuarios_Proyectos
 
 class Command(BaseCommand):
 
@@ -35,11 +36,17 @@ class Command(BaseCommand):
      
         crear_roles("Administrador", True, "Administrador del Sistema.")
         crear_roles("Scrum Master", True, "Líder del Proyecto.")
+        crear_roles("Usuario Regular", False, "Soporte.")
         
         crear_usuario('Alfredo', 'Barrios', 'abarrios', 'a123', 'alfbarrios2010@gmail.com', True)
         crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', True)
         crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
         crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', False)
+        
+        crear_proyecto("Proyecto de Prueba Nro. 1", "Proy1", "Escenario de prueba 1.")
+        crear_proyecto("Proyecto de Prueba Nro. 2", "Proy2", "Escenario de prueba 2.")
+        
+        asignar_usuarios()
 
 def crear_roles(nombre, tipo, observacion):
     rol = Roles()
@@ -88,3 +95,31 @@ def agregar_permisos(nombre, nivel):
     permisos.nivel = nivel
     permisos.estado = True
     permisos.save()
+
+def crear_proyecto(nombre_largo, nombre_corto, descripcion):
+    proyecto = Proyectos()
+    proyecto.nombre_largo = nombre_largo
+    proyecto.nombre_corto = nombre_corto
+    proyecto.descripcion = descripcion
+    proyecto.save()
+
+def asignar_usuarios():
+    usuarios = Usuarios.objects.all().exclude(id=1)
+    rol1 = Roles.objects.get(nombre="Scrum Master")
+    rol2 = Roles.objects.get(nombre="Usuario Regular")
+    proyecto1 = Proyectos.objects.get(nombre_largo="Proyecto de Prueba Nro. 1")
+    proyecto2 = Proyectos.objects.get(nombre_largo="Proyecto de Prueba Nro. 2")
+    
+    for idx, usuario in enumerate(usuarios):
+        if idx%2 == 0: 
+            ru = Roles_Usuarios(usuario=usuario, roles=rol1)
+            ru.save()
+            
+            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
+            up.save()
+        else:
+            ru = Roles_Usuarios(usuario=usuario, roles=rol2)
+            ru.save()
+            
+            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
+            up.save()

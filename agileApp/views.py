@@ -933,43 +933,77 @@ def comprobar(request):
 
 def verificar_permiso(usuario, accion):
     staff = None
-    us = Usuarios.objects.filter(id=usuario.id)
-    rol = get_object_or_404(Roles_Usuarios, usuario=us)
+    us = Usuarios.objects.get(id=usuario.id)
     
     if accion=="Registro de Usuarios" or accion=="Index de Usuarios" or accion=="Editar Usuarios" or accion=="Borrar Usuarios" or accion=="Ver Usuarios":
         permiso = Permisos.objects.filter(nombre="Administración de Usuarios")
-    
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
         
     elif accion=="Asginar Rol a Usuarios en un Proyecto":
         permiso = Permisos.objects.filter(nombre="Asignación de Usuarios")
-    
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
     
     elif accion=="Ver Index de Admin":
         permiso = Permisos.objects.filter(nombre="Ver Página de Administración")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
         
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
     
     elif accion=="Ver Index de Usuario Regular":
         permiso = Permisos.objects.filter(nombre="Ver Página de Inicio")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
         
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
     
     elif accion=="Registro de Roles" or accion=="Index de Roles" or accion=="Editar Roles" or accion=="Borrar Roles" or accion=="Ver Roles":
         permiso = Permisos.objects.filter(nombre="Administración de Roles y Permisos")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
         
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
-    
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+            
     elif accion=="Registro de Proyectos/Servicios" or accion=="Index de Proyectos/Servicios" or accion=="Editar Proyectos/Servicios" or accion=="Ver Proyectos/Servicios":
         permiso = Permisos.objects.filter(nombre="Administración de Proyectos/Servicios")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
         
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
         
     elif accion=="Definir Proyectos/Servicios":
         permiso = Permisos.objects.filter(nombre="Definición de Proyectos/Servicios")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
         
-        staff = Permisos_Roles.objects.filter(roles=rol.roles).filter(permisos=permiso)
-              
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+            
     return staff
     
