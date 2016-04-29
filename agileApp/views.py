@@ -175,6 +175,9 @@ def comprobar(request):
 
 
 def index_usuarios(request):
+    
+    
+    
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -298,6 +301,14 @@ def registrar_usuarios(request):
 
 @login_required(login_url='/ingresar')
 def editar_usuarios(request, user_id):
+    """
+     Permite la modificación de los datos de un usuario.
+     
+    @param request:Http request
+    @param user_id:Id de un usuario registrado en el sistema
+    @return:render a usuarios/editar.html que cuenta con los datos que se pueden modificar.
+    
+    """   
     aid = 2
     comprobar(request)
     if(request.user.is_anonymous()):
@@ -330,6 +341,14 @@ def editar_usuarios(request, user_id):
     return render(request, 'usuarios/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
 
 def eliminar_usuarios(request, user_id):
+    """
+    Método que permite eliminar un usuario existente del sistema.
+      
+    @param request:Http request
+    @param user_id:Id de un usuario registrado en el sistema
+    @return:render a usuarios/eliminar.html.
+    
+     """  
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -345,6 +364,16 @@ def eliminar_usuarios(request, user_id):
 
 @login_required(login_url='/ingresar')
 def delete_usuarios(request, user_id):
+    """
+    Método que nos permite poner como inactivo a un usuario existente en el sistema.
+  
+   
+    @param request:Http request
+    @param user_id:Id de un usuario registrado en el sistema
+    @return:render a usuarios/gracias.html con el contexto.
+
+    """
+    
     aid = 3
     usuario = request.user
     saludo = saludo_dia()
@@ -359,6 +388,15 @@ def delete_usuarios(request, user_id):
 
 @login_required(login_url='/ingresar')
 def ver_usuarios(request, user_id):
+    """
+    Nos permite ver los usuarios existente en el sistema.
+
+  
+    @param request:Http request
+    @param user_id:Id de un usuario registrado en el sistema
+    @return:render a usuarios/ver.html.
+
+    """ 
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -375,6 +413,14 @@ def ver_usuarios(request, user_id):
 
 """Administración de Roles"""
 def crear_roles(request):
+    """
+    Método para la creación de roles con la asignación de sus permisos correspondientes.
+
+    @param request:Http request
+    @return:render a roles/crear.html que cuenta con las especificaciones para la creación del rol.
+
+    """
+    
     usuario = request.user
     aid = 1
     comprobar(request)
@@ -419,7 +465,17 @@ def crear_roles(request):
     return render(request, 'roles/crear.html', {'usuario':usuario, 'saludo':saludo, 'form': form, 'permisos':permisos})
     
     
-def asignar_permisos_rol(request, rol_id, lista_permisos):    
+def asignar_permisos_rol(request, rol_id, lista_permisos):
+    """
+    Método para asignar los permisos con los que contara un rol.
+   
+   
+    @param request:Http request
+    @param user_id:Id de un rol existente en el sistema.
+    @return: rol con los permisos asignados recientemente.
+
+    """
+     
     rol = get_object_or_404(Roles, id=rol_id)
     
     for p in lista_permisos:
@@ -431,6 +487,14 @@ def asignar_permisos_rol(request, rol_id, lista_permisos):
     return pr
 
 def editar_roles(request, rol_id):
+    """
+    Método que nos permite modificar un rol existente en el sistema.
+
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/editar.html con la descripción del rol modificado.
+
+    """ 
     usuario = request.user
     
     aid = 2
@@ -473,7 +537,16 @@ def editar_roles(request, rol_id):
     return render(request, 'roles/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'lista':lista, 'permisos':permisos})
     
 def editar_permisos_rol(request, rol_id, lista_permisos):
-    
+    """
+    Nos permite modificar los permisos de un rol registrado en el sistema.
+  
+   
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/ver.html con sus respectivos permisos a modificar.
+
+    """
+
     rol = get_object_or_404(Roles, id=rol_id)
     rp = rol.permisos.all() 
     existe = False
@@ -500,6 +573,15 @@ def editar_permisos_rol(request, rol_id, lista_permisos):
     return per
 
 def ver_roles(request, rol_id):
+    """
+    Nos permite ver los roles registrados en el sistema.
+ 
+    
+   @param request: Http request
+   @param role_id: Id de un rol registrado en el sistema
+   @return: render a roles/ver.html.
+
+    """
     usuario = request.user
     
     
@@ -518,6 +600,15 @@ def ver_roles(request, rol_id):
     
     
 def eliminar_roles(request, rol_id):
+    """
+    Método para eliminar un rol existente del sistema.
+
+   
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/eliminar.html.  
+
+    """    
     usuario = request.user
     
     comprobar(request)
@@ -534,6 +625,14 @@ def eliminar_roles(request, rol_id):
     return render_to_response('roles/eliminar.html', {'usuario':usuario, 'saludo':saludo, 'rol':rol})
     
 def delete_roles(request, rol_id):
+    """
+     Establece el estado de un rol a False.
+     
+    @param request: Http request
+    @param rol_id: Id de un rol registrado en el sistema
+    @return:roles/gracias.html
+
+    """
     usuario = request.user
     
     aid = 3
@@ -550,6 +649,15 @@ def delete_roles(request, rol_id):
     return render_to_response('roles/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'pr':pr})  
     
 def index_roles(request):
+    """
+    Método que nos permite conocer los tipos de roles con la cual cuenta un usuario.
+
+    @param request:Http request
+    @type  request:HtpptRequest 
+    @return: render a roles/index.html.
+    
+    """
+    
     usuario = request.user
    
     comprobar(request)
