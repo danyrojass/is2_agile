@@ -242,7 +242,7 @@ def registrar_usuarios(request):
     
     @param request:Http request
     @type  request:HtpptRequest
-    @return: renderiza template de .html
+    @return: renderiza template registro.html
     
     
     """
@@ -295,6 +295,16 @@ def registrar_usuarios(request):
 
 @login_required(login_url='/ingresar')
 def editar_usuarios(request, user_id):
+    """ 
+    Edita un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template registro.html
+    
+    
+    """
     aid = 2
     comprobar(request)
     if(request.user.is_anonymous()):
@@ -327,6 +337,16 @@ def editar_usuarios(request, user_id):
     return render(request, 'usuarios/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
 
 def eliminar_usuarios(request, user_id):
+    """ 
+    Redirige a eliminar un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza y redirige al template eliminar.html
+    
+    
+    """
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -342,6 +362,16 @@ def eliminar_usuarios(request, user_id):
 
 @login_required(login_url='/ingresar')
 def delete_usuarios(request, user_id):
+    """ 
+    Elimina a un Usuario del sistema, es decir lo pone en estado inactivo.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template gracias.html
+    
+    
+    """
     aid = 3
     usuario = request.user
     saludo = saludo_dia()
@@ -356,6 +386,16 @@ def delete_usuarios(request, user_id):
 
 @login_required(login_url='/ingresar')
 def ver_usuarios(request, user_id):
+    """ 
+    Muestra a un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template ver.html
+    
+    
+    """
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
