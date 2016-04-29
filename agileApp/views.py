@@ -221,7 +221,7 @@ def registrar_usuarios(request):
     
     @param request:Http request
     @type  request:HtpptRequest
-    @return: renderiza template de .html
+    @return: renderiza template registro.html
     
     
     """
@@ -281,6 +281,16 @@ def registrar_usuarios(request):
     
 @login_required(login_url='/ingresar')
 def editar_usuarios(request, user_id):
+    """ 
+    Edita un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template registro.html
+    
+    
+    """
     usuario = request.user
     accion = "Editar Usuarios"
     
@@ -327,6 +337,16 @@ def editar_usuarios(request, user_id):
         return HttpResponseRedirect('/index')
 
 def eliminar_usuarios(request, user_id):
+    """ 
+    Redirige a eliminar un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza y redirige al template eliminar.html
+    
+    
+    """
     usuario = request.user
     accion = "Borrar Usuarios"
     
@@ -349,6 +369,16 @@ def eliminar_usuarios(request, user_id):
 
 @login_required(login_url='/ingresar')
 def delete_usuarios(request, user_id):
+    """ 
+    Elimina a un Usuario del sistema, es decir lo pone en estado inactivo.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template gracias.html
+    
+    
+    """
     usuario = request.user
     accion = "Borrar Usuarios"
     
@@ -398,6 +428,16 @@ def modificar_contrasena(request):
 
 @login_required(login_url='/ingresar')
 def ver_usuarios(request, user_id):
+    """ 
+    Muestra a un Usuario del sistema.
+    
+    @param request:Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado  
+    @return: renderiza template ver.html
+    
+    
+    """
     usuario = request.user
     accion = "Ver Usuarios"
     
