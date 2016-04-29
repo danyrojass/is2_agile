@@ -516,6 +516,14 @@ def asignar_roles_usuarios_proyecto(request, user_id):
 
 """Administración de Roles"""
 def crear_roles(request):
+    """
+    Método para la creación de roles con la asignación de sus permisos correspondientes.
+
+    @param request:Http request
+    @return:render a roles/crear.html que cuenta con las especificaciones para la creación del rol.
+
+    """
+    
     usuario = request.user
     accion = "Registro de Roles"
     
@@ -569,7 +577,17 @@ def crear_roles(request):
     else:
         return HttpResponseRedirect('/index')
     
-def asignar_permisos_rol(request, rol_id, lista_permisos):    
+def asignar_permisos_rol(request, rol_id, lista_permisos):
+    """
+    Método para asignar los permisos con los que contara un rol.
+   
+   
+    @param request:Http request
+    @param user_id:Id de un rol existente en el sistema.
+    @return: rol con los permisos asignados recientemente.
+
+    """  
+
     rol = get_object_or_404(Roles, id=rol_id)
     
     for p in lista_permisos:
@@ -581,6 +599,15 @@ def asignar_permisos_rol(request, rol_id, lista_permisos):
     return pr
 
 def editar_roles(request, rol_id):
+    """
+    Método que nos permite modificar un rol existente en el sistema.
+
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/editar.html con la descripción del rol modificado.
+
+    """
+    
     usuario = request.user
     accion = "Editar Roles"
     
@@ -643,6 +670,15 @@ def editar_roles(request, rol_id):
         return HttpResponseRedirect('/index')
     
 def editar_permisos_rol(request, rol_id, lista_permisos):
+    """
+    Nos permite modificar los permisos de un rol registrado en el sistema.
+  
+   
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/ver.html con sus respectivos permisos a modificar.
+
+    """  
     
     rol = get_object_or_404(Roles, id=rol_id)
     rp = rol.permisos.all() 
@@ -670,6 +706,16 @@ def editar_permisos_rol(request, rol_id, lista_permisos):
     return per
 
 def ver_roles(request, rol_id):
+    """
+    Nos permite ver los roles registrados en el sistema.
+ 
+    
+   @param request: Http request
+   @param role_id: Id de un rol registrado en el sistema
+   @return: render a roles/ver.html.
+
+    """
+    
     usuario = request.user
     accion = "Ver Roles"
     
@@ -695,6 +741,17 @@ def ver_roles(request, rol_id):
         return HttpResponseRedirect('/index')
     
 def eliminar_roles(request, rol_id):
+
+    """
+    Método para eliminar un rol existente del sistema.
+
+   
+    @param request: Http request
+    @param role_id: Id de un rol registrado en el sistema
+    @return: render a roles/eliminar.html.  
+
+    """
+
     usuario = request.user
     accion = "Borrar Roles"
     
@@ -717,6 +774,14 @@ def eliminar_roles(request, rol_id):
         return HttpResponseRedirect('/index')
     
 def delete_roles(request, rol_id):
+    """
+     Establece el estado de un rol a False
+    @param request: Http request
+    @param rol_id: Id de un rol registrado en el sistema
+    @return:roles/gracias.html
+
+    """
+    
     usuario = request.user
     accion = "Borrar Roles"
     
@@ -743,6 +808,15 @@ def delete_roles(request, rol_id):
         return HttpResponseRedirect('/index')
     
 def index_roles(request):
+    """
+    Método que nos permite conocer los tipos de roles con la cual cuenta un usuario.
+
+    @param request:Http request
+    @type  request:HtpptRequest 
+    @return: render a roles/index.html.
+    
+    """    
+    
     usuario = request.user
     accion = "Index de Roles"
     
@@ -848,7 +922,9 @@ def definir_proyectos(request, proyecto_id):
     @param request: Http request
     @param request: proyecto_id
     @return: render al template proyectos/gracias.html
+    
     """
+    
     usuario = request.user
     accion = "Definir Proyectos/Servicios"
     
@@ -902,7 +978,9 @@ def editar_proyectos(request, proyecto_id):
     @param request: Http request
     @param request: proyecto_id
     @return: render al template proyectos/gracias.html
+    
     """
+    
     usuario = request.user
     accion = "Editar Proyectos/Servicios"
     
@@ -946,6 +1024,14 @@ def editar_proyectos(request, proyecto_id):
         return HttpResponseRedirect('/index')
 
 def desasignar_usuarios(request, lista_usuarios, proyecto_id):
+    """
+    Método para desasignar a un usuarios existente del proyecto.
+    
+    @param request: Http request
+    @param request: proyecto_id
+    @return: se eliminaron los registros que relacionan al usuario con el proyecto, con el rol. 
+    
+    """
     
     proyecto = get_object_or_404(Proyectos, id=proyecto_id)
     
