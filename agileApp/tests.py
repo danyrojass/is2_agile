@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.models import User, AnonymousUser
 from django.core import mail
 from random import choice
@@ -7,6 +8,8 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
+
+from .models import Usuarios
 
 class test_login(TestCase):
     
@@ -45,3 +48,50 @@ class test_templates(TestCase):
         resp = self.client.get('/ingresar/')
         resp.user = AnonymousUser()
         self.assertEqual(resp.status_code, 200)
+
+class UsuarioTestCase(TestCase):
+    
+    def test_creacion_usuario(self):
+        """
+        Prueba la creacion de un usuario
+        """
+        #Se crea un usuario para la prueba
+        us = User()
+        us.username = "ariel"
+        us.password = "ariel"
+        us.email = "ariel@lastdeo.com"
+        us.is_active = True
+        us.save()
+    
+        #Se verifica si se ha creado el usuario, consultado si la
+        #tabla usuario no esta vacia 
+        self.assertTrue(User.objects.all() > 0, "No se ha guardado el usuario")
+        
+        
+    def test_campos_obligatorios(self):
+        """
+        Se verifica que los campos obligatorios se han guardado
+        """
+        
+        #Se crea un usuario para la prueba
+        us = User()
+        us.username = "alfredo"
+        us.password = "alfbarrios123"
+        us.email = "alfbarrios2010@gmail.com"
+        us.is_active = True
+        us.save()
+    
+        
+        #Se obtienen los datos del usuario que se ha creado
+        user = User.objects.get(username = "alfredo")
+            
+        #Se verifica si se han almacenado los campos obligatorios
+        
+        #Nombre de usuario 
+        self.assertEqual(user.username, "alfredo", "No existe el usuario alfredo")
+        #E-mail
+        self.assertEqual(user.email, "alfbarrios2010@gmail.com", "No se ha guardado el email")
+        #Contraseña
+        self.assertEqual(user.password, "alfbarrios123", "No se ha guardado la contrasena")
+    
+  
