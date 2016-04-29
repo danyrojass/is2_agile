@@ -224,10 +224,10 @@ class CrearProyectoForm(forms.Form):
 class DefinirProyectoForm(forms.Form):
     nombre_corto = forms.CharField(max_length=10)
     tipo = forms.BooleanField()
-    descripcion = forms.CharField(max_length=50)
+    estado = forms.IntegerField()
+    descripcion = forms.CharField(max_length=50, required=False)
     fecha_inicio = forms.DateField()
     fecha_fin_estimado = forms.DateField()
-    observaciones = forms.CharField(max_length=50, required=False)
 
 class BuscarProyectoForm(forms.Form):
     id = forms.IntegerField(required=False)
@@ -236,11 +236,6 @@ class BuscarProyectoForm(forms.Form):
     descripcion = forms.CharField(required=False)
     
 class EditarProyectoForm(forms.Form):
-    nombre_corto = forms.CharField(max_length=10)
-    tipo = forms.BooleanField()
-    descripcion = forms.CharField(max_length=50)
-    fecha_inicio = forms.DateField()
-    fecha_fin_estimado = forms.DateField()
     observaciones = forms.CharField(max_length=50, required=False)
 
 class ElegirProyectoForm(forms.Form):

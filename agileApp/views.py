@@ -37,10 +37,8 @@ def ingresar(request):
     @type  request:HtpptRequest 
     @return: render a template correspondiente segun rol del usuario en el sistema, contexto
     """
-    
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     request.session['last_activity'] = str(now)
-    
     if not request.user.is_anonymous():
         return HttpResponseRedirect('/index')
     if request.method == 'POST':
@@ -91,7 +89,11 @@ def index(request):
     """
     
     comprobar(request)
-        
+    if(request.user.is_anonymous()):
+        return HttpResponseRedirect('/ingresar')
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    request.session['last_activity'] = str(now)
+    
     usuario = request.user
     usuario_profile = Usuarios.objects.get(id=usuario.id)
     permiso = Permisos.objects.filter(nombre="Ver Página de Administración")
@@ -129,7 +131,11 @@ def creditos(request):
     @return: render al template de creditos.html
     
     """
-    comprobar(request)        
+    comprobar(request)
+    if(request.user.is_anonymous()):
+        return HttpResponseRedirect('/ingresar')
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    request.session['last_activity'] = str(now)        
     usuario = request.user
     saludo = saludo_dia()
     
@@ -145,6 +151,10 @@ def index_usuarios(request):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
 
         saludo = saludo_dia()
         
@@ -166,28 +176,28 @@ def index_usuarios(request):
                 uusername = request.POST.get('username', None)
                 if uusername:
                     if uusername != usuario.username:
-                        results = results.filter(username__contains=uusername)
+                        results = results.filter(username__icontains=uusername)
                     else:
                         results = None
                         
                 uemail = request.POST.get('email', None)
                 if uemail:
                     if uemail != usuario.email:
-                        results = results.filter(email__contains=uemail)
+                        results = results.filter(email__icontains=uemail)
                     else:
                         results = None
                         
                 first_name = request.POST.get('first_name', None)
                 if first_name:
                     if first_name != usuario.first_name:
-                        results = results.filter(first_name__contains=first_name)
+                        results = results.filter(first_name__icontains=first_name)
                     else:
                         results = None
                         
                 last_name = request.POST.get('last_name', None)
                 if last_name:
                     if last_name != usuario.last_name:
-                        results = results.filter(last_name__contains=last_name)
+                        results = results.filter(last_name__icontains=last_name)
                     else:
                         results = None
                         
@@ -223,6 +233,10 @@ def registrar_usuarios(request):
     if staff:
         aid = 1
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
             
@@ -276,6 +290,10 @@ def editar_usuarios(request, user_id):
         
         aid = 2
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
         
@@ -316,6 +334,10 @@ def eliminar_usuarios(request, user_id):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
 
         saludo = saludo_dia()
         
@@ -383,6 +405,10 @@ def ver_usuarios(request, user_id):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
 
         saludo = saludo_dia()
         
@@ -411,6 +437,10 @@ def asignar_roles_usuarios_proyecto(request, user_id):
     if staff:
         aid = 5
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
         
@@ -454,6 +484,10 @@ def crear_roles(request):
     if staff:
         aid = 1
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
 
         saludo = saludo_dia()
             
@@ -515,9 +549,15 @@ def editar_roles(request, rol_id):
     if staff:
         aid = 2
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
-            
+        
+        listax = []
+   
         permisos1 = Permisos.objects.all().filter(nivel=1)
         permisos2 = Permisos.objects.all().filter(nivel=2)
         permisos3 = Permisos.objects.all().filter(nivel=3)
@@ -529,6 +569,15 @@ def editar_roles(request, rol_id):
         p3 = rol.permisos.all().filter(nivel=3)
         lista = map(None, p1, p2, p3)
         
+        for p, q, r in lista:
+            if not None:
+                if p:
+                    listax.append(p.nombre)
+                if q:
+                    listax.append(q.nombre)
+                if r:
+                    listax.append(r.nombre)
+     
         if request.method == 'POST':
             form = EditarRolForm(request.POST, rol_id=rol_id)
             if form.is_valid():
@@ -549,7 +598,7 @@ def editar_roles(request, rol_id):
                     return render_to_response('roles/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'pr':pr, 'rol':rol}, context_instance=RequestContext(request))
         else:
             form = EditarRolForm(rol_id=rol_id)
-        return render(request, 'roles/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'lista':lista, 'permisos':permisos})
+        return render(request, 'roles/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'rol':rol, 'lista':lista, 'listax':listax, 'permisos':permisos})
     else:
         return HttpResponseRedirect('/index')
     
@@ -588,6 +637,10 @@ def ver_roles(request, rol_id):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
             
@@ -609,6 +662,10 @@ def eliminar_roles(request, rol_id):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         usuario = request.user
         saludo = saludo_dia()
@@ -628,6 +685,10 @@ def delete_roles(request, rol_id):
     if staff:
         aid = 3
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         usuario = request.user
         saludo = saludo_dia()
@@ -649,12 +710,20 @@ def index_roles(request):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
-            
-        roles = Roles.objects.order_by('id')
-        roles = roles.exclude(nombre="Administrador")
+        rolex = Roles.objects.all().exclude(nombre="Administrador")
+        roles = Roles.objects.order_by('id').exclude(nombre="Administrador")
+        for r in roles:
+            rol_usuario = Roles_Usuarios.objects.filter(roles=r)
+            if rol_usuario:
+                rolex= rolex.exclude(id=r.id)
         filas= roles.count()
+
             
         if request.method == 'POST':
             results = Roles.objects.all()
@@ -667,22 +736,22 @@ def index_roles(request):
                     
                 rnombre = request.POST.get('nombre', None)
                 if rnombre:
-                    results = results.filter(nombre__contains=rnombre)
+                    results = results.filter(nombre__icontains=rnombre)
                     
                 robservacion = request.POST.get('observacion', None)
                 if robservacion:
-                    results = results.filter(observacion__contains=robservacion)
+                    results = results.filter(observacion__icontains=robservacion)
                             
-                    if not rid and not rnombre and not robservacion:
-                        results = None
+                if not rid and not rnombre and not robservacion:
+                    results = None
                     
-                    if results:
-                        results.order_by('id')
-                    return render_to_response('roles/results.html', {'usuario':usuario, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+                if results:
+                    results.order_by('id')
+                return render_to_response('roles/results.html', {'usuario':usuario, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarRolForm()
             
-        return render(request, 'roles/index.html', {'usuario':usuario, 'saludo':saludo, 'roles':roles, 'filas':filas})
+        return render(request, 'roles/index.html', {'usuario':usuario, 'saludo':saludo, 'rolex':rolex, 'roles':roles, 'filas':filas})
     else:
         return HttpResponseRedirect('/index')
 
@@ -704,6 +773,10 @@ def crear_proyectos(request):
     if staff:
         aid = 1
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
             
@@ -744,11 +817,15 @@ def definir_proyectos(request, proyecto_id):
     if staff:
         aid = 2
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
              
         saludo = saludo_dia()
             
         proyecto = get_object_or_404(Proyectos, id=proyecto_id)
-            
+   
         if request.method == 'POST':
             form = DefinirProyectoForm(request.POST, request.FILES)
             
@@ -756,29 +833,28 @@ def definir_proyectos(request, proyecto_id):
                 cleaned_data = form.cleaned_data
                 nombre_corto = cleaned_data.get('nombre_corto')
                 tipo = cleaned_data.get('tipo')
+                estado = cleaned_data.get('estado')
                 descripcion = cleaned_data.get('descripcion')
                 fecha_inicio = cleaned_data.get('fecha_inicio')
                 fecha_fin_estimado = cleaned_data.get('fecha_fin_estimado')
-                observaciones = cleaned_data.get('observaciones')
             
                 proyecto.nombre_corto = nombre_corto
                 proyecto.tipo = tipo
                 proyecto.descripcion = descripcion
                 proyecto.fecha_inicio = fecha_inicio
                 proyecto.fecha_fin_estimado = fecha_fin_estimado
-                proyecto.observaciones = observaciones
-                proyecto.estado = 1
+                proyecto.estado = estado
                 proyecto.save()
-                    
+
                 return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         
         else:
             form = DefinirProyectoForm()
             
-        return render(request, 'proyectos/definir.html', {'usuario':usuario, 'saludo':saludo, 'form': form})
+        return render(request, 'proyectos/definir.html', {'proyecto':proyecto, 'usuario':usuario, 'saludo':saludo, 'form': form})
     else:
         return HttpResponseRedirect('/index')
-    
+
 def editar_proyectos(request, proyecto_id):
     """
     Metodo que edita los parametros de un proyecto
@@ -795,40 +871,56 @@ def editar_proyectos(request, proyecto_id):
     if staff:
         aid = 3
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
             
         proyecto = get_object_or_404(Proyectos, id=proyecto_id)
-            
+        lista = proyecto.usuarios.all()
+        
         if request.method == 'POST':
             form = EditarProyectoForm(request.POST, request.FILES)
             
             if form.is_valid():
                 cleaned_data = form.cleaned_data
-                nombre_corto = cleaned_data.get('nombre_corto')
-                tipo = cleaned_data.get('tipo')
-                descripcion = cleaned_data.get('descripcion')
-                fecha_inicio = cleaned_data.get('fecha_inicio')
-                fecha_fin_estimado = cleaned_data.get('fecha_fin_estimado')
                 observaciones = cleaned_data.get('observaciones')
-            
-                proyecto.nombre_corto = nombre_corto
-                proyecto.tipo = tipo
-                proyecto.descripcion = descripcion
-                proyecto.fecha_inicio = fecha_inicio
-                proyecto.fecha_fin_estimado = fecha_fin_estimado
+                
                 proyecto.observaciones = observaciones
                 proyecto.save()
-                    
-                return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                  
+                lista_usuarios = request.POST.getlist(u'lista_usuarios')
+                            
+                desasignar_usuarios(request, lista_usuarios, proyecto_id)
+                usuarios = proyecto.usuarios.all()
+                            
+                return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'usuarios':usuarios}, context_instance=RequestContext(request))
         
         else:
             form = EditarProyectoForm()
             
-        return render(request, 'proyectos/editar.html', {'usuario':usuario, 'saludo':saludo, 'form': form, 'proyecto':proyecto})
+        return render(request, 'proyectos/editar.html', {'lista':lista, 'usuario':usuario, 'saludo':saludo, 'form': form, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
+
+def desasignar_usuarios(request, lista_usuarios, proyecto_id):
     
+    proyecto = get_object_or_404(Proyectos, id=proyecto_id)
+    
+    for user_id in lista_usuarios:
+        usuario = get_object_or_404(Usuarios, id=user_id)
+        us_pr = get_object_or_404(Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
+        rol_us_pr = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
+        rol = get_object_or_404(Roles, id=rol_us_pr.roles.id)
+        rol_us = get_object_or_404(Roles_Usuarios, usuario=usuario, roles=rol)
+                
+        rol_us_pr.delete()
+        rol_us.delete()
+        us_pr.delete()
+    
+
 def ver_proyectos(request, proyecto_id):
     """
     Metodo que permite visualizar el proyecto seleccionado
@@ -846,6 +938,10 @@ def ver_proyectos(request, proyecto_id):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
             
@@ -875,6 +971,10 @@ def index_proyectos(request):
     
     if staff:
         comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
             
@@ -892,15 +992,15 @@ def index_proyectos(request):
                     
                 pnombre_largo = request.POST.get('nombre_largo', None)
                 if pnombre_largo:
-                    results = results.filter(nombre_largo__contains=pnombre_largo)
+                    results = results.filter(nombre_largo__icontains=pnombre_largo)
                     
                 pnombre_corto = request.POST.get('nombre_corto', None)
                 if pnombre_corto:
-                    results = results.filter(nombre_corto__contains=pnombre_corto)
+                    results = results.filter(nombre_corto__icontains=pnombre_corto)
                     
                 pdescripcion = request.POST.get('descripcion', None)
                 if pdescripcion:
-                    results = results.filter(descripcion_contains=pdescripcion)
+                    results = results.filter(descripcion_icontains=pdescripcion)
                             
                 if not pid and not pnombre_corto and not pnombre_largo and not pdescripcion:
                     results = None
@@ -946,7 +1046,6 @@ def comprobar(request):
     @return: redirige al template ingresar.html    
     
     """
-    
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     now_object = datetime.strptime(now, '%Y-%m-%d %H:%M:%S')
 
@@ -954,15 +1053,11 @@ def comprobar(request):
     date_object = datetime.strptime(last_activity, '%Y-%m-%d %H:%M:%S')
 
     restaminutos = ((now_object - date_object).seconds)/60 
+    
     if restaminutos >= 10:
         logout(request)
         return HttpResponseRedirect('/ingresar')
     
-    if(request.user.is_anonymous()):
-        return HttpResponseRedirect('/ingresar')
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    request.session['last_activity'] = str(now)
-
 def verificar_permiso(usuario, accion):
     """
     Verifica si el usuario tiene un rol asociado, y si éste cuenta con el o los permisos necesarios,

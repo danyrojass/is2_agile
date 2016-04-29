@@ -5,7 +5,8 @@
 		<div id="welcome" align="center">	
 			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
-			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
@@ -46,7 +47,7 @@
 										
 								<tr>
 									<td><b>Tipo</b></td>
-									<td colspan="2"> <input type="checkbox" name="tipo" id="tipo">¿Rol de Sistema?<br></td>
+									<td colspan="2"> <input type="checkbox" {% if rol.tipo == True %} checked{% endif %} name="tipo" id="tipo">¿Rol de Sistema?<br></td>
 								</tr>
 								
 								<tr>
@@ -90,12 +91,6 @@
 						</table>
 					</div>
 
-					<div id="botonBusqueda" align="center">
-						<img src="/static/img/atencion.png" alt="Atención"/>
-						Los permisos que no sean marcados se considerarán desasignados.
-						Si quiere mantener los permisos que ya poseía, vuelva a marcarlos.
-					</div>
-
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					
@@ -104,9 +99,9 @@
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								
 								<tr>
-									<td width="35%"><u><b>NIVEL PRIMARIO</b></u></td>
-									<td width="35%"><u><b>NIVEL SECUNDARIO</b></u></td>
-									<td width="35%"><u><b>NIVEL TERCIARIO</b></u></td>
+									<td width="35%"><u><b>NIVEL ALTO</b></u></td>
+									<td width="35%"><u><b>NIVEL MEDIO</b></u></td>
+									<td width="35%"><u><b>NIVEL BAJO</b></u></td>
 								</tr>
 								
 								{% if permisos %}
@@ -114,13 +109,13 @@
 										
 										<tr>
 											{% if p %}
-												<td width="35%"><input type="checkbox" name="permisos" id="option{{ p.id }}" value="{{ p.id }}">{{ p }}<br></td>
+												<td width="35%"><input type="checkbox" {% if p.nombre in listax %} checked{% endif %} name="permisos" id="option{{ p.id }}" value="{{ p.id }}">{{ p }}<br></td>
 											{% endif %}
 											{% if q %}
-												<td width="35%"><input type="checkbox" name="permisos" id="option{{ q.id }}" value="{{ q.id }}">{{ q }}<br></td>
+												<td width="35%"><input type="checkbox" {% if q.nombre in listax %} checked{% endif %} name="permisos" id="option{{ q.id }}" value="{{ q.id }}">{{ q }}<br></td>
 											{% endif %}
 											{% if r %}
-												<td width="35%"><input type="checkbox" name="permisos" id="option{{ r.id }}" value="{{ r.id }}">{{ r }}<br></td>
+												<td width="35%"><input type="checkbox" {% if r.nombre in listax %} checked{% endif %} name="permisos" id="option{{ r.id }}" value="{{ r.id }}">{{ r }}<br></td>
 											{% endif %}
 										</tr>
 											

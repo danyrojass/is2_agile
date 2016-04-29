@@ -5,7 +5,8 @@
 		<div id="welcome" align="center">	
 			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
-			<a href="javascript:history.go(-1)">Atrás</a>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
 	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
@@ -14,6 +15,7 @@
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
 		  		<li><a href='/agile/roles/index/'>Roles</a></li>
+		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -30,10 +32,11 @@
 								<tr class="cabeceraTabla">
 									<td width="7%">ÍTEM</td>
 									<td width="8%">ID</td>
-									<td width="15%">NOMBRE DE USUARIO</td>
-									<td width="15%">NOMBRES </td>
-									<td width="15%">APELLIDOS </td>
-									<td width="20%">EMAIL</td>
+									<td width="14%">NOMBRE DE USUARIO</td>
+									<td width="14%">NOMBRES </td>
+									<td width="14%">APELLIDOS </td>
+									<td width="15%">EMAIL</td>
+									<td width="8%">ESTADO</td>
 									<td width="5%">Assign</td>
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
@@ -108,7 +111,7 @@
 							</table>
 							</div>
 							<div id="botonBusqueda">
-        							<a class="button" onClick="javascript:history.go(-1);">OK</a>
+        							<a class="button" onClick="javascript:history.go(-1);">Atrás</a>
         					</div>
 						</div>
 					</div>
