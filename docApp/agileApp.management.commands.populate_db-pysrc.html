@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>agileApp.management.commands.populate_db</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="agileApp-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="agileApp-module.html">Package&nbsp;agileApp</a> ::
+        <a href="agileApp.management-module.html">Package&nbsp;management</a> ::
+        <a href="agileApp.management.commands-module.html">Package&nbsp;commands</a> ::
+        Module&nbsp;populate_db
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="agileApp.management.commands.populate_db-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="agileApp.management.commands.populate_db-module.html">Module agileApp.management.commands.populate_db</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- encoding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">core</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Package agileApp.management=agileApp.management-module.html"><a title="agileApp.management" class="py-name" href="#" onclick="return doclink('link-0', 'management', 'link-0');">management</a></tt><tt class="py-op">.</tt><tt class="py-name">base</tt> <tt class="py-keyword">import</tt> <tt class="py-name">BaseCommand</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">contrib</tt><tt class="py-op">.</tt><tt class="py-name">auth</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module agileApp.models=agileApp.models-module.html"><a title="agileApp.models" class="py-name" href="#" onclick="return doclink('link-1', 'models', 'link-1');">models</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">User</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package agileApp=agileApp-module.html"><a title="agileApp" class="py-name" href="#" onclick="return doclink('link-2', 'agileApp', 'link-2');">agileApp</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="agileApp.models" class="py-name" href="#" onclick="return doclink('link-3', 'models', 'link-1');">models</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class agileApp.models.Usuarios=agileApp.models.Usuarios-class.html"><a title="agileApp.models.Usuarios" class="py-name" href="#" onclick="return doclink('link-4', 'Usuarios', 'link-4');">Usuarios</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class agileApp.models.Permisos=agileApp.models.Permisos-class.html"><a title="agileApp.models.Permisos" class="py-name" href="#" onclick="return doclink('link-5', 'Permisos', 'link-5');">Permisos</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class agileApp.models.Roles=agileApp.models.Roles-class.html"><a title="agileApp.models.Roles" class="py-name" href="#" onclick="return doclink('link-6', 'Roles', 'link-6');">Roles</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Class agileApp.models.Permisos_Roles=agileApp.models.Permisos_Roles-class.html"><a title="agileApp.models.Permisos_Roles" class="py-name" href="#" onclick="return doclink('link-7', 'Permisos_Roles', 'link-7');">Permisos_Roles</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Class agileApp.models.Proyectos=agileApp.models.Proyectos-class.html"><a title="agileApp.models.Proyectos" class="py-name" href="#" onclick="return doclink('link-8', 'Proyectos', 'link-8');">Proyectos</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name" targets="Class agileApp.models.Roles_Usuarios_Proyectos=agileApp.models.Roles_Usuarios_Proyectos-class.html"><a title="agileApp.models.Roles_Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-9', 'Roles_Usuarios_Proyectos', 'link-9');">Roles_Usuarios_Proyectos</a></tt><tt class="py-op">,</tt>\ </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt id="link-10" class="py-name" targets="Class agileApp.models.Roles_Usuarios=agileApp.models.Roles_Usuarios-class.html"><a title="agileApp.models.Roles_Usuarios" class="py-name" href="#" onclick="return doclink('link-10', 'Roles_Usuarios', 'link-10');">Roles_Usuarios</a></tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name" targets="Class agileApp.models.Usuarios_Proyectos=agileApp.models.Usuarios_Proyectos-class.html"><a title="agileApp.models.Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-11', 'Usuarios_Proyectos', 'link-11');">Usuarios_Proyectos</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="Command"></a><div id="Command-def"><a name="L9"></a><tt class="py-lineno">  9</tt> <a class="py-toggle" href="#" id="Command-toggle" onclick="return toggle('Command');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db.Command-class.html">Command</a><tt class="py-op">(</tt><tt class="py-base-class">BaseCommand</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Command-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Command-expanded"><a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="Command.handle"></a><div id="Command.handle-def"><a name="L11"></a><tt class="py-lineno"> 11</tt> <a class="py-toggle" href="#" id="Command.handle-toggle" onclick="return toggle('Command.handle');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db.Command-class.html#handle">handle</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">options</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Command.handle-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Command.handle-expanded"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">         </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">        <tt class="py-name">nombres</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'Administraci&#243;n de Usuarios'</tt><tt class="py-op">,</tt> <tt class="py-string">'Administraci&#243;n de Proyectos/Servicios'</tt><tt class="py-op">,</tt> <tt class="py-string">'Ver P&#225;gina de Administraci&#243;n'</tt><tt class="py-op">,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">                   <tt class="py-string">'Definici&#243;n de Proyectos/Servicios'</tt><tt class="py-op">,</tt> <tt class="py-string">'Asignaci&#243;n de Usuarios'</tt><tt class="py-op">,</tt> <tt class="py-string">'Administraci&#243;n de Roles y Permisos'</tt><tt class="py-op">,</tt>  </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">                   <tt class="py-string">'Creaci&#243;n de US'</tt><tt class="py-op">,</tt> <tt class="py-string">'Asignaci&#243;n de Roles'</tt><tt class="py-op">,</tt> <tt class="py-string">'Modificaci&#243;n de US - Valores de Negocios'</tt><tt class="py-op">,</tt>  </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">                   <tt class="py-string">'Modificaci&#243;n de US - Valor T&#233;cnico'</tt><tt class="py-op">,</tt><tt class="py-string">'Modificaci&#243;n de US - Size'</tt><tt class="py-op">,</tt> <tt class="py-string">'Modificaci&#243;n de US - Prioridad'</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">                   <tt class="py-string">'Eliminaci&#243;n de US'</tt><tt class="py-op">,</tt> <tt class="py-string">'Administraci&#243;n de Sprints'</tt><tt class="py-op">,</tt> <tt class="py-string">'Administraci&#243;n de Flujos'</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">                   <tt class="py-string">'Consultar lista de Usuarios'</tt><tt class="py-op">,</tt>  </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">                   <tt class="py-string">'Consultar lista de Proyectos/Servicios'</tt><tt class="py-op">,</tt> <tt class="py-string">'Modificaci&#243;n de US - Notas'</tt><tt class="py-op">,</tt> <tt class="py-string">'Modificaci&#243;n de US - Archivos adjuntos'</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                   <tt class="py-string">'Modificaci&#243;n de US - Descripci&#243;n'</tt><tt class="py-op">,</tt> <tt class="py-string">'Consultar estado de Actividades'</tt><tt class="py-op">,</tt> <tt class="py-string">'Consultar Recursos Disponibles'</tt><tt class="py-op">,</tt>  </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                   <tt class="py-string">'Consultar Historial del Proyecto/Servicio'</tt><tt class="py-op">,</tt> <tt class="py-string">'Generar Burn Down Chart'</tt><tt class="py-op">,</tt> <tt class="py-string">'Generar listado de US'</tt><tt class="py-op">]</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-name">niveles</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                   <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt>  </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                   <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                   <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                   <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                   <tt class="py-number">1</tt><tt class="py-op">,</tt>  </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">                   <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                   <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                   <tt class="py-number">3</tt><tt class="py-op">,</tt> <tt class="py-number">3</tt><tt class="py-op">,</tt> <tt class="py-number">3</tt><tt class="py-op">]</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">c</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">n</tt> <tt class="py-keyword">in</tt> <tt class="py-name">nombres</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">            <tt id="link-12" class="py-name" targets="Function agileApp.management.commands.populate_db.agregar_permisos()=agileApp.management.commands.populate_db-module.html#agregar_permisos"><a title="agileApp.management.commands.populate_db.agregar_permisos" class="py-name" href="#" onclick="return doclink('link-12', 'agregar_permisos', 'link-12');">agregar_permisos</a></tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">,</tt> <tt class="py-name">niveles</tt><tt class="py-op">[</tt><tt class="py-name">c</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">            <tt class="py-name">c</tt> <tt class="py-op">=</tt> <tt class="py-name">c</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt>  </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">      </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt id="link-13" class="py-name" targets="Function agileApp.management.commands.populate_db.crear_roles()=agileApp.management.commands.populate_db-module.html#crear_roles,Function agileApp.views.crear_roles()=agileApp.views-module.html#crear_roles"><a title="agileApp.management.commands.populate_db.crear_roles
+agileApp.views.crear_roles" class="py-name" href="#" onclick="return doclink('link-13', 'crear_roles', 'link-13');">crear_roles</a></tt><tt class="py-op">(</tt><tt class="py-string">"Administrador"</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-string">"Administrador del Sistema."</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt id="link-14" class="py-name"><a title="agileApp.management.commands.populate_db.crear_roles
+agileApp.views.crear_roles" class="py-name" href="#" onclick="return doclink('link-14', 'crear_roles', 'link-13');">crear_roles</a></tt><tt class="py-op">(</tt><tt class="py-string">"Scrum Master"</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-string">"L&#237;der del Proyecto."</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt id="link-15" class="py-name"><a title="agileApp.management.commands.populate_db.crear_roles
+agileApp.views.crear_roles" class="py-name" href="#" onclick="return doclink('link-15', 'crear_roles', 'link-13');">crear_roles</a></tt><tt class="py-op">(</tt><tt class="py-string">"Usuario Regular"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-string">"Soporte."</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">         </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Function agileApp.management.commands.populate_db.crear_usuario()=agileApp.management.commands.populate_db-module.html#crear_usuario"><a title="agileApp.management.commands.populate_db.crear_usuario" class="py-name" href="#" onclick="return doclink('link-16', 'crear_usuario', 'link-16');">crear_usuario</a></tt><tt class="py-op">(</tt><tt class="py-string">'Alfredo'</tt><tt class="py-op">,</tt> <tt class="py-string">'Barrios'</tt><tt class="py-op">,</tt> <tt class="py-string">'abarrios'</tt><tt class="py-op">,</tt> <tt class="py-string">'a123'</tt><tt class="py-op">,</tt> <tt class="py-string">'alfbarrios2010@gmail.com'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt id="link-17" class="py-name"><a title="agileApp.management.commands.populate_db.crear_usuario" class="py-name" href="#" onclick="return doclink('link-17', 'crear_usuario', 'link-16');">crear_usuario</a></tt><tt class="py-op">(</tt><tt class="py-string">'Christian'</tt><tt class="py-op">,</tt> <tt class="py-string">'P&#233;rez'</tt><tt class="py-op">,</tt> <tt class="py-string">'cperez'</tt><tt class="py-op">,</tt> <tt class="py-string">'a123'</tt><tt class="py-op">,</tt> <tt class="py-string">'criper123@gmail.com'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="agileApp.management.commands.populate_db.crear_usuario" class="py-name" href="#" onclick="return doclink('link-18', 'crear_usuario', 'link-16');">crear_usuario</a></tt><tt class="py-op">(</tt><tt class="py-string">'Daniel'</tt><tt class="py-op">,</tt> <tt class="py-string">'Rojas'</tt><tt class="py-op">,</tt> <tt class="py-string">'drojas'</tt><tt class="py-op">,</tt> <tt class="py-string">'a123'</tt><tt class="py-op">,</tt> <tt class="py-string">'danyrojassimon@gmail.com'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt id="link-19" class="py-name"><a title="agileApp.management.commands.populate_db.crear_usuario" class="py-name" href="#" onclick="return doclink('link-19', 'crear_usuario', 'link-16');">crear_usuario</a></tt><tt class="py-op">(</tt><tt class="py-string">'Luis'</tt><tt class="py-op">,</tt> <tt class="py-string">'Soto'</tt><tt class="py-op">,</tt> <tt class="py-string">'lsoto'</tt><tt class="py-op">,</tt> <tt class="py-string">'a123'</tt><tt class="py-op">,</tt> <tt class="py-string">'lutyma89@gmail.com'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">         </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Function agileApp.management.commands.populate_db.crear_proyecto()=agileApp.management.commands.populate_db-module.html#crear_proyecto"><a title="agileApp.management.commands.populate_db.crear_proyecto" class="py-name" href="#" onclick="return doclink('link-20', 'crear_proyecto', 'link-20');">crear_proyecto</a></tt><tt class="py-op">(</tt><tt class="py-string">"Proyecto de Prueba Nro. 1"</tt><tt class="py-op">,</tt> <tt class="py-string">"Proy1"</tt><tt class="py-op">,</tt> <tt class="py-string">"Escenario de prueba 1."</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt id="link-21" class="py-name"><a title="agileApp.management.commands.populate_db.crear_proyecto" class="py-name" href="#" onclick="return doclink('link-21', 'crear_proyecto', 'link-20');">crear_proyecto</a></tt><tt class="py-op">(</tt><tt class="py-string">"Proyecto de Prueba Nro. 2"</tt><tt class="py-op">,</tt> <tt class="py-string">"Proy2"</tt><tt class="py-op">,</tt> <tt class="py-string">"Escenario de prueba 2."</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">         </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt id="link-22" class="py-name" targets="Function agileApp.management.commands.populate_db.asignar_usuarios()=agileApp.management.commands.populate_db-module.html#asignar_usuarios"><a title="agileApp.management.commands.populate_db.asignar_usuarios" class="py-name" href="#" onclick="return doclink('link-22', 'asignar_usuarios', 'link-22');">asignar_usuarios</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="crear_roles"></a><div id="crear_roles-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="crear_roles-toggle" onclick="return toggle('crear_roles');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db-module.html#crear_roles">crear_roles</a><tt class="py-op">(</tt><tt class="py-param">nombre</tt><tt class="py-op">,</tt> <tt class="py-param">tipo</tt><tt class="py-op">,</tt> <tt class="py-param">observacion</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="crear_roles-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="crear_roles-expanded"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-name">rol</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="agileApp.models.Roles" class="py-name" href="#" onclick="return doclink('link-23', 'Roles', 'link-6');">Roles</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-name">rol</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Variable agileApp.forms.BuscarRolForm.nombre=agileApp.forms.BuscarRolForm-class.html#nombre,Variable agileApp.forms.CrearRolForm.nombre=agileApp.forms.CrearRolForm-class.html#nombre,Variable agileApp.forms.EditarRolForm.nombre=agileApp.forms.EditarRolForm-class.html#nombre,Variable agileApp.models.Permisos.nombre=agileApp.models.Permisos-class.html#nombre,Variable agileApp.models.Roles.nombre=agileApp.models.Roles-class.html#nombre"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-24', 'nombre', 'link-24');">nombre</a></tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-25', 'nombre', 'link-24');">nombre</a></tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-name">rol</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Variable agileApp.forms.CrearRolForm.tipo=agileApp.forms.CrearRolForm-class.html#tipo,Variable agileApp.forms.DefinirProyectoForm.tipo=agileApp.forms.DefinirProyectoForm-class.html#tipo,Variable agileApp.forms.EditarRolForm.tipo=agileApp.forms.EditarRolForm-class.html#tipo,Variable agileApp.forms.RegistroUserForm.tipo=agileApp.forms.RegistroUserForm-class.html#tipo,Variable agileApp.models.Proyectos.tipo=agileApp.models.Proyectos-class.html#tipo,Variable agileApp.models.Roles.tipo=agileApp.models.Roles-class.html#tipo,Variable agileApp.models.Usuarios.tipo=agileApp.models.Usuarios-class.html#tipo"><a title="agileApp.forms.CrearRolForm.tipo
+agileApp.forms.DefinirProyectoForm.tipo
+agileApp.forms.EditarRolForm.tipo
+agileApp.forms.RegistroUserForm.tipo
+agileApp.models.Proyectos.tipo
+agileApp.models.Roles.tipo
+agileApp.models.Usuarios.tipo" class="py-name" href="#" onclick="return doclink('link-26', 'tipo', 'link-26');">tipo</a></tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name"><a title="agileApp.forms.CrearRolForm.tipo
+agileApp.forms.DefinirProyectoForm.tipo
+agileApp.forms.EditarRolForm.tipo
+agileApp.forms.RegistroUserForm.tipo
+agileApp.models.Proyectos.tipo
+agileApp.models.Roles.tipo
+agileApp.models.Usuarios.tipo" class="py-name" href="#" onclick="return doclink('link-27', 'tipo', 'link-26');">tipo</a></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-name">rol</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Variable agileApp.forms.CrearRolForm.estado=agileApp.forms.CrearRolForm-class.html#estado,Variable agileApp.forms.DefinirProyectoForm.estado=agileApp.forms.DefinirProyectoForm-class.html#estado,Variable agileApp.forms.EditarUserForm.estado=agileApp.forms.EditarUserForm-class.html#estado,Variable agileApp.models.Permisos.estado=agileApp.models.Permisos-class.html#estado,Variable agileApp.models.Proyectos.estado=agileApp.models.Proyectos-class.html#estado,Variable agileApp.models.Roles.estado=agileApp.models.Roles-class.html#estado"><a title="agileApp.forms.CrearRolForm.estado
+agileApp.forms.DefinirProyectoForm.estado
+agileApp.forms.EditarUserForm.estado
+agileApp.models.Permisos.estado
+agileApp.models.Proyectos.estado
+agileApp.models.Roles.estado" class="py-name" href="#" onclick="return doclink('link-28', 'estado', 'link-28');">estado</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-name">rol</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable agileApp.forms.BuscarRolForm.observacion=agileApp.forms.BuscarRolForm-class.html#observacion,Variable agileApp.forms.CrearRolForm.observacion=agileApp.forms.CrearRolForm-class.html#observacion,Variable agileApp.forms.EditarRolForm.observacion=agileApp.forms.EditarRolForm-class.html#observacion,Variable agileApp.forms.EditarUserForm.observacion=agileApp.forms.EditarUserForm-class.html#observacion,Variable agileApp.forms.RegistroUserForm.observacion=agileApp.forms.RegistroUserForm-class.html#observacion,Variable agileApp.models.Roles.observacion=agileApp.models.Roles-class.html#observacion,Variable agileApp.models.Usuarios.observacion=agileApp.models.Usuarios-class.html#observacion"><a title="agileApp.forms.BuscarRolForm.observacion
+agileApp.forms.CrearRolForm.observacion
+agileApp.forms.EditarRolForm.observacion
+agileApp.forms.EditarUserForm.observacion
+agileApp.forms.RegistroUserForm.observacion
+agileApp.models.Roles.observacion
+agileApp.models.Usuarios.observacion" class="py-name" href="#" onclick="return doclink('link-29', 'observacion', 'link-29');">observacion</a></tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="agileApp.forms.BuscarRolForm.observacion
+agileApp.forms.CrearRolForm.observacion
+agileApp.forms.EditarRolForm.observacion
+agileApp.forms.EditarUserForm.observacion
+agileApp.forms.RegistroUserForm.observacion
+agileApp.models.Roles.observacion
+agileApp.models.Usuarios.observacion" class="py-name" href="#" onclick="return doclink('link-30', 'observacion', 'link-29');">observacion</a></tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">rol</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">     </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-31" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-31', 'nombre', 'link-24');">nombre</a></tt><tt class="py-op">==</tt><tt class="py-string">"Administrador"</tt><tt class="py-op">:</tt>        </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt id="link-32" class="py-name" targets="Variable agileApp.models.Usuarios.user=agileApp.models.Usuarios-class.html#user"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-32', 'user', 'link-32');">user</a></tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">pk</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt id="link-33" class="py-name" targets="Variable agileApp.models.Roles_Usuarios.usuario=agileApp.models.Roles_Usuarios-class.html#usuario"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-33', 'usuario', 'link-33');">usuario</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="agileApp.models.Usuarios" class="py-name" href="#" onclick="return doclink('link-34', 'Usuarios', 'link-4');">Usuarios</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-35', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-36', 'user', 'link-32');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-37', 'user', 'link-32');">user</a></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt id="link-38" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-38', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt id="link-39" class="py-name" targets="Variable agileApp.models.Permisos_Roles.permisos=agileApp.models.Permisos_Roles-class.html#permisos,Variable agileApp.models.Roles.permisos=agileApp.models.Roles-class.html#permisos"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-39', 'permisos', 'link-39');">permisos</a></tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="agileApp.models.Permisos" class="py-name" href="#" onclick="return doclink('link-40', 'Permisos', 'link-5');">Permisos</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">     </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">ru</tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="agileApp.models.Roles_Usuarios" class="py-name" href="#" onclick="return doclink('link-41', 'Roles_Usuarios', 'link-10');">Roles_Usuarios</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">ru</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-42', 'usuario', 'link-33');">usuario</a></tt> <tt class="py-op">=</tt> <tt id="link-43" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-43', 'usuario', 'link-33');">usuario</a></tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-name">ru</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Variable agileApp.models.Permisos_Roles.roles=agileApp.models.Permisos_Roles-class.html#roles,Variable agileApp.models.Roles_Usuarios.roles=agileApp.models.Roles_Usuarios-class.html#roles,Variable agileApp.models.Roles_Usuarios_Proyectos.roles=agileApp.models.Roles_Usuarios_Proyectos-class.html#roles,Variable agileApp.models.Usuarios.roles=agileApp.models.Usuarios-class.html#roles"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-44', 'roles', 'link-44');">roles</a></tt> <tt class="py-op">=</tt> <tt class="py-name">rol</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">ru</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">         </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt id="link-45" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-45', 'permisos', 'link-39');">permisos</a></tt> <tt class="py-op">=</tt> <tt id="link-46" class="py-name"><a title="agileApp.models.Permisos" class="py-name" href="#" onclick="return doclink('link-46', 'Permisos', 'link-5');">Permisos</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">exclude</tt><tt class="py-op">(</tt><tt id="link-47" class="py-name" targets="Variable agileApp.models.Permisos.nivel=agileApp.models.Permisos-class.html#nivel"><a title="agileApp.models.Permisos.nivel" class="py-name" href="#" onclick="return doclink('link-47', 'nivel', 'link-47');">nivel</a></tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">     </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt id="link-48" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-48', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">:</tt>   </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-name">pr</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name"><a title="agileApp.models.Permisos_Roles" class="py-name" href="#" onclick="return doclink('link-49', 'Permisos_Roles', 'link-7');">Permisos_Roles</a></tt><tt class="py-op">(</tt><tt id="link-50" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-50', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">=</tt><tt class="py-name">p</tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-51', 'roles', 'link-44');">roles</a></tt><tt class="py-op">=</tt><tt class="py-name">rol</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">pr</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">         </tt>
+<a name="crear_usuario"></a><div id="crear_usuario-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="crear_usuario-toggle" onclick="return toggle('crear_usuario');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db-module.html#crear_usuario">crear_usuario</a><tt class="py-op">(</tt><tt class="py-param">nombre</tt><tt class="py-op">,</tt> <tt class="py-param">apellido</tt><tt class="py-op">,</tt> <tt class="py-param">username</tt><tt class="py-op">,</tt> <tt class="py-param">password</tt><tt class="py-op">,</tt> <tt class="py-param">email</tt><tt class="py-op">,</tt> <tt class="py-param">activo</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="crear_usuario-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="crear_usuario-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt id="link-52" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-52', 'user', 'link-32');">user</a></tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt id="link-53" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-53', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Variable agileApp.forms.BuscarUserForm.first_name=agileApp.forms.BuscarUserForm-class.html#first_name,Variable agileApp.forms.EditarUserForm.first_name=agileApp.forms.EditarUserForm-class.html#first_name,Variable agileApp.forms.RegistroUserForm.first_name=agileApp.forms.RegistroUserForm-class.html#first_name"><a title="agileApp.forms.BuscarUserForm.first_name
+agileApp.forms.EditarUserForm.first_name
+agileApp.forms.RegistroUserForm.first_name" class="py-name" href="#" onclick="return doclink('link-54', 'first_name', 'link-54');">first_name</a></tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-55', 'nombre', 'link-24');">nombre</a></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt id="link-56" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-56', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Variable agileApp.forms.BuscarUserForm.last_name=agileApp.forms.BuscarUserForm-class.html#last_name,Variable agileApp.forms.EditarUserForm.last_name=agileApp.forms.EditarUserForm-class.html#last_name,Variable agileApp.forms.RegistroUserForm.last_name=agileApp.forms.RegistroUserForm-class.html#last_name"><a title="agileApp.forms.BuscarUserForm.last_name
+agileApp.forms.EditarUserForm.last_name
+agileApp.forms.RegistroUserForm.last_name" class="py-name" href="#" onclick="return doclink('link-57', 'last_name', 'link-57');">last_name</a></tt> <tt class="py-op">=</tt> <tt class="py-name">apellido</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt id="link-58" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-58', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Variable agileApp.forms.BuscarUserForm.username=agileApp.forms.BuscarUserForm-class.html#username,Variable agileApp.forms.RegistroUserForm.username=agileApp.forms.RegistroUserForm-class.html#username"><a title="agileApp.forms.BuscarUserForm.username
+agileApp.forms.RegistroUserForm.username" class="py-name" href="#" onclick="return doclink('link-59', 'username', 'link-59');">username</a></tt> <tt class="py-op">=</tt> <tt id="link-60" class="py-name"><a title="agileApp.forms.BuscarUserForm.username
+agileApp.forms.RegistroUserForm.username" class="py-name" href="#" onclick="return doclink('link-60', 'username', 'link-59');">username</a></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt id="link-61" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-61', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">set_password</tt><tt class="py-op">(</tt><tt id="link-62" class="py-name" targets="Variable agileApp.forms.EditarUserForm.password=agileApp.forms.EditarUserForm-class.html#password,Variable agileApp.forms.ModificarContrasenaForm.password=agileApp.forms.ModificarContrasenaForm-class.html#password,Variable agileApp.forms.RegistroUserForm.password=agileApp.forms.RegistroUserForm-class.html#password"><a title="agileApp.forms.EditarUserForm.password
+agileApp.forms.ModificarContrasenaForm.password
+agileApp.forms.RegistroUserForm.password" class="py-name" href="#" onclick="return doclink('link-62', 'password', 'link-62');">password</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt id="link-63" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-63', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name" targets="Variable agileApp.forms.BuscarUserForm.email=agileApp.forms.BuscarUserForm-class.html#email,Variable agileApp.forms.EditarUserForm.email=agileApp.forms.EditarUserForm-class.html#email,Variable agileApp.forms.RegistroUserForm.email=agileApp.forms.RegistroUserForm-class.html#email"><a title="agileApp.forms.BuscarUserForm.email
+agileApp.forms.EditarUserForm.email
+agileApp.forms.RegistroUserForm.email" class="py-name" href="#" onclick="return doclink('link-64', 'email', 'link-64');">email</a></tt> <tt class="py-op">=</tt> <tt id="link-65" class="py-name"><a title="agileApp.forms.BuscarUserForm.email
+agileApp.forms.EditarUserForm.email
+agileApp.forms.RegistroUserForm.email" class="py-name" href="#" onclick="return doclink('link-65', 'email', 'link-64');">email</a></tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt id="link-66" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-66', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">is_active</tt> <tt class="py-op">=</tt> <tt class="py-name">activo</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt id="link-67" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-67', 'user', 'link-32');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">     </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt id="link-68" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-68', 'usuario', 'link-33');">usuario</a></tt> <tt class="py-op">=</tt> <tt id="link-69" class="py-name"><a title="agileApp.models.Usuarios" class="py-name" href="#" onclick="return doclink('link-69', 'Usuarios', 'link-4');">Usuarios</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt id="link-70" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-70', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-71', 'user', 'link-32');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-72" class="py-name"><a title="agileApp.models.Usuarios.user" class="py-name" href="#" onclick="return doclink('link-72', 'user', 'link-32');">user</a></tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt id="link-73" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-73', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">         </tt>
+<a name="agregar_permisos"></a><div id="agregar_permisos-def"><a name="L93"></a><tt class="py-lineno"> 93</tt> <a class="py-toggle" href="#" id="agregar_permisos-toggle" onclick="return toggle('agregar_permisos');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db-module.html#agregar_permisos">agregar_permisos</a><tt class="py-op">(</tt><tt class="py-param">nombre</tt><tt class="py-op">,</tt> <tt class="py-param">nivel</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="agregar_permisos-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="agregar_permisos-expanded"><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt id="link-74" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-74', 'permisos', 'link-39');">permisos</a></tt> <tt class="py-op">=</tt> <tt id="link-75" class="py-name"><a title="agileApp.models.Permisos" class="py-name" href="#" onclick="return doclink('link-75', 'Permisos', 'link-5');">Permisos</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt id="link-76" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-76', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-77', 'nombre', 'link-24');">nombre</a></tt> <tt class="py-op">=</tt> <tt id="link-78" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-78', 'nombre', 'link-24');">nombre</a></tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt id="link-79" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-79', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="agileApp.models.Permisos.nivel" class="py-name" href="#" onclick="return doclink('link-80', 'nivel', 'link-47');">nivel</a></tt> <tt class="py-op">=</tt> <tt id="link-81" class="py-name"><a title="agileApp.models.Permisos.nivel" class="py-name" href="#" onclick="return doclink('link-81', 'nivel', 'link-47');">nivel</a></tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt id="link-82" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-82', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="agileApp.forms.CrearRolForm.estado
+agileApp.forms.DefinirProyectoForm.estado
+agileApp.forms.EditarUserForm.estado
+agileApp.models.Permisos.estado
+agileApp.models.Proyectos.estado
+agileApp.models.Roles.estado" class="py-name" href="#" onclick="return doclink('link-83', 'estado', 'link-28');">estado</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt id="link-84" class="py-name"><a title="agileApp.models.Permisos_Roles.permisos
+agileApp.models.Roles.permisos" class="py-name" href="#" onclick="return doclink('link-84', 'permisos', 'link-39');">permisos</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="crear_proyecto"></a><div id="crear_proyecto-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="crear_proyecto-toggle" onclick="return toggle('crear_proyecto');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db-module.html#crear_proyecto">crear_proyecto</a><tt class="py-op">(</tt><tt class="py-param">nombre_largo</tt><tt class="py-op">,</tt> <tt class="py-param">nombre_corto</tt><tt class="py-op">,</tt> <tt class="py-param">descripcion</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="crear_proyecto-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="crear_proyecto-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt id="link-85" class="py-name" targets="Variable agileApp.models.Roles_Usuarios_Proyectos.proyecto=agileApp.models.Roles_Usuarios_Proyectos-class.html#proyecto,Variable agileApp.models.Usuarios_Proyectos.proyecto=agileApp.models.Usuarios_Proyectos-class.html#proyecto"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-85', 'proyecto', 'link-85');">proyecto</a></tt> <tt class="py-op">=</tt> <tt id="link-86" class="py-name"><a title="agileApp.models.Proyectos" class="py-name" href="#" onclick="return doclink('link-86', 'Proyectos', 'link-8');">Proyectos</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt id="link-87" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-87', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">.</tt><tt id="link-88" class="py-name" targets="Variable agileApp.forms.BuscarProyectoForm.nombre_largo=agileApp.forms.BuscarProyectoForm-class.html#nombre_largo,Variable agileApp.forms.CrearProyectoForm.nombre_largo=agileApp.forms.CrearProyectoForm-class.html#nombre_largo,Variable agileApp.models.Proyectos.nombre_largo=agileApp.models.Proyectos-class.html#nombre_largo"><a title="agileApp.forms.BuscarProyectoForm.nombre_largo
+agileApp.forms.CrearProyectoForm.nombre_largo
+agileApp.models.Proyectos.nombre_largo" class="py-name" href="#" onclick="return doclink('link-88', 'nombre_largo', 'link-88');">nombre_largo</a></tt> <tt class="py-op">=</tt> <tt id="link-89" class="py-name"><a title="agileApp.forms.BuscarProyectoForm.nombre_largo
+agileApp.forms.CrearProyectoForm.nombre_largo
+agileApp.models.Proyectos.nombre_largo" class="py-name" href="#" onclick="return doclink('link-89', 'nombre_largo', 'link-88');">nombre_largo</a></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt id="link-90" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-90', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">.</tt><tt id="link-91" class="py-name" targets="Variable agileApp.forms.BuscarProyectoForm.nombre_corto=agileApp.forms.BuscarProyectoForm-class.html#nombre_corto,Variable agileApp.forms.DefinirProyectoForm.nombre_corto=agileApp.forms.DefinirProyectoForm-class.html#nombre_corto,Variable agileApp.models.Proyectos.nombre_corto=agileApp.models.Proyectos-class.html#nombre_corto"><a title="agileApp.forms.BuscarProyectoForm.nombre_corto
+agileApp.forms.DefinirProyectoForm.nombre_corto
+agileApp.models.Proyectos.nombre_corto" class="py-name" href="#" onclick="return doclink('link-91', 'nombre_corto', 'link-91');">nombre_corto</a></tt> <tt class="py-op">=</tt> <tt id="link-92" class="py-name"><a title="agileApp.forms.BuscarProyectoForm.nombre_corto
+agileApp.forms.DefinirProyectoForm.nombre_corto
+agileApp.models.Proyectos.nombre_corto" class="py-name" href="#" onclick="return doclink('link-92', 'nombre_corto', 'link-91');">nombre_corto</a></tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt id="link-93" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-93', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Variable agileApp.forms.BuscarProyectoForm.descripcion=agileApp.forms.BuscarProyectoForm-class.html#descripcion,Variable agileApp.forms.DefinirProyectoForm.descripcion=agileApp.forms.DefinirProyectoForm-class.html#descripcion,Variable agileApp.models.Proyectos.descripcion=agileApp.models.Proyectos-class.html#descripcion"><a title="agileApp.forms.BuscarProyectoForm.descripcion
+agileApp.forms.DefinirProyectoForm.descripcion
+agileApp.models.Proyectos.descripcion" class="py-name" href="#" onclick="return doclink('link-94', 'descripcion', 'link-94');">descripcion</a></tt> <tt class="py-op">=</tt> <tt id="link-95" class="py-name"><a title="agileApp.forms.BuscarProyectoForm.descripcion
+agileApp.forms.DefinirProyectoForm.descripcion
+agileApp.models.Proyectos.descripcion" class="py-name" href="#" onclick="return doclink('link-95', 'descripcion', 'link-94');">descripcion</a></tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt id="link-96" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-96', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="asignar_usuarios"></a><div id="asignar_usuarios-def"><a name="L107"></a><tt class="py-lineno">107</tt> <a class="py-toggle" href="#" id="asignar_usuarios-toggle" onclick="return toggle('asignar_usuarios');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="agileApp.management.commands.populate_db-module.html#asignar_usuarios">asignar_usuarios</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="asignar_usuarios-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="asignar_usuarios-expanded"><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">    <tt id="link-97" class="py-name" targets="Variable agileApp.models.Proyectos.usuarios=agileApp.models.Proyectos-class.html#usuarios,Variable agileApp.models.Roles_Usuarios_Proyectos.usuarios=agileApp.models.Roles_Usuarios_Proyectos-class.html#usuarios,Variable agileApp.models.Usuarios_Proyectos.usuarios=agileApp.models.Usuarios_Proyectos-class.html#usuarios"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-97', 'usuarios', 'link-97');">usuarios</a></tt> <tt class="py-op">=</tt> <tt id="link-98" class="py-name"><a title="agileApp.models.Usuarios" class="py-name" href="#" onclick="return doclink('link-98', 'Usuarios', 'link-4');">Usuarios</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">exclude</tt><tt class="py-op">(</tt><tt id="link-99" class="py-name" targets="Variable agileApp.forms.BuscarProyectoForm.id=agileApp.forms.BuscarProyectoForm-class.html#id,Variable agileApp.forms.BuscarRolForm.id=agileApp.forms.BuscarRolForm-class.html#id,Variable agileApp.forms.BuscarUserForm.id=agileApp.forms.BuscarUserForm-class.html#id,Variable agileApp.forms.RegistroUserForm.id=agileApp.forms.RegistroUserForm-class.html#id"><a title="agileApp.forms.BuscarProyectoForm.id
+agileApp.forms.BuscarRolForm.id
+agileApp.forms.BuscarUserForm.id
+agileApp.forms.RegistroUserForm.id" class="py-name" href="#" onclick="return doclink('link-99', 'id', 'link-99');">id</a></tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-name">rol1</tt> <tt class="py-op">=</tt> <tt id="link-100" class="py-name"><a title="agileApp.models.Roles" class="py-name" href="#" onclick="return doclink('link-100', 'Roles', 'link-6');">Roles</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt id="link-101" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-101', 'nombre', 'link-24');">nombre</a></tt><tt class="py-op">=</tt><tt class="py-string">"Scrum Master"</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-name">rol2</tt> <tt class="py-op">=</tt> <tt id="link-102" class="py-name"><a title="agileApp.models.Roles" class="py-name" href="#" onclick="return doclink('link-102', 'Roles', 'link-6');">Roles</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt id="link-103" class="py-name"><a title="agileApp.forms.BuscarRolForm.nombre
+agileApp.forms.CrearRolForm.nombre
+agileApp.forms.EditarRolForm.nombre
+agileApp.models.Permisos.nombre
+agileApp.models.Roles.nombre" class="py-name" href="#" onclick="return doclink('link-103', 'nombre', 'link-24');">nombre</a></tt><tt class="py-op">=</tt><tt class="py-string">"Usuario Regular"</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-name">proyecto1</tt> <tt class="py-op">=</tt> <tt id="link-104" class="py-name"><a title="agileApp.models.Proyectos" class="py-name" href="#" onclick="return doclink('link-104', 'Proyectos', 'link-8');">Proyectos</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt id="link-105" class="py-name"><a title="agileApp.forms.BuscarProyectoForm.nombre_largo
+agileApp.forms.CrearProyectoForm.nombre_largo
+agileApp.models.Proyectos.nombre_largo" class="py-name" href="#" onclick="return doclink('link-105', 'nombre_largo', 'link-88');">nombre_largo</a></tt><tt class="py-op">=</tt><tt class="py-string">"Proyecto de Prueba Nro. 1"</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-name">proyecto2</tt> <tt class="py-op">=</tt> <tt id="link-106" class="py-name"><a title="agileApp.models.Proyectos" class="py-name" href="#" onclick="return doclink('link-106', 'Proyectos', 'link-8');">Proyectos</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt id="link-107" class="py-name"><a title="agileApp.forms.BuscarProyectoForm.nombre_largo
+agileApp.forms.CrearProyectoForm.nombre_largo
+agileApp.models.Proyectos.nombre_largo" class="py-name" href="#" onclick="return doclink('link-107', 'nombre_largo', 'link-88');">nombre_largo</a></tt><tt class="py-op">=</tt><tt class="py-string">"Proyecto de Prueba Nro. 2"</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">     </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">idx</tt><tt class="py-op">,</tt> <tt id="link-108" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-108', 'usuario', 'link-33');">usuario</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt id="link-109" class="py-name"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-109', 'usuarios', 'link-97');">usuarios</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">idx</tt><tt class="py-op">%</tt><tt class="py-number">2</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-name">ru</tt> <tt class="py-op">=</tt> <tt id="link-110" class="py-name"><a title="agileApp.models.Roles_Usuarios" class="py-name" href="#" onclick="return doclink('link-110', 'Roles_Usuarios', 'link-10');">Roles_Usuarios</a></tt><tt class="py-op">(</tt><tt id="link-111" class="py-name"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-111', 'roles', 'link-44');">roles</a></tt><tt class="py-op">=</tt><tt class="py-name">rol1</tt><tt class="py-op">,</tt> <tt id="link-112" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-112', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">=</tt><tt id="link-113" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-113', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-name">ru</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">             </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">            <tt class="py-name">up</tt> <tt class="py-op">=</tt> <tt id="link-114" class="py-name"><a title="agileApp.models.Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-114', 'Usuarios_Proyectos', 'link-11');">Usuarios_Proyectos</a></tt><tt class="py-op">(</tt><tt id="link-115" class="py-name"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-115', 'usuarios', 'link-97');">usuarios</a></tt><tt class="py-op">=</tt><tt id="link-116" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-116', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">,</tt> <tt id="link-117" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-117', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">=</tt><tt class="py-name">proyecto1</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-name">up</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">             </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">            <tt class="py-name">rup</tt> <tt class="py-op">=</tt> <tt id="link-118" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-118', 'Roles_Usuarios_Proyectos', 'link-9');">Roles_Usuarios_Proyectos</a></tt><tt class="py-op">(</tt><tt id="link-119" class="py-name"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-119', 'usuarios', 'link-97');">usuarios</a></tt><tt class="py-op">=</tt><tt id="link-120" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-120', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">,</tt> <tt id="link-121" class="py-name"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-121', 'roles', 'link-44');">roles</a></tt><tt class="py-op">=</tt><tt class="py-name">rol1</tt><tt class="py-op">,</tt> <tt id="link-122" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-122', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">=</tt><tt class="py-name">proyecto1</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">            <tt class="py-name">rup</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">            <tt class="py-name">ru</tt> <tt class="py-op">=</tt> <tt id="link-123" class="py-name"><a title="agileApp.models.Roles_Usuarios" class="py-name" href="#" onclick="return doclink('link-123', 'Roles_Usuarios', 'link-10');">Roles_Usuarios</a></tt><tt class="py-op">(</tt><tt id="link-124" class="py-name"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-124', 'roles', 'link-44');">roles</a></tt><tt class="py-op">=</tt><tt class="py-name">rol2</tt><tt class="py-op">,</tt> <tt id="link-125" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-125', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">=</tt><tt id="link-126" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-126', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt class="py-name">ru</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">             </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">            <tt class="py-name">up</tt> <tt class="py-op">=</tt> <tt id="link-127" class="py-name"><a title="agileApp.models.Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-127', 'Usuarios_Proyectos', 'link-11');">Usuarios_Proyectos</a></tt><tt class="py-op">(</tt><tt id="link-128" class="py-name"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-128', 'usuarios', 'link-97');">usuarios</a></tt><tt class="py-op">=</tt><tt id="link-129" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-129', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">,</tt> <tt id="link-130" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-130', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">=</tt><tt class="py-name">proyecto2</tt><tt class="py-op">)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">            <tt class="py-name">up</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">             </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">            <tt class="py-name">rup</tt> <tt class="py-op">=</tt> <tt id="link-131" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos" class="py-name" href="#" onclick="return doclink('link-131', 'Roles_Usuarios_Proyectos', 'link-9');">Roles_Usuarios_Proyectos</a></tt><tt class="py-op">(</tt><tt id="link-132" class="py-name"><a title="agileApp.models.Proyectos.usuarios
+agileApp.models.Roles_Usuarios_Proyectos.usuarios
+agileApp.models.Usuarios_Proyectos.usuarios" class="py-name" href="#" onclick="return doclink('link-132', 'usuarios', 'link-97');">usuarios</a></tt><tt class="py-op">=</tt><tt id="link-133" class="py-name"><a title="agileApp.models.Roles_Usuarios.usuario" class="py-name" href="#" onclick="return doclink('link-133', 'usuario', 'link-33');">usuario</a></tt><tt class="py-op">,</tt> <tt id="link-134" class="py-name"><a title="agileApp.models.Permisos_Roles.roles
+agileApp.models.Roles_Usuarios.roles
+agileApp.models.Roles_Usuarios_Proyectos.roles
+agileApp.models.Usuarios.roles" class="py-name" href="#" onclick="return doclink('link-134', 'roles', 'link-44');">roles</a></tt><tt class="py-op">=</tt><tt class="py-name">rol2</tt><tt class="py-op">,</tt> <tt id="link-135" class="py-name"><a title="agileApp.models.Roles_Usuarios_Proyectos.proyecto
+agileApp.models.Usuarios_Proyectos.proyecto" class="py-name" href="#" onclick="return doclink('link-135', 'proyecto', 'link-85');">proyecto</a></tt><tt class="py-op">=</tt><tt class="py-name">proyecto2</tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">            <tt class="py-name">rup</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="agileApp-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Apr 29 21:44:33 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

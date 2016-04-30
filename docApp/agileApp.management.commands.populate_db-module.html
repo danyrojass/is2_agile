@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>agileApp.models</title>
+  <title>agileApp.management.commands.populate_db</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -38,7 +38,9 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="agileApp-module.html">Package&nbsp;agileApp</a> ::
-        Module&nbsp;models
+        <a href="agileApp.management-module.html">Package&nbsp;management</a> ::
+        <a href="agileApp.management.commands-module.html">Package&nbsp;commands</a> ::
+        Module&nbsp;populate_db
       </span>
     </td>
     <td>
@@ -48,20 +50,14 @@
     onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="agileApp.models-module.html"
+            >]&nbsp;|&nbsp;<a href="agileApp.management.commands.populate_db-module.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
-<h1 class="epydoc">Module models</h1><p class="nomargin-top"><span class="codelink"><a href="agileApp.models-pysrc.html">source&nbsp;code</a></span></p>
-<pre class="literalblock">
-
-Modelos
-
-</pre>
-
+<h1 class="epydoc">Module populate_db</h1><p class="nomargin-top"><span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html">source&nbsp;code</a></span></p>
 <!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -83,56 +79,115 @@ Modelos
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="agileApp.models.Permisos-class.html" class="summary-name">Permisos</a>
+        <a href="agileApp.management.commands.populate_db.Command-class.html" class="summary-name">Command</a>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_roles"></a><span class="summary-sig-name">crear_roles</span>(<span class="summary-sig-arg">nombre</span>,
+        <span class="summary-sig-arg">tipo</span>,
+        <span class="summary-sig-arg">observacion</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_roles">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="agileApp.models.Roles-class.html" class="summary-name">Roles</a>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_usuario"></a><span class="summary-sig-name">crear_usuario</span>(<span class="summary-sig-arg">nombre</span>,
+        <span class="summary-sig-arg">apellido</span>,
+        <span class="summary-sig-arg">username</span>,
+        <span class="summary-sig-arg">password</span>,
+        <span class="summary-sig-arg">email</span>,
+        <span class="summary-sig-arg">activo</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_usuario">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="agileApp.models.Usuarios-class.html" class="summary-name">Usuarios</a>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="agregar_permisos"></a><span class="summary-sig-name">agregar_permisos</span>(<span class="summary-sig-arg">nombre</span>,
+        <span class="summary-sig-arg">nivel</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#agregar_permisos">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="agileApp.models.Permisos_Roles-class.html" class="summary-name">Permisos_Roles</a>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_proyecto"></a><span class="summary-sig-name">crear_proyecto</span>(<span class="summary-sig-arg">nombre_largo</span>,
+        <span class="summary-sig-arg">nombre_corto</span>,
+        <span class="summary-sig-arg">descripcion</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="agileApp.models.Proyectos-class.html" class="summary-name">Proyectos</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="agileApp.models.Roles_Usuarios-class.html" class="summary-name">Roles_Usuarios</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="agileApp.models.Usuarios_Proyectos-class.html" class="summary-name">Usuarios_Proyectos</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="agileApp.models.Roles_Usuarios_Proyectos-class.html" class="summary-name">Roles_Usuarios_Proyectos</a>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asignar_usuarios"></a><span class="summary-sig-name">asignar_usuarios</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_usuarios">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 </table>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>agileApp.urls</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="agileApp-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="agileApp-module.html">Package&nbsp;agileApp</a> ::
+        Module&nbsp;urls
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="agileApp.urls-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="agileApp.urls-module.html">Module agileApp.urls</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># -*- encoding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">conf</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module agileApp.urls=agileApp.urls-module.html"><a title="agileApp.urls" class="py-name" href="#" onclick="return doclink('link-0', 'urls', 'link-0');">urls</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">url</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module agileApp.views=agileApp.views-module.html"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-1', 'views', 'link-1');">views</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">  </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable agileApp.urls.urlpatterns=agileApp.urls-module.html#urlpatterns"><a title="agileApp.urls.urlpatterns" class="py-name" href="#" onclick="return doclink('link-2', 'urlpatterns', 'link-2');">urlpatterns</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/registro/$'</tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-3', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Function agileApp.views.registrar_usuarios()=agileApp.views-module.html#registrar_usuarios"><a title="agileApp.views.registrar_usuarios" class="py-name" href="#" onclick="return doclink('link-4', 'registrar_usuarios', 'link-4');">registrar_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'registrar_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/modificar_contrasena/$'</tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-5', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Function agileApp.views.modificar_contrasena()=agileApp.views-module.html#modificar_contrasena"><a title="agileApp.views.modificar_contrasena" class="py-name" href="#" onclick="return doclink('link-6', 'modificar_contrasena', 'link-6');">modificar_contrasena</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'modificar_contrasena'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/index/$'</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-7', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Function agileApp.views.index_usuarios()=agileApp.views-module.html#index_usuarios"><a title="agileApp.views.index_usuarios" class="py-name" href="#" onclick="return doclink('link-8', 'index_usuarios', 'link-8');">index_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'index_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/(?P&lt;user_id&gt;\d+)/editar/$'</tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-9', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Function agileApp.views.editar_usuarios()=agileApp.views-module.html#editar_usuarios"><a title="agileApp.views.editar_usuarios" class="py-name" href="#" onclick="return doclink('link-10', 'editar_usuarios', 'link-10');">editar_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'editar_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/(?P&lt;user_id&gt;\d+)/eliminar/$'</tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-11', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Function agileApp.views.eliminar_usuarios()=agileApp.views-module.html#eliminar_usuarios"><a title="agileApp.views.eliminar_usuarios" class="py-name" href="#" onclick="return doclink('link-12', 'eliminar_usuarios', 'link-12');">eliminar_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'eliminar_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/(?P&lt;user_id&gt;\d+)/delete/$'</tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-13', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Function agileApp.views.delete_usuarios()=agileApp.views-module.html#delete_usuarios"><a title="agileApp.views.delete_usuarios" class="py-name" href="#" onclick="return doclink('link-14', 'delete_usuarios', 'link-14');">delete_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'delete_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/(?P&lt;user_id&gt;\d+)/ver/$'</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-15', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Function agileApp.views.ver_usuarios()=agileApp.views-module.html#ver_usuarios"><a title="agileApp.views.ver_usuarios" class="py-name" href="#" onclick="return doclink('link-16', 'ver_usuarios', 'link-16');">ver_usuarios</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'ver_usuarios'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^usuarios/(?P&lt;user_id&gt;\d+)/asignar/$'</tt><tt class="py-op">,</tt> <tt id="link-17" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-17', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Function agileApp.views.asignar_roles_usuarios_proyecto()=agileApp.views-module.html#asignar_roles_usuarios_proyecto"><a title="agileApp.views.asignar_roles_usuarios_proyecto" class="py-name" href="#" onclick="return doclink('link-18', 'asignar_roles_usuarios_proyecto', 'link-18');">asignar_roles_usuarios_proyecto</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'asignar_roles_usuarios_proyecto'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/crear/$'</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-19', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Function agileApp.management.commands.populate_db.crear_roles()=agileApp.management.commands.populate_db-module.html#crear_roles,Function agileApp.views.crear_roles()=agileApp.views-module.html#crear_roles"><a title="agileApp.management.commands.populate_db.crear_roles
+agileApp.views.crear_roles" class="py-name" href="#" onclick="return doclink('link-20', 'crear_roles', 'link-20');">crear_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'crear_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/index/$'</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-21', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Function agileApp.views.index_roles()=agileApp.views-module.html#index_roles"><a title="agileApp.views.index_roles" class="py-name" href="#" onclick="return doclink('link-22', 'index_roles', 'link-22');">index_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'index_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/(?P&lt;rol_id&gt;\d+)/editar/$'</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-23', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Function agileApp.views.editar_roles()=agileApp.views-module.html#editar_roles"><a title="agileApp.views.editar_roles" class="py-name" href="#" onclick="return doclink('link-24', 'editar_roles', 'link-24');">editar_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'editar_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/(?P&lt;rol_id&gt;\d+)/ver/$'</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-25', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Function agileApp.views.ver_roles()=agileApp.views-module.html#ver_roles"><a title="agileApp.views.ver_roles" class="py-name" href="#" onclick="return doclink('link-26', 'ver_roles', 'link-26');">ver_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'ver_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/(?P&lt;rol_id&gt;\d+)/eliminar/$'</tt><tt class="py-op">,</tt> <tt id="link-27" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-27', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Function agileApp.views.eliminar_roles()=agileApp.views-module.html#eliminar_roles"><a title="agileApp.views.eliminar_roles" class="py-name" href="#" onclick="return doclink('link-28', 'eliminar_roles', 'link-28');">eliminar_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'eliminar_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^roles/(?P&lt;rol_id&gt;\d+)/delete/$'</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-29', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Function agileApp.views.delete_roles()=agileApp.views-module.html#delete_roles"><a title="agileApp.views.delete_roles" class="py-name" href="#" onclick="return doclink('link-30', 'delete_roles', 'link-30');">delete_roles</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'delete_roles'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^proyectos/crear/$'</tt><tt class="py-op">,</tt> <tt id="link-31" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-31', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Function agileApp.views.crear_proyectos()=agileApp.views-module.html#crear_proyectos"><a title="agileApp.views.crear_proyectos" class="py-name" href="#" onclick="return doclink('link-32', 'crear_proyectos', 'link-32');">crear_proyectos</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'crear_proyectos'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^proyectos/(?P&lt;proyecto_id&gt;\d+)/definir/$'</tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-33', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Function agileApp.views.definir_proyectos()=agileApp.views-module.html#definir_proyectos"><a title="agileApp.views.definir_proyectos" class="py-name" href="#" onclick="return doclink('link-34', 'definir_proyectos', 'link-34');">definir_proyectos</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'definir_proyectos'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^proyectos/(?P&lt;proyecto_id&gt;\d+)/editar/$'</tt><tt class="py-op">,</tt> <tt id="link-35" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-35', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Function agileApp.views.editar_proyectos()=agileApp.views-module.html#editar_proyectos"><a title="agileApp.views.editar_proyectos" class="py-name" href="#" onclick="return doclink('link-36', 'editar_proyectos', 'link-36');">editar_proyectos</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'editar_proyectos'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^proyectos/(?P&lt;proyecto_id&gt;\d+)/ver/$'</tt><tt class="py-op">,</tt> <tt id="link-37" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-37', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Function agileApp.views.ver_proyectos()=agileApp.views-module.html#ver_proyectos"><a title="agileApp.views.ver_proyectos" class="py-name" href="#" onclick="return doclink('link-38', 'ver_proyectos', 'link-38');">ver_proyectos</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'ver_proyectos'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-name">url</tt><tt class="py-op">(</tt><tt class="py-string">r'^proyectos/index/$'</tt><tt class="py-op">,</tt> <tt id="link-39" class="py-name"><a title="agileApp.views" class="py-name" href="#" onclick="return doclink('link-39', 'views', 'link-1');">views</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Function agileApp.views.index_proyectos()=agileApp.views-module.html#index_proyectos"><a title="agileApp.views.index_proyectos" class="py-name" href="#" onclick="return doclink('link-40', 'index_proyectos', 'link-40');">index_proyectos</a></tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'index_proyectos'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-op">]</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="agileApp-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Apr 29 21:44:33 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
