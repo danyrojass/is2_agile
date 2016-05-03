@@ -109,19 +109,18 @@ def index(request):
     if not proyectos:
         return render_to_response('noasignado.html', {'usuario':usuario, 'saludo':saludo}, context_instance=RequestContext(request))
     else:
-        if request.method == 'POST':
-            form = ElegirProyectoForm(request.POST, request.FILES)
-            if form.is_valid():
-                cleaned_data = form.cleaned_data
-                proyecto_id = cleaned_data.get('proyecto_id')
-                proyecto = Proyectos.objects.filter(id=proyecto_id)
-                return render_to_response('inicio_usuario.html', {'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request))   
+        return render(request, 'elegir_proyecto.html', {'usuario':usuario, 'proyectos':proyectos, 'saludo':saludo})
 
-        else:
-            form = ElegirProyectoForm()
-            
-        return render(request, 'elegir_proyecto.html', {'usuario':usuario, 'proyectos':proyectos, 'saludo':saludo, 'form': form})
-    
+def index_ususario_proyecto(request, user_id, proyecto_id):
+    saludo = saludo_dia()
+    usuario = User.objects.get(id=user_id)
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    print usuario
+    print proyecto
+    return render_to_response('inicio_usuario.html', {'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+
+
+
 def creditos(request):
     """
     Método que se encarga de mostrar los créditos del sistema.
@@ -486,7 +485,7 @@ def asignar_roles_usuarios_proyecto(request, user_id):
         
         user_profile = get_object_or_404(Usuarios, id=user_id)
         user_model = get_object_or_404(User, id=user_id)
-        roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador")
+        roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador").exclude(nombre="Scrum Master")
         proyectos = Proyectos.objects.all().exclude(usuarios__id=user_id)
         if user_model.is_active:
             if request.method == 'POST':
@@ -893,25 +892,41 @@ def crear_proyectos(request):
         request.session['last_activity'] = str(now)
             
         saludo = saludo_dia()
-            
+        
+        rol = get_object_or_404(Roles, nombre="Scrum Master")
+        usuarios = User.objects.all().exclude(id=1)
+        
         if request.method == 'POST':
             form = CrearProyectoForm(request.POST, request.FILES)
             
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 nombre_largo = cleaned_data.get('nombre_largo')
+                user_id = cleaned_data.get('user_id')
             
                 proyecto = Proyectos()
                 proyecto.nombre_largo = nombre_largo
                 proyecto.estado = 1
                 proyecto.save()
+                
+                user_profile = Usuarios.objects.get(id=user_id)
+                    
+                ru = Roles_Usuarios(roles=rol, usuario=user_profile)
+                ru.save()
+                  
+                up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
+                up.save()
+                  
+                rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
+                rup.save()
+                
                     
                 return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         
         else:
             form = CrearProyectoForm()
             
-        return render(request, 'proyectos/crear.html', {'usuario':usuario, 'saludo':saludo, 'form': form})
+        return render(request, 'proyectos/crear.html', {'usuarios':usuarios, 'rol':rol, 'usuario':usuario, 'saludo':saludo, 'form': form})
     else:
         return HttpResponseRedirect('/index')
     
@@ -1201,7 +1216,7 @@ def verificar_permiso(usuario, accion):
     if accion=="Registro de Usuarios" or accion=="Index de Usuarios" or accion=="Editar Usuarios" or accion=="Borrar Usuarios" or accion=="Ver Usuarios":
         permiso = Permisos.objects.filter(nombre="Administración de Usuarios")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1211,7 +1226,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Asginar Rol a Usuarios en un Proyecto":
         permiso = Permisos.objects.filter(nombre="Asignación de Usuarios")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1221,7 +1236,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Ver Index de Admin":
         permiso = Permisos.objects.filter(nombre="Ver Página de Administración")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1231,7 +1246,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Ver Index de Usuario Regular":
         permiso = Permisos.objects.filter(nombre="Ver Página de Inicio")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1241,7 +1256,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Registro de Roles" or accion=="Index de Roles" or accion=="Editar Roles" or accion=="Borrar Roles" or accion=="Ver Roles":
         permiso = Permisos.objects.filter(nombre="Administración de Roles y Permisos")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1251,7 +1266,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Registro de Proyectos/Servicios" or accion=="Index de Proyectos/Servicios" or accion=="Editar Proyectos/Servicios" or accion=="Ver Proyectos/Servicios":
         permiso = Permisos.objects.filter(nombre="Administración de Proyectos/Servicios")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True
@@ -1261,7 +1276,7 @@ def verificar_permiso(usuario, accion):
     elif accion=="Definir Proyectos/Servicios":
         permiso = Permisos.objects.filter(nombre="Definición de Proyectos/Servicios")
         rol = Roles.objects.filter(permisos=permiso)
-        rol_usuario_profile = Usuarios.objects.get(roles=rol, id=us.id)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
         if rol_usuario_profile:
             staff = True

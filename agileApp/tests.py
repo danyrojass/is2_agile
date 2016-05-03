@@ -72,7 +72,7 @@ class test_proyecto(TestCase):
         
         us_proyecto = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto)
         us_proyecto.save()
-        self.assertTrue(Proyectos.objects.filter(usuarios = usuario).exists(), "No se ha asignado el usuario, correctamente.") 
+        self.assertTrue(Proyectos.objects.filter(usuarios = usuario1).exists(), "No se ha asignado el usuario, correctamente.") 
     
     def test_eliminar_Proyecto(self):
         """

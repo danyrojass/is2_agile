@@ -102,7 +102,7 @@
 									<td width="25%">NOMBRE DEL ROL</td>
 									<td width="10%">TIPO </td>
 									<td width="10%">ESTADO </td>
-									<td width="25%">OBSERVACIÓN </td>
+									<td width="30%">OBSERVACIÓN </td>
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
 									<td width="5%">Delete</td>
@@ -128,10 +128,10 @@
 												{% else %}
 													<td width="10%"><div align="center">Inactivo</div></td>
 												{% endif %}
-												<td width="25%"><div align="center">{{rol.observacion}}</div></td>
+												<td width="30%"><div align="center">{{rol.observacion}}</div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_roles' rol.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_roles' rol.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												{% if rol in rolex %}
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_roles' rol.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_roles' rol.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
 												{% else %}	
 														<td width="5%">&nbsp;</td>
@@ -153,10 +153,10 @@
 												{% else %}
 													<td width="10%"><div align="center">Rol de Usuario</div></td>
 												{% endif %}
-												<td width="25%"><div align="center">{{rol.observacion}}</div></td>
+												<td width="30%"><div align="center">{{rol.observacion}}</div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_roles' rol.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_roles' rol.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												{% if rol in rolex %}
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_roles' rol.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_roles' rol.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
 												{% else %}	
 														<td width="5%">&nbsp;</td>

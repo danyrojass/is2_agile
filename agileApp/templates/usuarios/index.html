@@ -112,8 +112,7 @@
 									<td width="14%">NOMBRES </td>
 									<td width="14%">APELLIDOS </td>
 									<td width="15%">EMAIL</td>
-									<td width="8%">Estado</td>
-									<td width="5%">Assign</td>
+									<td width="13%">Estado</td>
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
 									<td width="5%">Delete</td>
@@ -134,21 +133,16 @@
 													<td width="14%"><div align="center">{{user.last_name}}</div></td>
 													<td width="15%"><div align="center">{{user.email}}</div></td>
 													{% if user.is_active == True %}
-														<td width="8%"><div align="center">Activo</div></td>
+														<td width="13%"><div align="center">Activo</div></td>
 													{% else %}
-														<td width="8%"><div align="center">Inactivo</div></td>
+														<td width="13%"><div align="center">Inactivo</div></td>
 													{% endif %}
-													{% if user.is_active == True %}
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_roles_usuarios_proyecto' user.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
-													{% else %}	
-														<td width="10%">&nbsp;</td>
-													{% endif %}	
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 													{% if user.is_active == True %}	
 														<td width="5%"><div align="center"><a href="{% url 'agileApp:eliminar_usuarios' user.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar"></a></div></td>
 													{% else %}	
-														<td width="10%">&nbsp;</td>
+														<td width="5%">&nbsp;</td>
 													{% endif %}	
 												</tr>
 											{% else %}
@@ -160,14 +154,9 @@
 													<td width="14%"><div align="center">{{user.last_name}}</div></td>
 													<td width="15%"><div align="center">{{user.email}}</div></td>
 													{% if user.is_active == True %}
-														<td width="8%"><div align="center">Activo</div></td>
+														<td width="13%"><div align="center">Activo</div></td>
 													{% else %}
-														<td width="8%"><div align="center">Inactivo</div></td>
-													{% endif %}	
-													{% if user.is_active == True %}
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_roles_usuarios_proyecto' user.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Roles/Permisos"></a></div></td>
-													{% else %}	
-														<td width="5%">&nbsp;</td>
+														<td width="13%"><div align="center">Inactivo</div></td>
 													{% endif %}	
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_usuarios' user.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_usuarios' user.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>

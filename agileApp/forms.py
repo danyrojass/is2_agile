@@ -212,6 +212,7 @@ class AsignarRolForm(forms.Form):
     
 class CrearProyectoForm(forms.Form):
     nombre_largo = forms.CharField(max_length=25)
+    user_id = forms.IntegerField()
     
     def clean_nombre_largo(self):
         """Comprueba que no exista un nombre igual en la db"""

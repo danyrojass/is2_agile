@@ -8,20 +8,58 @@
 		
 	<td>&nbsp;</td>
 	<td>&nbsp;</td>
-	
-	<link rel="stylesheet" href="/static/formoid-solid-orange2.css" type="text/css" />
-	<form class="formoid-solid-orange" style="background-color:#ffffff;font-size:14px;font-family:'Ubuntu',Arial,Helvetica,sans-serif;color:#34495E;max-width:480px;min-width:150px" method="post"><div class="title"><h2>Selección de Proyecto</h2></div>{% csrf_token %}	
-		{{ form.errors }} 
-		<div class="element-select"><label class="title"></label><div class="item-cont"><div class="large"><span><select id="proyecto_id" name="proyecto_id" class="comboGrande">
-			<option selected="selected" disabled="disabled">--- Selecciona un Proyecto ---</option> 
-				{% if proyectos %}
-					{% for p in proyectos %}
-						<option value="{{p.id}}">{{p.nombre_largo}}</option>
-					{% endfor %}
-				{% endif %}
-			</select><i></i><span class="icon-place"></span></span></div></div></div>
-					
-		<div class="submit"><input type="submit" name="register" id="register" class="button" value="Seleccionar" /></input></div>
-	
-	</form>
+		
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<div id="pagina">
+			<div id="zonaContenidoPP">
+				<div align="center">
+					<div id="cabeceraResultado" class="header">
+						PROYECTOS DEL USUARIO </div>
+						<div id="frmResultado">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								<tr class="cabeceraTabla">
+									<td width="8%">ÍTEM</td>
+									<td width="7%">ID</td>
+									<td width="25%">NOMBRE LARGO</td>
+									<td width="10%">NOMBRE CORTO </td>
+									<td width="35%">DESCRIPCIÓN</td>
+									<td width="15%">INGRESAR</td>
+									<td width="10%">&nbsp;</td>
+								</tr>
+							</table>
+							<div class="ScrollStyle">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								{% if proyectos %}
+									{% for proyecto in proyectos %}
+										{% if forloop.counter|divisibleby:2  %}
+											<tr class="itemImparTabla">
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
+												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
+												<td width="15%"><div align="center"><a href="{% url 'agileApp:index_ususario_proyecto' usuario.id proyecto.id %}"><img src="/static/img/cliente.png" width="16" height="16" border="0" title="Ingresar"></a></div></td>
+											</tr>
+										{% else %}
+											<tr class="itemParTabla"> 
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
+												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
+												<td width="15%"><div align="center"><a href="{% url 'agileApp:index_ususario_proyecto' usuario.id proyecto.id %}"><img src="/static/img/cliente.png" width="16" height="16" border="0" title="Ingresar"></a></div></td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<p>No hay proyectos registrados en la base de datos.</p>
+								{% endif %}
+								
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 {% endblock content %}

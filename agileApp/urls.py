@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^proyectos/(?P<proyecto_id>\d+)/editar/$', views.editar_proyectos, name='editar_proyectos'),
     url(r'^proyectos/(?P<proyecto_id>\d+)/ver/$', views.ver_proyectos, name='ver_proyectos'),
     url(r'^proyectos/index/$', views.index_proyectos, name='index_proyectos'),
+    url(r'^index/usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/$', views.index_ususario_proyecto, name='index_ususario_proyecto'),
 ]
