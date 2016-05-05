@@ -103,9 +103,14 @@
 									<td width="10%">TIPO </td>
 									<td width="10%">ESTADO </td>
 									<td width="30%">OBSERVACIÓN </td>
-									<td width="5%">Read</td>
-									<td width="5%">Update</td>
-									<td width="5%">Delete</td>
+									<td width="5%">Ver</td>
+									<td width="5%">Actualizar</td>
+									{% if rol in rolex %}
+										<td width="5%">Eliminar</td>
+									{% else %}	
+										<td width="5%">&nbsp;</td>
+										<td width="5%">&nbsp;</td>
+									{% endif %}	
 									<td width="10%">&nbsp;</td>
 								</tr>
 							</table>
