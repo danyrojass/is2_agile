@@ -11,7 +11,7 @@ from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolFor
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, Roles_Usuarios, User_Story
+Usuarios_Proyectos, User_Story
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -802,7 +802,7 @@ def index_roles(request):
         rolex = Roles.objects.all().exclude(nombre="Administrador")
         roles = Roles.objects.order_by('id').exclude(nombre="Administrador")
         for r in roles:
-            rol_usuario = Roles_Usuarios.objects.filter(roles=r)
+            rol_usuario = Roles_Usuarios_Proyectos.objects.filter(roles=r)
             if rol_usuario:
                 rolex= rolex.exclude(id=r.id)
         filas= roles.count()
@@ -880,9 +880,6 @@ def crear_proyectos(request):
                 proyecto.save()
                 
                 user_profile = Usuarios.objects.get(id=user_id)
-                    
-                ru = Roles_Usuarios(roles=rol, usuario=user_profile)
-                ru.save()
                   
                 up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                 up.save()
@@ -947,12 +944,12 @@ def definir_proyectos(request, user_id, proyecto_id):
                 proyecto.estado = estado
                 proyecto.save()
 
-                return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('proyecto_usuario/gracias.html', {'staff':staff, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         
         else:
             form = DefinirProyectoForm()
             
-        return render(request, 'proyecto_usuario/definir.html', {'proyecto':proyecto, 'usuario':usuario, 'saludo':saludo, 'form': form})
+        return render(request, 'proyecto_usuario/definir.html', {'staff':staff, 'proyecto':proyecto, 'usuario':usuario, 'saludo':saludo, 'form': form})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1001,9 +998,6 @@ def editar_proyectos(request, proyecto_id):
                     desasignar_usuarios(request, sm.id, proyecto_id)
                     user_profile = Usuarios.objects.get(id=user_id)
                     desasignar_usuarios(request, user_profile.id, proyecto_id)
-                    
-                    ru = Roles_Usuarios(roles=rol, usuario=user_profile)
-                    ru.save()
                       
                     up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                     up.save()
@@ -1036,11 +1030,8 @@ def desasignar_usuarios(request, user_id, proyecto_id):
     usuario = get_object_or_404(Usuarios, id=user_id)
     us_pr = get_object_or_404(Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
     rol_us_pr = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
-    rol = get_object_or_404(Roles, id=rol_us_pr.roles.id)
-    rol_us = get_object_or_404(Roles_Usuarios, usuario=usuario, roles=rol)
             
     rol_us_pr.delete()
-    rol_us.delete()
     us_pr.delete()
     
 
@@ -1319,9 +1310,6 @@ def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
                 rol = get_object_or_404(Roles, id=rol_id) 
                 proyecto = get_object_or_404(Proyectos, id=proyecto_id)
                 user_profile = get_object_or_404(Usuarios, id=userd_id)
-                 
-                ru = Roles_Usuarios(roles=rol, usuario=user_profile)
-                ru.save()
                     
                 up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                 up.save()
@@ -1329,10 +1317,10 @@ def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
                 rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
                 rup.save()
                  
-                return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'r':rol}, context_instance=RequestContext(request))
+                return render_to_response('proyecto_usuario/gracias.html', {'staff':staff, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'r':rol}, context_instance=RequestContext(request))
         else:
             form = AsignarRolForm()
-        return render(request, 'proyecto_usuario/asignar.html', {'form': form, 'roles':roles, 'usuariox':usuariox, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        return render(request, 'proyecto_usuario/asignar.html', {'staff':staff, 'form': form, 'roles':roles, 'usuariox':usuariox, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
 

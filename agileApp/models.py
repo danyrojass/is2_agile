@@ -43,7 +43,7 @@ class Usuarios(models.Model):
     direccion = models.CharField(max_length=45, default="")
     tipo = models.CharField(max_length=10, default="")
     observacion = models.CharField(max_length=50, default="")
-    roles = models.ManyToManyField(Roles, through='Roles_Usuarios')
+    roles = models.ManyToManyField(Roles, through='Roles_Usuarios_Proyectos')
     
     def __str__(self):
         return self.user.username
@@ -88,17 +88,13 @@ class Proyectos(models.Model):
     
     def __str__(self):
         return self.nombre_largo
-
-class Roles_Usuarios(models.Model):
-    roles = models.ForeignKey(Roles)
-    usuario = models.ForeignKey(Usuarios)
     
 class Usuarios_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     usuarios = models.ForeignKey(Usuarios)
 
 class Roles_Usuarios_Proyectos(models.Model):
-    proyecto = models.ForeignKey(Proyectos)
+    proyecto = models.ForeignKey(Proyectos, null=True)
     usuarios = models.ForeignKey(Usuarios)
     roles = models.ForeignKey(Roles)
 
