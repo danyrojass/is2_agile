@@ -3,19 +3,17 @@
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
-			<br></br>
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>.<br></br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a> | 
 			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
-	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
-		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
-		  		<li><a href='/agile/roles/index/'>Roles</a></li>
-		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' usuario.id proyecto.id %}">Proyecto</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -24,19 +22,30 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">ASIGNAR ROL-PROYECTO</div>
+					<div id="tituloForm" class="header">ASIGNAR USUARIO-ROL</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								<tr>
-									<td width="14%"><b>ID</b></td>
-									<td width="36%">{{um.id}}</td>
+									<td width="14%"><b>ID de Proyecto</b></td>
+									<td width="36%">{{proyecto.id}}</td>
 								</tr>
 								
 								<tr>
-									<td width="14%"><b>Nombre de Usuario</b></td>
-								    <td width="36%">{{um.username}}</td>
-								</tr>	
+									<td width="14%"><b>Usuario</b></td>
+									<td width="36%">
+										<select id="userd_id" name="userd_id" class="comboGrande">
+											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
+												{% if usuarios %}
+													{% for u in usuarios %}
+														{% if not u in usuariox %}
+															<option value="{{u.id}}">{{u.username}}</option>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+										</select>
+									</td>
+								</tr>
 										
 								<tr>
 									<td width="14%"><b>Rol</b></td>
@@ -51,24 +60,12 @@
 										</select>
 									</td>
 								</tr>
-								<tr>
-									<td width="14%"><b>Proyecto</b></td>
-									<td width="36%">
-										<select id="proyecto_id" name="proyecto_id" class="comboGrande">
-											<option selected="selected" disabled="disabled">--- Selecciona un Proyecto ---</option> 
-												{% if proyectos %}
-													{% for p in proyectos %}
-														<option value="{{p.id}}">{{p.nombre_largo}}</option>
-													{% endfor %}
-												{% endif %}
-										</select>
-									</td>
-								</tr>			
+											
 							</table>	
 					</div>
 					<div id="botonBusqueda">
 						<button class="button" type="submit">ASIGNAR ROL</button>
-				  		<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit">CANCELAR</a>
+				  		<a href="{% url 'agileApp:index_proyecto_usuario' usuario.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
 					</div>
 					</form>
 				</div>

@@ -107,12 +107,11 @@
 									<td width="8%">ÍTEM</td>
 									<td width="7%">ID</td>
 									<td width="25%">NOMBRE LARGO</td>
-									<td width="10%">NOMBRE CORTO </td>
+									<td width="15%">NOMBRE CORTO </td>
 									<td width="35%">DESCRIPCIÓN</td>
-									<td width="5%">Define</td>
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
-									<td width="10%">&nbsp;</td>
+									<td width="5%">&nbsp;</td>
 								</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -124,9 +123,8 @@
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
 												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
-												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="15%"><div align="center">{{proyecto.nombre_corto}}</div></td>
 												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:definir_proyectos' proyecto.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Definir"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_proyectos' proyecto.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_proyectos' proyecto.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
 											</tr>
@@ -135,9 +133,8 @@
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
 												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
-												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
+												<td width="15%"><div align="center">{{proyecto.nombre_corto}}</div></td>
 												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:definir_proyectos' proyecto.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Definir"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_proyectos' proyecto.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:editar_proyectos' proyecto.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>																			
 											</tr>

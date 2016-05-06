@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}Index de Ejecución{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+
+		<script language="javascript">
+			
+			function crear_us() {
+				location.href="{% url 'agileApp:crear_us' user.id proyecto.id %}";
+			}
+			
+			function limpiar() {
+				document.getElementById("form_busqueda").reset();
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
+	
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<div id="pagina">
+			<div id="zonaContenidoPP">
+				<div align="center">	
+				<div id="tituloForm" class="header">BUSCAR USER STORY DENTRO DEL PROYECTO</div>
+				<div id="frmBusqueda">
+				<form id="form_busqueda" name="form_busqueda" method="post" action="">
+					{% csrf_token %}
+					<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+					{{ form.errors }}				
+						<tr>
+							<td width="16%">ID de US </td>
+							<td width="68%"><input id="id" type="text" class="cajaPequena" NAME="id" maxlength="10" value=""></td>
+							<td width="5%">&nbsp;</td>
+							<td width="5%">&nbsp;</td>
+							<td width="6%" align="right"></td>
+						</tr>
+						<tr>
+							<td>Nombre de US</td>
+							<td><input id="nombre" name="nombre" type="text" class="cajaGrande" maxlength="45" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>Descripcion</td>
+							<td><input id="descripcion" name="descripcion" type="text" class="cajaGrande" maxlength="45" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+		
+					</table>
+					</div>
+					<div id="botonBusqueda">
+						<td style="text-align:right"><button class="button" type="submit">BUSCAR</button></td>
+        				<td style="text-align:right"><a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a></td>
+						<td style="text-align:left"><a onClick="crear_us()" onMouseOver="style.cursor=cursor" class="button" >CREAR USER STORY</a></td>
+							</div>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<div id="lineaResultado">
+			  <table class="fuente8" width="80%" cellspacing=0 cellpadding=3 border=0>
+			  	<tr>
+				<td width="50%" align="left">Nro. de User Stories encontrados. <input id=filax type="text" class="cajaPequena" NAME=filas maxlength="5" value="{{filax}}"></td>
+			  </table>
+			</div>
+					<div id="cabeceraResultado" class="header">
+						PRODUCT BACKLOG </div>
+						<div id="frmResultado">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								<tr class="cabeceraTabla">
+									<td width="8%">ÍTEM</td>
+									<td width="7%">ID</td>
+									<td width="20%">NOMBRE</td>
+									<td width="35%">DESCRIPCION</td>
+									<td width="8%">PRIORIDAD</td>
+									<td width="8%">V. NEGOCIOS</td>
+									<td width="8%">V. TÉCNICO</td>
+									<td width="6%">SIZE</td>
+								</tr>
+							</table>
+							<div class="ScrollStyle">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								{% if uh %}
+									{% for us in uh %}
+										{% if forloop.counter|divisibleby:2  %}
+											<tr class="itemImparTabla">
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{us.id}}</div></td>
+												<td width="20%"><div align="center">{{us.nombre}}</div></td>
+												<td width="35%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
+												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
+												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
+												<td width="6%"><div align="center">{{us.size}}</div></td>											
+											</tr>
+										{% else %}
+											<tr class="itemParTabla"> 
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{us.id}}</div></td>
+												<td width="20%"><div align="center">{{us.nombre}}</div></td>
+												<td width="35%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
+												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
+												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
+												<td width="6%"><div align="center">{{us.size}}</div></td>	
+											</tr>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<p>No hay user stories registrados en la base de datos.</p>
+								{% endif %}
+								
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>							
+{% endblock content %}

@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 import string
-from .models import Roles, Roles_Usuarios, Proyectos, Usuarios_Proyectos
+from .models import Roles, Roles_Usuarios, Proyectos, Usuarios_Proyectos, User_Story
 from django.shortcuts import get_object_or_404
 
  
@@ -170,6 +170,7 @@ class BuscarUserForm(forms.Form):
     email = forms.CharField(required=False)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
+    tipo = forms.ChoiceField(choices=TIPOS, required=False)
         
 class CrearRolForm(forms.Form):
     nombre = forms.CharField(max_length=25)
@@ -208,7 +209,7 @@ class EditarRolForm(forms.Form):
 
 class AsignarRolForm(forms.Form):
     rol_id = forms.IntegerField()
-    proyecto_id = forms.IntegerField()
+    userd_id = forms.IntegerField()
     
 class CrearProyectoForm(forms.Form):
     nombre_largo = forms.CharField(max_length=25)
@@ -238,6 +239,31 @@ class BuscarProyectoForm(forms.Form):
     
 class EditarProyectoForm(forms.Form):
     observaciones = forms.CharField(max_length=50, required=False)
+    user_id = forms.IntegerField(required=False)
+    
+class CambiarEstadoForm(forms.Form):
+    estado = forms.BooleanField(required=False)
+    
+class CrearUSForm(forms.Form):
+    nombre = forms.CharField(max_length = 50)
+    descripcion = forms.CharField(max_length = 50, required=False)
+    nivel_prioridad = forms.IntegerField(required=False)
+    valor_negocios = forms.IntegerField(required=False)
+    valor_tecnico = forms.IntegerField(required=False)
+    size = forms.IntegerField(required=False)
+    tiempo_estimado = forms.IntegerField(required=False)
+    tiempo_real = forms.IntegerField(required=False)
+    fecha_creacion = forms.DateField(required=False)
+    fecha_inicio = forms.DateField(required=False)
+    
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en la db"""
+        nombre = self.cleaned_data['nombre']
+        
+        if User_Story.objects.filter(nombre=nombre):
+            raise forms.ValidationError('Nombre de user_story ya registrado.')
+        return nombre
 
-class ElegirProyectoForm(forms.Form):
-    proyecto_id = forms.IntegerField(required=False)
+class BuscarUSForm(forms.Form):
+    nombre = forms.CharField(max_length = 50)
+    descripcion = forms.CharField(max_length = 50, required=False)

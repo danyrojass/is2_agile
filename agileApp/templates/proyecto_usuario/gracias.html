@@ -1,21 +1,20 @@
 {% extends 'base.html' %}
-{% block title %}Cambios guardados{% endblock title %}
+{% block title %}Gracias{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
 			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a> | 
 			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
 		
-	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
-		  		<li><a href='/agile/usuarios/index/'>Usuarios</a></li>
-		  		<li><a href='/agile/roles/index/'>Roles</a></li>
-		  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -24,12 +23,10 @@
 				<div id="zonaContenido">
 					<div align="center">
 						{% if aid == 1 %}
-							<div id="tituloForm" class="header">PROYECTO CREADO</div>
+							<div id="tituloForm" class="header">USUARIO ELIMINADO</div>
 						{% elif aid == 2 %}
 							<div id="tituloForm" class="header">PROYECTO DEFINIDO</div>
-						{% elif aid == 3 %}
-							<div id="tituloForm" class="header">PROYECTO MODIFICADO</div>
-						{% endif %}
+						
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 									<colgroup>
@@ -70,11 +67,11 @@
 									{% endif %}
 								</table>
 							</div>
-							
+							{% endif %}
 							<div id="botonBusqueda">
         							<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
         					</div>        							
-        					<a href="{% url 'agileApp:index_proyectos'%}" class="button" type="submit">VOLVER</a>
+        					<a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}" class="button" type="submit">VOLVER</a>
 						</div>
 					</div>
 				</div>

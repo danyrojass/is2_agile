@@ -9,9 +9,9 @@ from django.template import RequestContext
 from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
-EditarProyectoForm, ElegirProyectoForm, AsignarRolForm
+EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, Roles_Usuarios
+Usuarios_Proyectos, Roles_Usuarios, User_Story
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -105,21 +105,11 @@ def index(request):
         return render_to_response('inicio_admin.html', {'usuario':usuario, 'saludo':saludo}, context_instance=RequestContext(request))    
     else:
         proyectos = Proyectos.objects.filter(usuarios__id=usuario.id)
-        
+
     if not proyectos:
         return render_to_response('noasignado.html', {'usuario':usuario, 'saludo':saludo}, context_instance=RequestContext(request))
     else:
         return render(request, 'elegir_proyecto.html', {'usuario':usuario, 'proyectos':proyectos, 'saludo':saludo})
-
-def index_ususario_proyecto(request, user_id, proyecto_id):
-    saludo = saludo_dia()
-    usuario = User.objects.get(id=user_id)
-    proyecto = Proyectos.objects.get(id=proyecto_id)
-    print usuario
-    print proyecto
-    return render_to_response('inicio_usuario.html', {'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
-
-
 
 def creditos(request):
     """
@@ -161,7 +151,7 @@ def index_usuarios(request):
         filas= usuarios.count() - 1
         
         if request.method == 'POST':
-            results = User.objects.all().exclude(id=1)
+            results = Usuarios.objects.all().exclude(id=1)
             form = BuscarUserForm(request.POST)
             
             if form.is_valid():
@@ -175,34 +165,39 @@ def index_usuarios(request):
                 uusername = request.POST.get('username', None)
                 if uusername:
                     if uusername != usuario.username:
-                        results = results.filter(username__icontains=uusername)
+
+                        results = results.filter(user__username__icontains=uusername)
                     else:
                         results = None
                         
                 uemail = request.POST.get('email', None)
                 if uemail:
                     if uemail != usuario.email:
-                        results = results.filter(email__icontains=uemail)
+                        results = results.filter(user__email__icontains=uemail)
                     else:
                         results = None
                         
                 first_name = request.POST.get('first_name', None)
                 if first_name:
                     if first_name != usuario.first_name:
-                        results = results.filter(first_name__icontains=first_name)
+                        results = results.filter(user__first_name__icontains=first_name)
                     else:
                         results = None
                         
                 last_name = request.POST.get('last_name', None)
                 if last_name:
                     if last_name != usuario.last_name:
-                        results = results.filter(last_name__icontains=last_name)
+                        results = results.filter(user__last_name__icontains=last_name)
                     else:
                         results = None
-                        
-                if not uid and not uusername and not uemail and not first_name and not last_name:
-                    results = None
                 
+                utipo = request.POST.get('tipo', None)
+                if utipo:
+                        results = results.filter(tipo__iexact=utipo)
+                        
+                if not uid and not uusername and not uemail and not first_name and not last_name and not utipo:
+                    results = None
+                print results
                 if results:
                     results.order_by('id')
                 return render_to_response('usuarios/results.html', {'usuario':usuario, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
@@ -292,8 +287,10 @@ def editar_usuarios(request, user_id):
     """
     usuario = request.user
     accion = "Editar Usuarios"
+    accion2 = "Cambiar Estado"
     
     staff = verificar_permiso(usuario, accion)
+    staff2 = verificar_permiso(usuario, accion2)
     
     if staff:
         
@@ -332,6 +329,33 @@ def editar_usuarios(request, user_id):
         else:
             form = EditarUserForm()
         return render(request, 'usuarios/editar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
+    elif staff2:
+        aid = 1
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        
+        user_model = get_object_or_404(User, pk=user_id)
+        user_profile = get_object_or_404(Usuarios, id=user_id)
+    
+        if request.method == 'POST':
+            form = CambiarEstadoForm(request.POST, request.FILES)
+            if form.is_valid():
+
+                estado = form.cleaned_data['estado']
+                user_model.is_active = estado
+                user_model.save()
+                if estado:
+                    proyecto = Proyectos.objects.get(usuarios__id=user_model.id)
+                    desasignar_usuarios(request, user_model.id, proyecto.id)
+                return render_to_response('proyecto_usuario/gracias.html', {'usuario':usuario, 'saludo':saludo, 'aid':aid, 'um':user_model, 'up':user_profile}, context_instance=RequestContext(request))
+        else:
+            form = CambiarEstadoForm()
+        return render(request, 'usuarios/editar.html', {'staff2':staff2, 'form': form, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
     else:
         return HttpResponseRedirect('/index')
 
@@ -458,60 +482,6 @@ def ver_usuarios(request, user_id):
     else:
         return HttpResponseRedirect('/index')
 
-def asignar_roles_usuarios_proyecto(request, user_id):
-    """
-    Método que permite asignar un Rol a un Usuario en un Proyecto determinado.
-    
-    @param request: Http request
-    @param user_id: Id de un usuario registrado en el sistema.
-    @return: render al template usuarios/asignar.html para la asignación. 
-             render al template usuarios/gracias.html cuando se ha asignado correctamente.
-    """
-    
-    usuario = request.user
-    accion = "Asginar Rol a Usuarios en un Proyecto"
-    
-    staff = verificar_permiso(usuario, accion)
-    
-    if staff:
-        aid = 5
-        comprobar(request)
-        if(request.user.is_anonymous()):
-            return HttpResponseRedirect('/ingresar')
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        request.session['last_activity'] = str(now)
-        
-        saludo = saludo_dia()
-        
-        user_profile = get_object_or_404(Usuarios, id=user_id)
-        user_model = get_object_or_404(User, id=user_id)
-        roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador").exclude(nombre="Scrum Master")
-        proyectos = Proyectos.objects.all().exclude(usuarios__id=user_id)
-        if user_model.is_active:
-            if request.method == 'POST':
-                form = AsignarRolForm(request.POST)
-                if form.is_valid():
-                    rol_id = request.POST.get('rol_id', None)
-                    proyecto_id = request.POST.get('proyecto_id', None)
-                    
-                    rol = get_object_or_404(Roles, id=rol_id) 
-                    proyecto = get_object_or_404(Proyectos, id=proyecto_id)
-                    
-                    ru = Roles_Usuarios(roles=rol, usuario=user_profile)
-                    ru.save()
-                    
-                    up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
-                    up.save()
-                    
-                    rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
-                    rup.save()
-                    
-                    return render_to_response('usuarios/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'p':proyecto, 'r':rol}, context_instance=RequestContext(request))
-            else:
-                form = AsignarRolForm()
-            return render(request, 'usuarios/asignar.html', {'form': form, 'roles':roles, 'proyectos':proyectos, 'usuario':usuario, 'saludo':saludo, 'um':user_model, 'up':user_profile})
-    else:
-        return HttpResponseRedirect('/index')
 
 """Administración de Roles"""
 def crear_roles(request):
@@ -930,7 +900,7 @@ def crear_proyectos(request):
     else:
         return HttpResponseRedirect('/index')
     
-def definir_proyectos(request, proyecto_id):
+def definir_proyectos(request, user_id, proyecto_id):
     """
     Metodo que define los parametros de un proyecto
     
@@ -940,7 +910,7 @@ def definir_proyectos(request, proyecto_id):
     
     """
     
-    usuario = request.user
+    usuario = User.objects.get(id=user_id)
     accion = "Definir Proyectos/Servicios"
     
     staff = verificar_permiso(usuario, accion)
@@ -977,12 +947,12 @@ def definir_proyectos(request, proyecto_id):
                 proyecto.estado = estado
                 proyecto.save()
 
-                return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         
         else:
             form = DefinirProyectoForm()
             
-        return render(request, 'proyectos/definir.html', {'proyecto':proyecto, 'usuario':usuario, 'saludo':saludo, 'form': form})
+        return render(request, 'proyecto_usuario/definir.html', {'proyecto':proyecto, 'usuario':usuario, 'saludo':saludo, 'form': form})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1012,7 +982,9 @@ def editar_proyectos(request, proyecto_id):
         saludo = saludo_dia()
             
         proyecto = get_object_or_404(Proyectos, id=proyecto_id)
-        lista = proyecto.usuarios.all()
+        rol = get_object_or_404(Roles, nombre="Scrum Master")
+        sm = proyecto.usuarios.get(roles=rol)
+        lista = proyecto.usuarios.all().exclude(id=sm.id)
         
         if request.method == 'POST':
             form = EditarProyectoForm(request.POST, request.FILES)
@@ -1020,25 +992,36 @@ def editar_proyectos(request, proyecto_id):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 observaciones = cleaned_data.get('observaciones')
+                user_id = cleaned_data.get('user_id')
                 
                 proyecto.observaciones = observaciones
                 proyecto.save()
-                  
-                lista_usuarios = request.POST.getlist(u'lista_usuarios')
-                            
-                desasignar_usuarios(request, lista_usuarios, proyecto_id)
+                
+                if user_id:
+                    desasignar_usuarios(request, sm.id, proyecto_id)
+                    user_profile = Usuarios.objects.get(id=user_id)
+                    desasignar_usuarios(request, user_profile.id, proyecto_id)
+                    
+                    ru = Roles_Usuarios(roles=rol, usuario=user_profile)
+                    ru.save()
+                      
+                    up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
+                    up.save()
+                      
+                    rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
+                    rup.save()
+                
                 usuarios = proyecto.usuarios.all()
                             
                 return render_to_response('proyectos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'usuarios':usuarios}, context_instance=RequestContext(request))
         
         else:
             form = EditarProyectoForm()
-            
-        return render(request, 'proyectos/editar.html', {'lista':lista, 'usuario':usuario, 'saludo':saludo, 'form': form, 'proyecto':proyecto})
+        return render(request, 'proyectos/editar.html', {'rol':rol, 'sm':sm, 'lista':lista, 'usuario':usuario, 'saludo':saludo, 'form': form, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
 
-def desasignar_usuarios(request, lista_usuarios, proyecto_id):
+def desasignar_usuarios(request, user_id, proyecto_id):
     """
     Método para desasignar a un usuarios existente del proyecto.
     
@@ -1050,16 +1033,15 @@ def desasignar_usuarios(request, lista_usuarios, proyecto_id):
     
     proyecto = get_object_or_404(Proyectos, id=proyecto_id)
     
-    for user_id in lista_usuarios:
-        usuario = get_object_or_404(Usuarios, id=user_id)
-        us_pr = get_object_or_404(Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
-        rol_us_pr = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
-        rol = get_object_or_404(Roles, id=rol_us_pr.roles.id)
-        rol_us = get_object_or_404(Roles_Usuarios, usuario=usuario, roles=rol)
-                
-        rol_us_pr.delete()
-        rol_us.delete()
-        us_pr.delete()
+    usuario = get_object_or_404(Usuarios, id=user_id)
+    us_pr = get_object_or_404(Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
+    rol_us_pr = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
+    rol = get_object_or_404(Roles, id=rol_us_pr.roles.id)
+    rol_us = get_object_or_404(Roles_Usuarios, usuario=usuario, roles=rol)
+            
+    rol_us_pr.delete()
+    rol_us.delete()
+    us_pr.delete()
     
 
 def ver_proyectos(request, proyecto_id):
@@ -1155,6 +1137,305 @@ def index_proyectos(request):
         return render(request, 'proyectos/index.html', {'usuario':usuario, 'saludo':saludo, 'proyectos':proyectos, 'filas':filas})
     else:
         return HttpResponseRedirect('/index')
+
+
+def index_ususario_proyecto(request, user_id, proyecto_id):
+    comprobar(request)
+    if(request.user.is_anonymous()):
+        return HttpResponseRedirect('/ingresar')
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    request.session['last_activity'] = str(now)
+    user = request.user
+    accion = "Definir Proyectos/Servicios"
+    staff = verificar_permiso(user, accion)  
+        
+    saludo = saludo_dia()
+    usuario = User.objects.get(id=user_id)
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    return render_to_response('inicio_usuario.html', {'staff':staff, 'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+
+def index_proyecto_usuario(request, user_id, proyecto_id):
+    user = request.user
+    accion = "Definir Proyectos/Servicios"
+    accion2 = "Listar US"
+    
+    staff = verificar_permiso(user, accion)
+    staff2 = verificar_permiso(user, accion2)
+    
+    comprobar(request)
+    if(request.user.is_anonymous()):
+        return HttpResponseRedirect('/ingresar')
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    request.session['last_activity'] = str(now)
+            
+    saludo = saludo_dia()
+    usuario = Usuarios.objects.get(id=user_id)
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+            
+    rup = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=usuario)
+    rol = get_object_or_404(Roles, nombre=rup.roles.nombre)
+    usuarios = proyecto.usuarios.all().exclude(id=user.id).exclude(user__is_active=False)
+    filas = usuarios.count()
+    uh = proyecto.user_stories.all()
+    filax = uh.count()
+    
+    if staff:    
+        if request.method == 'POST':
+            results = proyecto.usuarios.all().exclude(id=usuario.id)
+            form = BuscarUserForm(request.POST)
+                
+            if form.is_valid():
+                uid = request.POST.get('id', None)
+                if uid:
+                    if uid != usuario.user.id:
+                        results = results.filter(id__iexact=uid)
+                    else:
+                        results = None
+                            
+                uusername = request.POST.get('username', None)
+                if uusername:
+                    if uusername != usuario.user.username:
+                        results = results.filter(user__username__icontains=uusername)
+                    else:
+                        results = None
+                            
+                uemail = request.POST.get('email', None)
+                if uemail:
+                    if uemail != usuario.user.email:
+                        results = results.filter(user__uemail__icontains=uemail)
+                    else:
+                        results = None
+                            
+                first_name = request.POST.get('first_name', None)
+                if first_name:
+                    if first_name != usuario.user.first_name:
+                        results = results.filter(user__first_name__icontains=first_name)
+                    else:
+                        results = None
+                            
+                last_name = request.POST.get('last_name', None)
+                if last_name:
+                    if last_name != usuario.user.last_name:
+                        results = results.filter(user__last_name__icontains=last_name)
+                    else:
+                        results = None
+                            
+                if not uid and not uusername and not uemail and not first_name and not last_name:
+                    results = None
+                    
+                if results:
+                    results.order_by('id')
+                return render_to_response('proyecto_usuario/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+        else:
+            form = BuscarUserForm()
+    if staff or staff2:
+        if request.method == 'POST':
+            results = proyecto.usuarios.all().exclude(id=usuario.id)
+            form = BuscarUSForm(request.POST)
+                
+            if form.is_valid():
+                usid = request.POST.get('id', None)
+                if usid:
+                    results = results.filter(id__iexact=usid)
+                            
+                usnombre = request.POST.get('nombre', None)
+                if usnombre:
+                    results = results.filter(nombre__icontains=usnombre)
+                            
+                usdescripcion = request.POST.get('descripcion', None)
+                if usdescripcion:
+                    results = results.filter(descripcion__icontains=usdescripcion)
+
+                if not usid and not usnombre and not usdescripcion:
+                    results = None
+                    
+                if results:
+                    results.order_by('id')
+                return render_to_response('proyecto_usuario/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+        else:
+            form = BuscarUSForm()
+        return render_to_response('proyecto_usuario/index.html', {'filax':filax, 'uh':uh, 'filas':filas, 'staff2':staff2, 'staff':staff, 'usuarios':usuarios, 'rol':rol, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
+    
+def eliminar_usuario_proyecto(request, user_id, userd_id, proyecto_id):
+    user = request.user
+    accion = "Definir Proyectos/Servicios"
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        aid = 2   
+        saludo = saludo_dia()
+        usuario = Usuarios.objects.get(id=userd_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+        desasignar_usuarios(request, usuario.id, proyecto.id)
+    else:
+        return HttpResponseRedirect('/index')
+    
+    return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'user':user, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+
+def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
+    """
+    Método que permite asignar un Rol a un Usuario en un Proyecto determinado.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @return: render al template usuarios/asignar.html para la asignación. 
+             render al template usuarios/gracias.html cuando se ha asignado correctamente.
+    """
+    
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    accion = "Asginar Rol a Usuarios en un Proyecto"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    if staff:
+        aid = 2
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        
+        roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador").exclude(nombre="Scrum Master")
+        usuarios = User.objects.all().exclude(id=user_id).exclude(is_active=False).exclude(id=1)
+        usuariox = proyecto.usuarios.all()
+        
+        if request.method == 'POST':
+            form = AsignarRolForm(request.POST)
+            if form.is_valid():
+                rol_id = request.POST.get('rol_id', None)
+                userd_id = request.POST.get('userd_id', None)
+                   
+                rol = get_object_or_404(Roles, id=rol_id) 
+                proyecto = get_object_or_404(Proyectos, id=proyecto_id)
+                user_profile = get_object_or_404(Usuarios, id=userd_id)
+                 
+                ru = Roles_Usuarios(roles=rol, usuario=user_profile)
+                ru.save()
+                    
+                up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
+                up.save()
+                 
+                rup = Roles_Usuarios_Proyectos(roles=rol, proyecto=proyecto, usuarios=user_profile)
+                rup.save()
+                 
+                return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'r':rol}, context_instance=RequestContext(request))
+        else:
+            form = AsignarRolForm()
+        return render(request, 'proyecto_usuario/asignar.html', {'form': form, 'roles':roles, 'usuariox':usuariox, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+"Gestión de US"
+def crear_us(request, user_id, proyecto_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    accion = "Crear US"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    if staff:
+        aid = 1
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = CrearUSForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
+                nivel_prioridad = cleaned_data.get('nivel_prioridad')
+                valor_negocios = cleaned_data.get('valor_negocios')
+                valor_tecnico = cleaned_data.get('valor_tecnico')
+                size = cleaned_data.get('size')
+                tiempo_estimado = cleaned_data.get('tiempo_estimado')
+                tiempo_real = cleaned_data.get('tiempo_real')
+                fecha_creacion = cleaned_data.get('fecha_creacion')
+                fecha_inicio = cleaned_data.get('fecha_inicio')
+                
+                us = User_Story()
+                us.nombre = nombre
+                us.descripcion = descripcion
+                us.nivel_prioridad = nivel_prioridad
+                us.valor_negocios = valor_negocios
+                us.valor_tecnico = valor_tecnico
+                us.size = size
+                us.tiempo_estimado = tiempo_estimado
+                us.tiempo_real = tiempo_real
+                us.fecha_creacion = fecha_creacion
+                us.fecha_inicio = fecha_inicio
+                us.save()
+                 
+                return render_to_response('user_history/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = CrearUSForm()
+        return render(request, 'user_history/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+def index_us(request, user_id, proyecto_id):  
+    user = request.user
+    accion = "Listar US"
+    
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+                
+        saludo = saludo_dia()
+        usuario = Usuarios.objects.get(id=user_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+                
+        uh = proyecto.user_stories.all()
+        filax = uh.count()
+    
+        if request.method == 'POST':
+            results = proyecto.usuarios.all().exclude(id=usuario.id)
+            form = BuscarUSForm(request.POST)
+                
+            if form.is_valid():
+                usid = request.POST.get('id', None)
+                if usid:
+                    results = results.filter(id__iexact=usid)
+                            
+                usnombre = request.POST.get('nombre', None)
+                if usnombre:
+                    results = results.filter(nombre__icontains=usnombre)
+                            
+                usdescripcion = request.POST.get('descripcion', None)
+                if usdescripcion:
+                    results = results.filter(descripcion__icontains=usdescripcion)
+
+                if not usid and not usnombre and not usdescripcion:
+                    results = None
+                    
+                if results:
+                    results.order_by('id')
+                return render_to_response('user_history/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+        else:
+            form = BuscarUSForm()
+        return render_to_response('user_history/index.html', {'filax':filax, 'uh':uh, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
     
 def saludo_dia():
     """
@@ -1213,7 +1494,7 @@ def verificar_permiso(usuario, accion):
     staff = None
     us = Usuarios.objects.get(id=usuario.id)
     
-    if accion=="Registro de Usuarios" or accion=="Index de Usuarios" or accion=="Editar Usuarios" or accion=="Borrar Usuarios" or accion=="Ver Usuarios":
+    if accion=="Registro de Usuarios" or accion=="Index de Usuarios" or accion=="Editar Usuarios" or accion=="Borrar Usuarios":
         permiso = Permisos.objects.filter(nombre="Administración de Usuarios")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
@@ -1222,7 +1503,27 @@ def verificar_permiso(usuario, accion):
             staff = True
         else:
             staff = False
+            
+    if accion=="Ver Usuarios":
+        permiso = Permisos.objects.filter(nombre="Consultar lista de Usuarios")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    if accion=="Cambiar Estado":
+        permiso = Permisos.objects.filter(nombre="Cambiar Estado del Usuario")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
     elif accion=="Asginar Rol a Usuarios en un Proyecto":
         permiso = Permisos.objects.filter(nombre="Asignación de Usuarios")
         rol = Roles.objects.filter(permisos=permiso)
@@ -1283,5 +1584,25 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False
             
+    elif accion=="Crear US":
+        permiso = Permisos.objects.filter(nombre="Desarrollo de US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Listar US":
+        permiso = Permisos.objects.filter(nombre="Generar listado de US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+    
     return staff
     
