@@ -71,6 +71,38 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Tipo',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='US_Proyectos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('proyecto', models.ForeignKey(to='agileApp.Proyectos')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='User_Story',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=50, null=True)),
+                ('descripcion', models.CharField(max_length=50, null=True)),
+                ('nivel_prioridad', models.IntegerField(null=True)),
+                ('valor_negocios', models.IntegerField(null=True)),
+                ('valor_tecnico', models.IntegerField(null=True)),
+                ('size', models.IntegerField(null=True)),
+                ('tiempo_estimado', models.IntegerField(default=0)),
+                ('tiempo_real', models.IntegerField(default=0)),
+                ('estado', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateField(null=True)),
+                ('fecha_inicio', models.DateField(null=True)),
+                ('tipo', models.OneToOneField(null=True, to='agileApp.Tipo')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Usuarios',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -91,6 +123,16 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AddField(
+            model_name='user_story',
+            name='usuario_asignado',
+            field=models.OneToOneField(null=True, to='agileApp.Usuarios'),
+        ),
+        migrations.AddField(
+            model_name='us_proyectos',
+            name='user_story',
+            field=models.ForeignKey(to='agileApp.User_Story'),
+        ),
+        migrations.AddField(
             model_name='roles_usuarios_proyectos',
             name='usuarios',
             field=models.ForeignKey(to='agileApp.Usuarios'),
@@ -99,6 +141,11 @@ class Migration(migrations.Migration):
             model_name='roles_usuarios',
             name='usuario',
             field=models.ForeignKey(to='agileApp.Usuarios'),
+        ),
+        migrations.AddField(
+            model_name='proyectos',
+            name='user_stories',
+            field=models.ManyToManyField(to='agileApp.User_Story', through='agileApp.US_Proyectos'),
         ),
         migrations.AddField(
             model_name='proyectos',

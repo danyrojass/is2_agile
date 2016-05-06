@@ -7,11 +7,17 @@
 			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
 		</div>
 		
-	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' usuario.id proyecto.id %}">Proyecto</a>
+	{% if staff %}	<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+               		</ul>
+	{% endif %}	</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
+		
 {% endblock content %}

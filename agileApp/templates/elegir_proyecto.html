@@ -9,22 +9,20 @@
 	<td>&nbsp;</td>
 	<td>&nbsp;</td>
 		
-		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<link href="/static/estilos1.css" rel="stylesheet" type="text/css" />
 		<div id="pagina">
 			<div id="zonaContenidoPP">
 				<div align="center">
 					<div id="cabeceraResultado" class="header">
 						SU LISTA DE PROYECTOS </div>
 						<div id="frmResultado">
-							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+							<table class="fuente8" width="60%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
 								<tr class="cabeceraTabla">
 									<td width="8%">ÍTEM</td>
 									<td width="7%">ID</td>
-									<td width="25%">NOMBRE LARGO</td>
+									<td width="20%">NOMBRE LARGO</td>
 									<td width="10%">NOMBRE CORTO </td>
-									<td width="35%">DESCRIPCIÓN</td>
 									<td width="15%">INGRESAR</td>
-									<td width="10%">&nbsp;</td>
 								</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -35,18 +33,16 @@
 											<tr class="itemImparTabla">
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
-												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="20%"><div align="center">{{proyecto.nombre_largo}}</div></td>
 												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
-												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
 												<td width="15%"><div align="center"><a href="{% url 'agileApp:index_ususario_proyecto' usuario.id proyecto.id %}"><img src="/static/img/cliente.png" width="16" height="16" border="0" title="Ingresar"></a></div></td>
 											</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{proyecto.id}}</div></td>
-												<td width="25%"><div align="center">{{proyecto.nombre_largo}}</div></td>
+												<td width="20%"><div align="center">{{proyecto.nombre_largo}}</div></td>
 												<td width="10%"><div align="center">{{proyecto.nombre_corto}}</div></td>
-												<td width="35%"><div align="center">{{proyecto.descripcion}}</div></td>
 												<td width="15%"><div align="center"><a href="{% url 'agileApp:index_ususario_proyecto' usuario.id proyecto.id %}"><img src="/static/img/cliente.png" width="16" height="16" border="0" title="Ingresar"></a></div></td>
 											</tr>
 										{% endif %}

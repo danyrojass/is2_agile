@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}Modificar contraseña{% endblock title %}
 {% block content %}
-	<link href="/static/style.css" rel="stylesheet" type="text/css" />
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
 			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
 			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a> | 
 			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
-		
-	<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+	{% if staff %}	
+		<link href="/static/menu.css" rel="stylesheet" type="text/css" />
+	{% else %}	
+		<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+	{% endif %}
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
@@ -18,6 +21,7 @@
 			  		<li><a href='/agile/roles/index/'>Roles</a></li>
 			  		<li><a href='/agile/proyectos/index/'>Proyectos</a></li>
 		  		{% endif %}
+		  		<li><a href='#'>Proeycto</a></li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -55,7 +59,7 @@
 						
 								<div id="botonBusqueda">
 									<button class="button" type="submit">ACTUALIZAR</button>
-        							<a href="/" class="button" type="submit">CANCELAR</a>
+        							<a class="button" onClick="javascript:history.go(-1);">CACNELAR</a>
 								</div>
 							</form>
 						</div>

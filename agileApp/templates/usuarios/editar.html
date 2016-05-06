@@ -33,7 +33,7 @@
 											<td>{{um.id}}</td>
 							    			<td width="42%" rowspan="13" align="left" valign="top"><ul></ul></td>
 										</tr>
-										
+										{% if not staff2 %}
 										<tr>
 											<td width="15%"><b>Contraseña</b></td>
 							    			<td width="43%"><input NAME="password" type="password" class="cajaGrande" id="password" size="45" minlength="10" value=""></td>
@@ -73,7 +73,7 @@
 										  	<td><b>Observación</b></td>
 										 	<td><input NAME="observacion" type="text" class="cajaGrande" id="observacion" size="45" maxlength="50" value=""></td>
 								      	</tr>
-								      	
+								      	{% endif %}
 								      	<tr>
 								      		<td><b>Estado</b></td>
 								      		<td>
@@ -90,7 +90,11 @@
 						
 								<div id="botonBusqueda">
 									<button class="button" type="submit">ACTUALIZAR</button>
-        							<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit">CANCELAR</a>
+									{% if not staff2 %}
+        								<a href="{% url 'agileApp:index_usuarios'%}" class="button" type="submit">CANCELAR</a>
+									{% else %}
+										<a class="button" onClick="javascript:history.go(-1);">CANCELAR</a>
+									{% endif %}
 								</div>
 							</form>
 						</div>

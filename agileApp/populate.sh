@@ -12,6 +12,7 @@ echo "2. Local."
 read opcion
 
 echo "Por favor, ingrese el nombre del Tag."
+echo "V2: Tag Nro. 2."
 
 read nombreTag
 	sudo service postgresql restart 
@@ -48,7 +49,8 @@ read nombreTag
 					
 		python manage.py syncdb
 		python manage.py migrate
-		python manage.py populate_db
+		python /home/dany/agile/manage.py populate_db
+		
 		python manage.py runserver
 		deactivate
 
@@ -65,10 +67,11 @@ read nombreTag
 		fi
 		python manage.py syncdb
 		python manage.py migrate
-		pyton manage.py populate_db
+		python /home/dany/agile/manage.py populate_db
+		
 		python manage.py collectstatic
 		sudo chown :www-data /home/dany/AmbienteProduccion/agile
 		sudo a2ensite agile.conf
 		sudo service apache2 restart
-
+		cd /home/dany/agile/agileApp
 	fi

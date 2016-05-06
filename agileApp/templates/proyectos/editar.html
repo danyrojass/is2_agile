@@ -37,16 +37,41 @@
 									<td><input NAME="observaciones" type="text" class="cajaGrande" id="observaciones" size="50" maxlength="50" value="{{proyecto.observaciones}}"></td>
 								</tr>
 								
-								<tr>
-									<td><b>Desasignación de Usuarios</b></td>
-									{% if lista %}
-										{% for u in lista %}
-											<td width="35%"><input type="checkbox" name="lista_usuarios" id="option{{ u.id }}" value="{{ u.id }}">{{ u.user }}<br></td>
-										{% endfor %}
-									{% endif %}
-								</tr>
 							</table>	
 						</div>
+						
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						
+						<div id="tituloForm" class="header">ASIGNAR NUEVO SCRUM MASTER</div>
+						<div id="frmBusqueda">
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								<tr>
+									<td width="14%"><b>Rol</b></td>
+									<td width="36%">{{rol.nombre}}</td>
+								</tr>
+								
+								<tr>
+									<td width="14%"><b>Líder Anterior del Proyecto</b></td>
+									<td width="36%">{{sm}}</td>
+								</tr>
+								
+								<tr>
+									<td width="14%"><b>Líder Actual del Proyecto</b></td>
+									<td width="36%">
+										<select id="user_id" name="user_id" class="comboGrande">
+											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
+												{% if lista %}
+													{% for user in lista %}
+														<option value="{{user.id}}">{{user.user.username}}</option>
+													{% endfor %}
+												{% endif %}
+										</select>
+									</td>
+								</tr>			
+											
+							</table>	
+					</div>
 									
 					<div id="botonBusqueda">
 						<button class="button" type="submit">MODIFICAR PROYECTO</button>

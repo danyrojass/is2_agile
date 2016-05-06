@@ -1,5 +1,10 @@
 eclipse.preferences.version=1
 encoding//agile/settings/__init__.py=utf-8
+encoding//agile/settings/development.py=utf-8
 encoding//agile/settings/production.py=utf-8
 encoding//agile/urls.py=utf-8
+encoding//agileApp/forms.py=utf-8
+encoding//agileApp/management/commands/populate_db.py=utf-8
+encoding//agileApp/tests.py=utf-8
+encoding//agileApp/urls.py=utf-8
 encoding//agileApp/views.py=utf-8
