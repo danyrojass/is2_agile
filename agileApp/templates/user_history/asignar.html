@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Modificar US{% endblock title %}
+{% block title %}Asignar US{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -56,53 +56,28 @@
 									<td width="15%"><b>Nombre</b></td>
 								    <td width="43%">{{us.nombre}}</td>
 								</tr>
-								{% if staff7 %}
+								
 								<tr>
-									<td width="15%"><b>Descripción</b></td>
-								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>
+									<td width="15%"><b>Usuario</b></td>
+									<td width="43%">
+										<select id="id_user" name="id_user" class="comboGrande">
+											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
+												{% if usuarios %}
+													{% for u in usuarios %}
+														{% if not u in list_usuarios_asginados %}
+															<option value="{{u.id}}" id="id_user">{{u.user}}</option>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+										</select>
+									</td>								
 								</tr>	
-								{% endif %}
-								{% if staff4 %}
-								<tr>
-									<td width="15%"><b>Nivel de Prioridad</b></td>
-								    <td width="43%"><input NAME="nivel_prioridad" type="text" class="cajaGrande" id="nivel_prioridad" size="50" maxlength="50" value="{{us.nivel_prioridad}}"></td>
-								</tr>	
-								{% endif %}
-								{% if staff1 %}
-								<tr>
-									<td width="15%"><b>Valor de Negocios</b></td>
-								    <td width="43%"><input NAME="valor_negocios" type="text" class="cajaGrande" id="valor_negocios" size="50" maxlength="50" value="{{us.valor_negocios}}"></td>
-								</tr>
-								{% endif %}
-								{% if staff2 %}
-								<tr>
-									<td width="15%"><b>Valor Técnico</b></td>
-								    <td width="43%"><input NAME="valor_tecnico" type="text" class="cajaGrande" id="valor_tecnico" size="50" maxlength="50" value="{{us.valor_tecnico}}"></td>
-								</tr>
-								{% endif %}
-								{% if staff3 %}
-								<tr>
-									<td width="15%"><b>Size</b></td>
-								    <td width="43%"><input NAME="size" type="text" class="cajaGrande" id="size" size="50" maxlength="50" value="{{us.size}}"></td>
-								</tr>
-								{% endif %}
-								{% if staff9 %}
-								<tr>
-									<td width="15%"><b>Tiempo Estimado (en hs.)</b></td>
-								    <td width="43%"><input NAME="tiempo_estimado" type="text" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value="{{us.tiempo_estimado}}"></td>
-								</tr>
-								{% endif %}
-								{% if staff8 %}
-								<tr>
-									<td width="15%"><b>Tipo</b></td>
-								    <td width="43%"><input NAME="tipo" type="text" class="cajaGrande" id="tipo" size="50" maxlength="50" value="{{us.tipo}}"></td>
-								</tr>	
-								{% endif %}								
+							
 							</table>	
 						</div>
 											
 					<div id="botonBusqueda">
-						<button class="button" type="submit">MODIFICAR USER STORY</button>
+						<button class="button" type="submit">ASIGNAR USER STORY</button>
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>

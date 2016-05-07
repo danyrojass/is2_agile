@@ -280,3 +280,6 @@ class EditarUSForm(forms.Form):
     size = forms.IntegerField(required=False)
     tiempo_estimado = forms.IntegerField(required=False)
     tipo = forms.CharField(max_length = 50, required=False)
+
+class AsignarUSForm(forms.Form):
+    id_user = forms.IntegerField()
