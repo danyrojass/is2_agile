@@ -56,17 +56,10 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Roles_Usuarios',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('roles', models.ForeignKey(to='agileApp.Roles')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Roles_Usuarios_Proyectos',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('proyecto', models.ForeignKey(to='agileApp.Proyectos')),
+                ('proyecto', models.ForeignKey(to='agileApp.Proyectos', null=True)),
                 ('roles', models.ForeignKey(to='agileApp.Roles')),
             ],
         ),
@@ -110,7 +103,7 @@ class Migration(migrations.Migration):
                 ('direccion', models.CharField(default=b'', max_length=45)),
                 ('tipo', models.CharField(default=b'', max_length=10)),
                 ('observacion', models.CharField(default=b'', max_length=50)),
-                ('roles', models.ManyToManyField(to='agileApp.Roles', through='agileApp.Roles_Usuarios')),
+                ('roles', models.ManyToManyField(to='agileApp.Roles', through='agileApp.Roles_Usuarios_Proyectos')),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -135,11 +128,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='roles_usuarios_proyectos',
             name='usuarios',
-            field=models.ForeignKey(to='agileApp.Usuarios'),
-        ),
-        migrations.AddField(
-            model_name='roles_usuarios',
-            name='usuario',
             field=models.ForeignKey(to='agileApp.Usuarios'),
         ),
         migrations.AddField(

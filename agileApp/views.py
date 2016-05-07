@@ -9,9 +9,9 @@ from django.template import RequestContext
 from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
-EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
+EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos
+Usuarios_Proyectos, User_Story, US_Proyectos, Tipo
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -1342,7 +1342,7 @@ def crear_us(request, user_id, proyecto_id):
         
         saludo = saludo_dia()
         if request.method == 'POST':
-            form = CrearUSForm(request.POST)
+            form = CrearUSForm(request.POST, proyecto_id=proyecto_id)
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
@@ -1352,6 +1352,10 @@ def crear_us(request, user_id, proyecto_id):
                 valor_tecnico = cleaned_data.get('valor_tecnico')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
+                tipo = cleaned_data.get('tipo')
+                
+                type = Tipo(nombre=tipo)
+                type.save()
                 
                 us = User_Story()
                 us.nombre = nombre
@@ -1362,6 +1366,7 @@ def crear_us(request, user_id, proyecto_id):
                 us.size = size
                 us.tiempo_estimado = tiempo_estimado
                 us.fecha_creacion = datetime.now()
+                us.tipo = type
                 us.save()
                 
                 us_p = US_Proyectos(proyecto=proyecto, user_story=us)
@@ -1369,11 +1374,83 @@ def crear_us(request, user_id, proyecto_id):
                 
                 return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
-            form = CrearUSForm()
+            form = CrearUSForm(proyecto_id=proyecto_id)
         return render(request, 'user_history/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
+    
+def modificar_us(request, us_id, user_id, proyecto_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
 
+    accion1 = "Modificar US - ValNeg"
+    accion2 = "Modificar US - ValTec"
+    accion3 = "Modificar US - Size"         
+    accion4 = "Modificar US - Prioridad"
+    accion5 = "Modificar US - Notas"
+    accion6 = "Modificar US - ArchAdj"
+    accion7 = "Modificar US - Descripción"
+    accion8 = "Modificar US - Tipo"
+    accion9 = "Modificar US - TEst"
+
+    staff1 = verificar_permiso(usuario, accion1)
+    staff2 = verificar_permiso(usuario, accion2)
+    staff3 = verificar_permiso(usuario, accion3)
+    staff4 = verificar_permiso(usuario, accion4)
+    staff5 = verificar_permiso(usuario, accion5)
+    staff6 = verificar_permiso(usuario, accion6)
+    staff7 = verificar_permiso(usuario, accion7)
+    staff8 = verificar_permiso(usuario, accion8)
+    staff9 = verificar_permiso(usuario, accion9)
+    
+    us = proyecto.user_stories.get(id=us_id)
+    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff8:
+        aid = 2
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = EditarUSForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
+                nivel_prioridad = cleaned_data.get('nivel_prioridad')
+                valor_negocios = cleaned_data.get('valor_negocios')
+                valor_tecnico = cleaned_data.get('valor_tecnico')
+                size = cleaned_data.get('size')
+                tiempo_estimado = cleaned_data.get('tiempo_estimado')
+                tipo = cleaned_data.get('tipo')
+                
+                us.nombre = nombre
+                us.descripcion = descripcion
+                us.nivel_prioridad = nivel_prioridad
+                us.valor_negocios = valor_negocios
+                us.valor_tecnico = valor_tecnico
+                us.size = size
+                us.tiempo_estimado = tiempo_estimado
+                us.fecha_creacion = datetime.now()
+                if us.tipo == None:
+                    type = Tipo(nombre=tipo)
+                    type.save()
+                    us.tipo = type
+                else:
+                    us.tipo.nombre = tipo
+                us.save()
+                
+                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = EditarUSForm()
+        return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1,\
+                                                               'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7,\
+                                                               'staff8':staff8, 'staff9':staff9})
+    else:
+        return HttpResponseRedirect('/index')
+    
 def index_us(request, user_id, proyecto_id):  
     user = request.user
     accion = "Listar US"
@@ -1582,6 +1659,106 @@ def verificar_permiso(usuario, accion):
     
     elif accion=="Listar US":
         permiso = Permisos.objects.filter(nombre="Generar listado de US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Modificar US - ValNeg":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Valores de Negocios")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Modificar US - ValTec":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Valor Técnico")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+    
+    elif accion=="Modificar US - Size":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Size")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+            
+    elif accion=="Modificar US - Prioridad":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Prioridad")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+    
+    elif accion=="Modificar US - Notas":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Notas")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+    
+    elif accion=="Modificar US - ArchAdj":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Archivos adjuntos")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+            
+    elif accion=="Modificar US - Descripción":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Descripción")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+            
+    elif accion=="Modificar US - Tipo":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Tipo")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Modificar US - TEst":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Tiempo Estimado")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+    
+    elif accion=="Modificar US - TReal":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Tiempo Real")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         

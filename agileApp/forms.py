@@ -252,16 +252,31 @@ class CrearUSForm(forms.Form):
     valor_tecnico = forms.IntegerField(required=False)
     size = forms.IntegerField(required=False)
     tiempo_estimado = forms.IntegerField(required=False)
+    tipo = forms.CharField(max_length = 50, required=False)
     
-    def clean_nombre(self):
-        """Comprueba que no exista un nombre igual en la db"""
-        nombre = self.cleaned_data['nombre']
+    def __init__(self, *args, **kwargs):
+        self.proyecto_id = kwargs.pop('proyecto_id')
+        return super(CrearUSForm, self).__init__(*args, **kwargs)
         
-        if User_Story.objects.filter(nombre=nombre):
-            raise forms.ValidationError('Nombre de user_story ya registrado.')
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en el proyecto."""
+        nombre = self.cleaned_data['nombre']
+        proyecto = Proyectos.objects.get(id=self.proyecto_id)
+        
+        if proyecto.user_stories.filter(nombre=nombre):
+            raise forms.ValidationError('Nombre de user story ya registrado.')
         return nombre
 
 class BuscarUSForm(forms.Form):
     id = forms.IntegerField(required=False)
     nombre = forms.CharField(max_length = 50, required=False)
     descripcion = forms.CharField(max_length = 50, required=False)
+
+class EditarUSForm(forms.Form):
+    descripcion = forms.CharField(max_length = 50, required=False)
+    nivel_prioridad = forms.IntegerField(required=False)
+    valor_negocios = forms.IntegerField(required=False)
+    valor_tecnico = forms.IntegerField(required=False)
+    size = forms.IntegerField(required=False)
+    tiempo_estimado = forms.IntegerField(required=False)
+    tipo = forms.CharField(max_length = 50, required=False)

@@ -18,6 +18,7 @@ class Command(BaseCommand):
                    'Consultar lista de Usuarios', 'Cambiar Estado del Usuario', 'Desarrollo de US',
                    'Consultar lista de Proyectos/Servicios', 'Modificación de US - Notas', 'Modificación de US - Archivos adjuntos',
                    'Modificación de US - Descripción', 'Consultar estado de Actividades', 'Consultar Recursos Disponibles', 
+                   'Modificación de US - Tipo', 'Modificación de US - Tiempo Estimado', 'Modificación de US - Tiempo Real',  
                    'Consultar Historial del Proyecto/Servicio', 'Generar Burn Down Chart', 'Generar listado de US']
    
         niveles = [0, 0, 0,
@@ -26,6 +27,7 @@ class Command(BaseCommand):
                    1, 1, 1,
                    1, 1, 1,
                    1, 1, 2,
+                   2, 2, 2,
                    2, 2, 2,
                    2, 2, 2,
                    3, 3, 3]

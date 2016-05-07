@@ -53,7 +53,9 @@ class Permisos_Roles(models.Model):
     roles = models.ForeignKey(Roles)
 
 class Tipo(models.Model):
-    nombre = models.CharField(max_length = 50)
+    nombre = models.CharField(max_length = 50, null=True)
+    def __str__(self):
+        return self.nombre
 
 class User_Story(models.Model):
     nombre = models.CharField(max_length = 50, null = True)
