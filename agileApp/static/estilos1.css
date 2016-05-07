@@ -16,6 +16,7 @@
 {
     max-height: 125px;
     overflow-y: scroll;
+    width: 60%;
 }
 
 .button{
@@ -689,7 +690,7 @@ background: #f47c20;
 	position:relative;
 	top:11%;
 	left:1%;
-	width:79.97%;	
+	width: 48%;
 }
 
 #cabeceraResultadoNNN {

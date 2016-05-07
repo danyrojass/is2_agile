@@ -262,5 +262,6 @@ class CrearUSForm(forms.Form):
         return nombre
 
 class BuscarUSForm(forms.Form):
-    nombre = forms.CharField(max_length = 50)
+    id = forms.IntegerField(required=False)
+    nombre = forms.CharField(max_length = 50, required=False)
     descripcion = forms.CharField(max_length = 50, required=False)

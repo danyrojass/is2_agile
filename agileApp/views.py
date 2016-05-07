@@ -1367,7 +1367,7 @@ def crear_us(request, user_id, proyecto_id):
                 us_p = US_Proyectos(proyecto=proyecto, user_story=us)
                 us_p.save()
                 
-                return render_to_response('user_history/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearUSForm()
         return render(request, 'user_history/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
@@ -1395,7 +1395,7 @@ def index_us(request, user_id, proyecto_id):
         filax = uh.count()
     
         if request.method == 'POST':
-            results = proyecto.usuarios.all().exclude(id=usuario.id)
+            results = proyecto.user_stories.all().exclude(id=usuario.id)
             form = BuscarUSForm(request.POST)
                 
             if form.is_valid():
