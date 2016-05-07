@@ -52,6 +52,11 @@ class Permisos_Roles(models.Model):
     permisos = models.ForeignKey(Permisos)
     roles = models.ForeignKey(Roles)
 
+class Actividades(models.Model):
+    nombre = models.CharField(max_length=20, default="")
+    descripcion = models.CharField(max_length=30, default="")
+    estado = models.IntegerField(default=0) #0 = To Do, 1 = Doing, 2 = Done
+    
 class Tipo(models.Model):
     nombre = models.CharField(max_length = 50)
 
@@ -70,6 +75,21 @@ class User_Story(models.Model):
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
     tipo = models.OneToOneField(Tipo, null=True)
 
+class Flujos(models.Model):
+    nombre = models.CharField(max_length = 30, null = True)
+    descripcion = models.CharField(max_length=50, default="")
+    actividades = models.ManyToManyField(Actividades, through='Actividades_Flujos')
+    tipo = models.OneToOneField(Tipo, null=True)
+    us = models.ManyToManyField(User_Story, through='us_Flujos')
+
+class Actividades_Flujos(models.Model):
+    flujo = models.ForeignKey(Flujos)
+    actividad = models.ForeignKey(Actividades)    
+
+class us_Flujos(models.Model):
+    flujo = models.ForeignKey(Flujos)
+    us = models.ForeignKey(User_Story)
+
 """
 Clase Proyectos.
 """
@@ -85,6 +105,7 @@ class Proyectos(models.Model):
     estado = models.IntegerField(default=1) #1: Pendiente. 2: Anulado. 3: Activo. 4: Finalizado.
     usuarios = models.ManyToManyField(Usuarios, through='Usuarios_Proyectos')
     user_stories = models.ManyToManyField(User_Story, through='US_Proyectos')
+    flujos = models.ManyToManyField(Flujos, through='Flujos_Proyectos')
     
     def __str__(self):
         return self.nombre_largo
@@ -105,3 +126,7 @@ class Roles_Usuarios_Proyectos(models.Model):
 class US_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     user_story = models.ForeignKey(User_Story)
+    
+class Flujos_Proyectos(models.Model):
+    proyecto = models.ForeignKey(Proyectos)
+    flujo = models.ForeignKey(Flujos)

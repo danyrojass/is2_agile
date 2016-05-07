@@ -28,5 +28,8 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/asignar/$', views.asignar_roles_usuarios_proyecto, name='asignar_roles_usuarios_proyecto'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_us/$', views.crear_us, name='crear_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_us/$', views.index_us, name='index_us'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_flujo/$', views.index_flujo, name='index_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_flujo/$', views.crear_flujo, name='crear_flujo'), 
 
+    
 ]

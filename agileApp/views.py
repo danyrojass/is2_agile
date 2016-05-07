@@ -9,9 +9,10 @@ from django.template import RequestContext
 from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
-EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
+EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, BuscarFlujosForm, \
+CrearFlujosForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, Roles_Usuarios, User_Story
+Usuarios_Proyectos, Roles_Usuarios, User_Story, Flujos, Flujos_Proyectos, Actividades
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -1604,5 +1605,105 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False 
     
+    elif accion=="Listar Flujo" or accion=="Crear Flujo":
+        permiso = Permisos.objects.filter(nombre="Administración de Flujos")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
     return staff
+
+"Gestión de Flujos"
+def crear_flujo(request, user_id, proyecto_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    accion = "Crear Flujo"
     
+    staff = verificar_permiso(usuario, accion)
+    
+    if staff:
+        aid = 1
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = CrearFlujosForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
+                
+                flujo = Flujos()
+                flujo.nombre = nombre
+                flujo.descripcion = descripcion
+                flujo.save()
+                
+                fp = Flujos_Proyectos(proyecto=proyecto, flujo=flujo)
+                fp.save()
+                
+                
+                return render_to_response('user_history/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = CrearFlujosForm()
+        return render(request, 'flujos/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+def index_flujo(request, user_id, proyecto_id):  
+    user = request.user
+    accion = "Listar Flujo"
+    
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+                
+        saludo = saludo_dia()
+        usuario = Usuarios.objects.get(id=user_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+        
+        
+        flujo = proyecto.flujos.all()        
+        filax = flujo.count()
+    
+        if request.method == 'POST':
+            results = proyecto.usuarios.all().exclude(id=usuario.id)
+            form = BuscarFlujosForm(request.POST)
+                
+            if form.is_valid():
+                flujoid = request.POST.get('id', None)
+                if flujoid:
+                    results = results.filter(id__iexact=flujoid)
+                
+                flujonombre = request.POST.get('nombre', None)
+                if flujonombre:
+                    results = results.filter(nombre__iexact=flujonombre)
+                            
+                flujodescripcion = request.POST.get('descripcion', None)
+                if flujodescripcion:
+                    results = results.filter(nombre__icontains=flujodescripcion)
+                            
+                
+                if not flujoid and not flujodescripcion and not flujonombre:
+                    results = None
+                    
+                if results:
+                    results.order_by('id')
+                return render_to_response('flujos/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
+        else:
+            form = BuscarFlujosForm()
+        return render_to_response('flujos/index.html', {'filax':filax, 'flujo':flujo, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
+        

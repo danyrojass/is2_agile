@@ -267,3 +267,16 @@ class CrearUSForm(forms.Form):
 class BuscarUSForm(forms.Form):
     nombre = forms.CharField(max_length = 50)
     descripcion = forms.CharField(max_length = 50, required=False)
+
+class CrearFlujosForm(forms.Form):
+    nombre = forms.CharField(max_length = 30)
+    descripcion = forms.CharField(max_length=50)
+
+class BuscarFlujosForm(forms.Form):
+    nombre = forms.CharField(max_length = 30)
+    descripcion = forms.CharField(max_length=50)
+
+class CrearActividadForm(forms.Form):
+    nombre = forms.CharField(max_length=20)
+    descripcion = forms.CharField(max_length=30, required=False)
+    estado = forms.IntegerField(required=False)
