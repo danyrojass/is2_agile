@@ -252,9 +252,6 @@ class CrearUSForm(forms.Form):
     valor_tecnico = forms.IntegerField(required=False)
     size = forms.IntegerField(required=False)
     tiempo_estimado = forms.IntegerField(required=False)
-    tiempo_real = forms.IntegerField(required=False)
-    fecha_creacion = forms.DateField(required=False)
-    fecha_inicio = forms.DateField(required=False)
     
     def clean_nombre(self):
         """Comprueba que no exista un nombre igual en la db"""

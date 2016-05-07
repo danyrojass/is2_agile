@@ -11,7 +11,7 @@ from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolFor
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story
+Usuarios_Proyectos, User_Story, US_Proyectos
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -1352,9 +1352,6 @@ def crear_us(request, user_id, proyecto_id):
                 valor_tecnico = cleaned_data.get('valor_tecnico')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
-                tiempo_real = cleaned_data.get('tiempo_real')
-                fecha_creacion = cleaned_data.get('fecha_creacion')
-                fecha_inicio = cleaned_data.get('fecha_inicio')
                 
                 us = User_Story()
                 us.nombre = nombre
@@ -1364,11 +1361,12 @@ def crear_us(request, user_id, proyecto_id):
                 us.valor_tecnico = valor_tecnico
                 us.size = size
                 us.tiempo_estimado = tiempo_estimado
-                us.tiempo_real = tiempo_real
-                us.fecha_creacion = fecha_creacion
-                us.fecha_inicio = fecha_inicio
+                us.fecha_creacion = datetime.now()
                 us.save()
-                 
+                
+                us_p = US_Proyectos(proyecto=proyecto, user_story=us)
+                us_p.save()
+                
                 return render_to_response('user_history/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearUSForm()
