@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Crear Flujo{% endblock title %}
+{% block title %}Crear Actividades{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -28,7 +28,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR FLUJO</div>
+					<div id="tituloForm" class="header">CREAR ACTIVIDAD</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -43,7 +43,7 @@
 							</table>
 					</div>		
 					<div id="botonBusqueda">
-						<button class="button" type="submit">CREAR FLUJO</button>
+						<button class="button" type="submit">CREAR ACTIVIDAD</button>
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>

@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_us/$', views.index_us, name='index_us'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_flujo/$', views.index_flujo, name='index_flujo'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_flujo/$', views.crear_flujo, name='crear_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/crear_actividad/$', views.crear_actividad, name='crear_actividad'), 
 
     
 ]

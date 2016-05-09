@@ -80,6 +80,7 @@ class Flujos(models.Model):
     descripcion = models.CharField(max_length=50, default="")
     actividades = models.ManyToManyField(Actividades, through='Actividades_Flujos')
     tipo = models.OneToOneField(Tipo, null=True)
+    estado = models.BooleanField(default=True)
     us = models.ManyToManyField(User_Story, through='us_Flujos')
 
 class Actividades_Flujos(models.Model):
