@@ -16,7 +16,7 @@
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
 	{% if staff %}	<ul>
-                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
                		</ul>
 	{% endif %}	</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
@@ -273,11 +273,13 @@
 									<td width="8%">ÍTEM</td>
 									<td width="7%">ID</td>
 									<td width="20%">NOMBRE</td>
-									<td width="35%">DESCRIPCION</td>
+									<td width="30%">DESCRIPCION</td>
 									<td width="8%">PRIORIDAD</td>
 									<td width="8%">V. NEGOCIOS</td>
 									<td width="8%">V. TÉCNICO</td>
 									<td width="6%">SIZE</td>
+									<td width="5%">Update</td>
+									<td width="5%">&nbsp;</td>
 								</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -289,22 +291,24 @@
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{us.id}}</div></td>
 												<td width="20%"><div align="center">{{us.nombre}}</div></td>
-												<td width="35%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="30%"><div align="center">{{us.descripcion}}</div></td>
 												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
 												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
 												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
 												<td width="6%"><div align="center">{{us.size}}</div></td>											
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 											</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{us.id}}</div></td>
 												<td width="20%"><div align="center">{{us.nombre}}</div></td>
-												<td width="35%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="30%"><div align="center">{{us.descripcion}}</div></td>
 												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
 												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
 												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
 												<td width="6%"><div align="center">{{us.size}}</div></td>	
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 											</tr>
 										{% endif %}
 									{% endfor %}

@@ -11,7 +11,11 @@
 		<nav>
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
-		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+	{% if staff %}	<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+               		</ul>
+	{% endif %}	</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>

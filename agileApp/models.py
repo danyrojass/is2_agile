@@ -43,7 +43,8 @@ class Usuarios(models.Model):
     direccion = models.CharField(max_length=45, default="")
     tipo = models.CharField(max_length=10, default="")
     observacion = models.CharField(max_length=50, default="")
-    roles = models.ManyToManyField(Roles, through='Roles_Usuarios')
+    horas_por_dia = models.IntegerField(null=True)
+    roles = models.ManyToManyField(Roles, through='Roles_Usuarios_Proyectos')
     
     def __str__(self):
         return self.user.username
@@ -53,7 +54,9 @@ class Permisos_Roles(models.Model):
     roles = models.ForeignKey(Roles)
 
 class Tipo(models.Model):
-    nombre = models.CharField(max_length = 50)
+    nombre = models.CharField(max_length = 50, null=True)
+    def __str__(self):
+        return self.nombre
 
 class User_Story(models.Model):
     nombre = models.CharField(max_length = 50, null = True)
@@ -69,6 +72,10 @@ class User_Story(models.Model):
     fecha_inicio = models.DateField(null = True)
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
     tipo = models.OneToOneField(Tipo, null=True)
+    id_flujo = models.IntegerField(null=True)
+    id_sprint = models.IntegerField(null=True)
+    f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
+    f_actividad = models.IntegerField(null=True) #Nro. de actividad del flujo.
 
 """
 Clase Proyectos.
@@ -88,17 +95,13 @@ class Proyectos(models.Model):
     
     def __str__(self):
         return self.nombre_largo
-
-class Roles_Usuarios(models.Model):
-    roles = models.ForeignKey(Roles)
-    usuario = models.ForeignKey(Usuarios)
     
 class Usuarios_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     usuarios = models.ForeignKey(Usuarios)
 
 class Roles_Usuarios_Proyectos(models.Model):
-    proyecto = models.ForeignKey(Proyectos)
+    proyecto = models.ForeignKey(Proyectos, null=True)
     usuarios = models.ForeignKey(Usuarios)
     roles = models.ForeignKey(Roles)
 

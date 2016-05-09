@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/asignar/$', views.asignar_roles_usuarios_proyecto, name='asignar_roles_usuarios_proyecto'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_us/$', views.crear_us, name='crear_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_us/$', views.index_us, name='index_us'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/modificar$', views.modificar_us, name='modificar_us'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/asignar', views.asignar_us, name='asignar_us'),
 
 ]

@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from agileApp.models import Usuarios, Permisos, Roles, Permisos_Roles, Proyectos, Roles_Usuarios_Proyectos,\
-Roles_Usuarios, Usuarios_Proyectos, User_Story, US_Proyectos
+Usuarios_Proyectos, User_Story, US_Proyectos
 
 
 class Command(BaseCommand):
@@ -15,9 +15,11 @@ class Command(BaseCommand):
                    'Creación de US', 'Asignación de Roles', 'Modificación de US - Valores de Negocios', 
                    'Modificación de US - Valor Técnico','Modificación de US - Size', 'Modificación de US - Prioridad',
                    'Eliminación de US', 'Administración de Sprints', 'Administración de Flujos',
-                   'Consultar lista de Usuarios', 'Cambiar Estado del Usuario', 'Desarrollo de US',
+                   'Consultar lista de Usuarios', 'Cambiar Estado del Usuario', 'Asignación de US',
+                   'Desarrollo de US',
                    'Consultar lista de Proyectos/Servicios', 'Modificación de US - Notas', 'Modificación de US - Archivos adjuntos',
                    'Modificación de US - Descripción', 'Consultar estado de Actividades', 'Consultar Recursos Disponibles', 
+                   'Modificación de US - Tipo', 'Modificación de US - Tiempo Estimado', 'Modificación de US - Tiempo Real',  
                    'Consultar Historial del Proyecto/Servicio', 'Generar Burn Down Chart', 'Generar listado de US']
    
         niveles = [0, 0, 0,
@@ -25,7 +27,9 @@ class Command(BaseCommand):
                    1, 1, 1,
                    1, 1, 1,
                    1, 1, 1,
-                   1, 1, 2,
+                   1, 1, 1,
+                   2,
+                   2, 2, 2,
                    2, 2, 2,
                    2, 2, 2,
                    3, 3, 3]
@@ -70,11 +74,8 @@ def crear_roles(nombre, tipo, observacion):
         usuario.user = user
         usuario.save()
         permisos = Permisos.objects.all()
-    
-        ru = Roles_Usuarios()
-        ru.usuario = usuario
-        ru.roles = rol
-        ru.save()
+        rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol)
+        rup.save()
         
     elif nombre=="Scrum Master":
         permisos = Permisos.objects.all().exclude(nivel=0)
@@ -124,8 +125,6 @@ def asignar_usuarios():
     
     for idx, usuario in enumerate(usuarios):
         if idx == 0:
-            ru = Roles_Usuarios(roles=rol1, usuario=usuario)
-            ru.save()
 
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
             up.save()
@@ -134,9 +133,7 @@ def asignar_usuarios():
             rup.save()
 
         elif idx == 1:
-            ru = Roles_Usuarios(roles=rol2, usuario=usuario)
-            ru.save()
-            
+
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
             up.save()
             
@@ -144,8 +141,7 @@ def asignar_usuarios():
             rup.save()
             
         elif idx == 2:
-            ru = Roles_Usuarios(roles=rol1, usuario=usuario)
-            ru.save()
+
             
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
             up.save()
@@ -154,9 +150,7 @@ def asignar_usuarios():
             rup.save()
             
         elif idx == 3:
-            ru = Roles_Usuarios(roles=rol2, usuario=usuario)
-            ru.save()
-            
+
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
             up.save()
             

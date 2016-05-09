@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Asignar Roles{% endblock title %}
+{% block title %}Asignar US{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -23,57 +23,67 @@
 		</nav>
 		
 		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<link href="/static/calendario/calendar-blue.css" rel="stylesheet" type="text/css">
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/calendar.js"></script>
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/lang/calendar-sp.js"></script>
+		<script type="text/JavaScript" language="javascript" src="/static/calendario/calendar-setup.js"></script>
+		
+		<script language="javascript">
+		
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">ASIGNAR USUARIO-ROL</div>
+					<div id="tituloForm" class="header">CREAR USER STORY</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								<tr>
-									<td width="14%"><b>ID de Proyecto</b></td>
-									<td width="36%">{{proyecto.id}}</td>
+									<td width="15%"><b>ID</b></td>
+								    <td width="43%">{{us.id}}</td>
 								</tr>
 								
 								<tr>
-									<td width="14%"><b>Usuario</b></td>
-									<td width="36%">
-										<select id="userd_id" name="userd_id" class="comboGrande">
+									<td width="15%"><b>Nombre</b></td>
+								    <td width="43%">{{us.nombre}}</td>
+								</tr>
+								
+								<tr>
+									<td width="15%"><b>Usuario</b></td>
+									<td width="43%">
+										<select id="id_user" name="id_user" class="comboGrande">
 											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
 												{% if usuarios %}
 													{% for u in usuarios %}
-														{% if not u in usuariox %}
-															<option value="{{u.id}}">{{u.username}}</option>
+														{% if not u in list_usuarios_asginados %}
+															<option value="{{u.id}}" id="id_user">{{u.user}}</option>
 														{% endif %}
 													{% endfor %}
 												{% endif %}
 										</select>
-									</td>
-								</tr>
-										
-								<tr>
-									<td width="14%"><b>Rol</b></td>
-									<td width="36%">
-										<select id="rol_id" name="rol_id" class="comboGrande">
-											<option selected="selected" disabled="disabled">--- Selecciona un Rol ---</option> 
-												{% if roles %}
-													{% for r in roles %}
-														<option value="{{r.id}}" id="rol_id">{{r.nombre}}</option>
-													{% endfor %}
-												{% endif %}
-										</select>
-									</td>
-								</tr>
-											
+									</td>								
+								</tr>	
+							
 							</table>	
-					</div>
+						</div>
+											
 					<div id="botonBusqueda">
-						<button class="button" type="submit">ASIGNAR ROL</button>
-				  		<a href="{% url 'agileApp:index_proyecto_usuario' usuario.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
+						<button class="button" type="submit">ASIGNAR USER STORY</button>
+				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>
 				</div>
 			</div>
 		</div>
 			
+
 {% endblock content %}
