@@ -43,6 +43,7 @@ class Usuarios(models.Model):
     direccion = models.CharField(max_length=45, default="")
     tipo = models.CharField(max_length=10, default="")
     observacion = models.CharField(max_length=50, default="")
+    horas_por_dia = models.IntegerField(null=True)
     roles = models.ManyToManyField(Roles, through='Roles_Usuarios_Proyectos')
     
     def __str__(self):
@@ -71,6 +72,10 @@ class User_Story(models.Model):
     fecha_inicio = models.DateField(null = True)
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
     tipo = models.OneToOneField(Tipo, null=True)
+    id_flujo = models.IntegerField(null=True)
+    id_sprint = models.IntegerField(null=True)
+    f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
+    f_actividad = models.IntegerField(null=True) #Nro. de actividad del flujo.
 
 """
 Clase Proyectos.

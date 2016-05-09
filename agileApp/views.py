@@ -1392,6 +1392,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     accion7 = "Modificar US - Descripción"
     accion8 = "Modificar US - Tipo"
     accion9 = "Modificar US - TEst"
+    accion10 = "Modificar US - Desarrollador"
 
     staff1 = verificar_permiso(usuario, accion1)
     staff2 = verificar_permiso(usuario, accion2)
@@ -1402,9 +1403,10 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     staff7 = verificar_permiso(usuario, accion7)
     staff8 = verificar_permiso(usuario, accion8)
     staff9 = verificar_permiso(usuario, accion9)
+    staff10 = verificar_permiso(usuario, accion10)
     
     us = proyecto.user_stories.get(id=us_id)
-    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff8:
+    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff8 or staff9 or staff10:
         aid = 2
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1424,20 +1426,42 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
                 tipo = cleaned_data.get('tipo')
+                id_user = cleaned_data.get('id_user')
+
+                if staff7:
+                    us.descripcion = descripcion
+                if staff4:
+                    us.nivel_prioridad = nivel_prioridad
+                if staff1:
+                    us.valor_negocios = valor_negocios
+                if staff2:
+                    us.valor_tecnico = valor_tecnico
+                if staff3:
+                    us.size = size
+                if staff9:
+                    us.tiempo_estimado = tiempo_estimado
+                if staff8:
+                    if us.tipo == None:
+                        type = Tipo(nombre=tipo)
+                        type.save()
+                        us.tipo = type
+                    else:
+                        us.tipo.nombre = tipo
                 
-                us.descripcion = descripcion
-                us.nivel_prioridad = nivel_prioridad
-                us.valor_negocios = valor_negocios
-                us.valor_tecnico = valor_tecnico
-                us.size = size
-                us.tiempo_estimado = tiempo_estimado
-                us.fecha_creacion = datetime.now()
-                if us.tipo == None:
-                    type = Tipo(nombre=tipo)
-                    type.save()
-                    us.tipo = type
-                else:
-                    us.tipo.nombre = tipo
+                if staff10:
+                    userstories = proyecto.user_stories.all()
+                    list_usuarios_asginados = []
+    
+                    for uh in userstories:
+                        list_usuarios_asginados.append(uh.usuario_asignado)
+
+                    usuarios = proyecto.usuarios.all()
+                    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US")
+                    
+                    if id_user:
+                        usuario_asignado = Usuarios.objects.get(id=id_user)
+                        us.usuario_asignado = usuario_asignado
+                        
                 us.save()
                 
                 return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
@@ -1445,7 +1469,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
             form = EditarUSForm()
         return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1,\
                                                                'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7,\
-                                                               'staff8':staff8, 'staff9':staff9})
+                                                               'staff8':staff8, 'staff9':staff9, 'staff10':staff10, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1465,6 +1489,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         list_usuarios_asginados.append(uh.usuario_asignado)
 
     usuarios = proyecto.usuarios.all()
+    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US")
 
     if staff:
         aid = 3

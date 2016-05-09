@@ -59,7 +59,7 @@
 								{% if staff7 %}
 								<tr>
 									<td width="15%"><b>Descripción</b></td>
-								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>
+								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{us.descripcion}}"></td>
 								</tr>	
 								{% endif %}
 								{% if staff4 %}
@@ -100,7 +100,34 @@
 								{% endif %}								
 							</table>	
 						</div>
-											
+				{% if staff10 %}		
+				<div id="tituloForm" class="header">MODIFICAR DESARROLLADO DE US</div>
+					<div id="frmBusqueda">
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+							
+								<tr>
+									<td width="15%"><b>Desarrollador Actual</b></td>
+								    <td width="43%">{{us.usario_asignado}}</td>
+								</tr>
+								<tr>
+									<td width="15%"><b>Usuario</b></td>
+									<td width="43%">
+										<select id="id_user" name="id_user" class="comboGrande">
+											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
+												{% if usuarios %}
+													{% for u in usuarios %}
+														{% if not u in list_usuarios_asginados %}
+															<option value="{{u.id}}" id="id_user">{{u.user}}</option>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+										</select>
+									</td>								
+								</tr>						
+							</table>	
+						</div>
+				{% endif %}							
 					<div id="botonBusqueda">
 						<button class="button" type="submit">MODIFICAR USER STORY</button>
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
