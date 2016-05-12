@@ -9,9 +9,90 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
-from agileApp.models import Proyectos, Usuarios, Usuarios_Proyectos, Roles, Roles_Usuarios, Permisos, Permisos_Roles
+from agileApp.models import Proyectos, Usuarios, Usuarios_Proyectos, Roles, Roles_Usuarios, Permisos, Permisos_Roles,\
+    Flujos, Actividades, Flujos_Proyectos, Actividades_Flujos
 
-
+class test_flujoActividad(TestCase):
+    
+    def test_crearFlujo(self):
+        """
+        Prueba de creacion correcta de un flujo
+        """    
+        flujo = Flujos()
+        flujo.nombre = 'Flujo Prueba'
+        flujo.descripcion = 'Descripcion de prueba'
+        flujo.estado = True
+        flujo.save()
+        
+        self.assertTrue(Flujos.objects.filter(nombre = 'Flujo Prueba').exists(), "El flujo no se ha creado")   
+    
+    def test_modificarFlujo(self):
+        """
+        Prueba de modificacion correcta de un flujo
+        """    
+        flujo = Flujos()
+        flujo.nombre = 'Flujo Prueba'
+        flujo.descripcion = 'Descripcion de prueba'
+        flujo.estado = True
+        flujo.save()
+        
+        flujo.nombre = 'Flujo Prueba cambio'
+        flujo.save()
+        self.assertTrue(Flujos.objects.filter(nombre = 'Flujo Prueba cambio').exists(), "El flujo no se ha modificado")   
+    
+    def test_crearActividad(self):
+        """
+        Prueba de creacion correcta de una actividad
+        """    
+        actividad = Actividades()
+        actividad.nombre = 'Actividad Prueba'
+        actividad.descripcion = 'Descripcion actividad'
+        actividad.estado = 1
+        actividad.save()
+        
+        self.assertTrue(Actividades.objects.filter(nombre = 'Actividad Prueba').exists(), "La actividad no se ha creado")   
+    
+    def test_modificarActividad(self):
+        """
+        Prueba de modificar una actividad
+        """    
+        actividad = Actividades()
+        actividad.nombre = 'Actividad Prueba'
+        actividad.descripcion = 'Descripcion actividad'
+        actividad.estado = 1
+        actividad.save()
+        
+        actividad.nombre = 'Actividad Prueba 2'
+        actividad.save()
+        self.assertTrue(Actividades.objects.filter(nombre = 'Actividad Prueba 2').exists(), "La actividad no se ha modificado")   
+    
+    def test_asignar_ActividadFlujo(self):
+        """
+        Prueba de asignar una actividad a un flujo
+        """ 
+        flujo = Flujos()
+        flujo.nombre = 'Prueba flujo'
+        flujo.descripcion = 'Prueba flujo descripcion'
+        flujo.estado = True
+        flujo.save()
+        
+        #Se crea dos actividades para la prueba, la segunda actividad es para probar la falla
+        actividad = Actividades()
+        actividad.nombre = 'Actividad Prueba'
+        actividad.descripcion = 'Descripcion actividad'
+        actividad.estado = 1
+        actividad.save()
+        
+        actividad1 = Actividades()
+        actividad1.nombre = 'Actividad Prueba 2'
+        actividad1.descripcion = 'Descripcion actividad 2'
+        actividad1.estado = 1
+        actividad1.save()
+        
+        ac_fl = Actividades_Flujos(actividad=actividad, flujo=flujo)
+        ac_fl.save()
+        self.assertTrue(Flujos.objects.filter(actividades = actividad).exists(), "No se ha asignado la actividad, correctamente.") 
+ 
 class test_proyecto(TestCase):
     
     def test_crearproyecto(self):
@@ -72,7 +153,7 @@ class test_proyecto(TestCase):
         
         us_proyecto = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto)
         us_proyecto.save()
-        self.assertTrue(Proyectos.objects.filter(usuarios = usuario1).exists(), "No se ha asignado el usuario, correctamente.") 
+        self.assertTrue(Proyectos.objects.filter(usuarios = usuario).exists(), "No se ha asignado el usuario, correctamente.") 
     
     def test_eliminar_Proyecto(self):
         """

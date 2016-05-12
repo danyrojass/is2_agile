@@ -14,7 +14,8 @@ CrearFlujosForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
 Usuarios_Proyectos, Roles_Usuarios, User_Story, Flujos, Flujos_Proyectos, Actividades
 from django.contrib.auth.hashers import make_password
-from agileApp.forms import CrearActividadForm
+from agileApp.forms import CrearActividadForm, EditarFlujoForm,\
+    EditarActividadForm
 from agileApp.models import Actividades_Flujos
 
 def inicio(request): 
@@ -1607,7 +1608,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False 
     
-    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad":
+    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad":
         permiso = Permisos.objects.filter(nombre="Administración de Flujos")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
@@ -1653,7 +1654,7 @@ def crear_flujo(request, user_id, proyecto_id):
                 fp.save()
                 
                 
-                return render_to_response('flujos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('flujos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'flujo':flujo}, context_instance=RequestContext(request))
         else:
             form = CrearFlujosForm()
         return render(request, 'flujos/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
@@ -1749,9 +1750,115 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 af.save()
                 
                 
-                return render_to_response('flujos/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('flujos/gracias_actividad.html', {'actividad':actividad, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearActividadForm()
         return render(request, 'flujos/crear_actividades.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+def visualizar_flujo(request, user_id, proyecto_id, flujo_id):
+    
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    flujo = proyecto.flujos.get(id=flujo_id)
+    accion = "Visualizar Flujo"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    actividades=[]
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+            
+        saludo = saludo_dia()
+            
+        flujo = get_object_or_404(Flujos, id=flujo_id)
+        up = flujo.actividades.all()
+
+        
+        return render(request, 'flujos/visualizar_flujo.html', {'flujo':flujo,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+def modificar_flujo(request, user_id, proyecto_id, flujo_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion1 = "Modificar Flujo"
+   
+
+    staff1 = verificar_permiso(usuario, accion1)
+    flujo = proyecto.flujos.get(id=flujo_id)
+    up = flujo.actividades.all()
+    if staff1:
+        aid = 2
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = EditarFlujoForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
+                
+                flujo.nombre = nombre
+                flujo.descripcion = descripcion
+                
+
+                        
+                flujo.save()
+                
+                return render_to_response('flujos/gracias.html', {'flujo':flujo,'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = EditarFlujoForm()
+        return render(request, 'flujos/modificar.html', {'form':form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'flujo':flujo, 'staff1':staff1})
+    else:
+        return HttpResponseRedirect('/index')
+
+def modificar_actividad(request, user_id, proyecto_id, flujo_id, actividad_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion1 = "Modificar Actividad"
+   
+
+    staff1 = verificar_permiso(usuario, accion1)
+    flujo = proyecto.flujos.get(id=flujo_id)
+    actividad = flujo.actividades.get(id=actividad_id)
+    if staff1:
+        aid = 2
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = EditarFlujoForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
+                
+                actividad.nombre = nombre
+                actividad.descripcion = descripcion
+
+                actividad.save()
+                
+                return render_to_response('flujos/gracias_actividad.html', {'actividad':actividad,'flujo':flujo,'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = EditarActividadForm()
+        return render(request, 'flujos/modificar_actividad.html', {'form':form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'actividad':actividad,'flujo':flujo, 'staff1':staff1})
     else:
         return HttpResponseRedirect('/index')

@@ -27,9 +27,9 @@
 				<div id="zonaContenido">
 					<div align="center">
 						{% if aid == 1 %}
-							<div id="tituloForm" class="header">FLUJO CREADO</div>
+							<div id="tituloForm" class="header">ACTIVIDAD CREADA</div>
 						{% elif aid == 2 %}
-							<div id="tituloForm" class="header">FLUJO MODIFICADO</div>
+							<div id="tituloForm" class="header">ACTIVIDAD MODIFICADA</div>
 						{% endif %}
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -37,26 +37,20 @@
 										<col width="16%">
 										<col width="21%">
 										<col width="21%">
-										<col width="21%">
-									</colgroup>
+										</colgroup>
 									<tr>
 										<td><b>ID</b></td>
-										<td colspan="2">{{flujo.id}}</td>
+										<td colspan="2">{{actividad.id}}</td>
 								    </tr>
 								    
 									<tr>
 										<td><b>Nombre</b></td>
-									    <td colspan="2">{{flujo.nombre}}</td>
+									    <td colspan="2">{{actividad.nombre}}</td>
 								    </tr>
 								    
 								    <tr>
 										<td><b>Descripción</b></td>
-									    <td colspan="2">{{flujo.descripcion}}</td>
-								    </tr>
-								   
-								    <tr>
-										<td><b>Tipo</b></td>
-									    <td colspan="2">{{flujo.tipo}}</td>
+									    <td colspan="2">{{actividad.descripcion}}</td>
 								    </tr>
 								    
 								</table>
