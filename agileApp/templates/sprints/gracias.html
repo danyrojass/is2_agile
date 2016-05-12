@@ -15,11 +15,11 @@
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
-	{% if staff %}	<ul>
+					<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
                     	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                		</ul>
-	{% endif %}	</li>
+	 			</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -31,6 +31,10 @@
 							<div id="tituloForm" class="header">SPRINT CREADO</div>
 						{% elif aid == 2 %}
 							<div id="tituloForm" class="header">SPRINT MODIFICADO</div>
+						{% elif aid == 3 %}
+							<div id="tituloForm" class="header">US ASIGNADO A SPRINT</div>
+						{% elif aid == 4 %}
+							<div id="tituloForm" class="header">ESTADO DE SPRINT MODIFICADO</div>
 						{% endif %}
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -41,22 +45,49 @@
 										<col width="21%">
 										<col width="21%">
 									</colgroup>
-									<tr>
-										<td><b>ID</b></td>
-										<td colspan="2">{{sp.id}}</td>
-								    </tr>
-								    
-									<tr>
-										<td><b>Nombre</b></td>
-									    <td colspan="2">{{sp.nombre}}</td>
-								    </tr>
-								    
+									{% if aid == 1 or aid == 2 or aid == 4 %}
+										<tr>
+											<td><b>ID</b></td>
+											<td colspan="2">{{sp.id}}</td>
+									    </tr>
+									    
+										<tr>
+											<td><b>Nombre</b></td>
+										    <td colspan="2">{{sp.nombre}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Descripción</b></td>
+										    <td colspan="2">{{sp.duracion}}</td>
+									    </tr>
+								    {% else %}
 								    <tr>
-										<td><b>Descripción</b></td>
-									    <td colspan="2">{{sp.duracion}}</td>
-								    </tr>
-								    
-				
+										<td width="35%"><u><b>PRIORIDAD ALTA</b></u></td>
+										<td width="35%"><u><b>PRIORIDAD MEDIA</b></u></td>
+										<td width="35%"><u><b>PRIORIDAD BAJA</b></u></td>
+									</tr>
+									{% if sp_us %}
+										{% for p, q, r in sp_us %}
+									    	<tr>
+												{% if p %}
+													<td width="35%">{{ p }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+												{% if q %}
+													<td width="35%">{{ q }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+												{% if r %}
+													<td width="35%">{{ r }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+											</tr>
+									    {% endfor %}
+									{% endif %}
+									{% endif %}
 								</table>
 							</div>
 							

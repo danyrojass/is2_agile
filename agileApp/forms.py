@@ -308,9 +308,22 @@ class BuscarSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25, required=False)
 
 class EditarSprintForm(forms.Form):    
-    nombre = forms.CharField(max_length=25)
-    duracion = forms.IntegerField()
+    nombre = forms.CharField(max_length=25, required=False)
+    duracion = forms.IntegerField(required=False)
+    
+    def __init__(self, *args, **kwargs):
+        self.proyecto_id = kwargs.pop('proyecto_id')
+        self.sp_id = kwargs.pop('sp_id')
+        return super(EditarSprintForm, self).__init__(*args, **kwargs)
+        
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en el proyecto."""
+        nombre = self.cleaned_data['nombre']
+        proyecto = Proyectos.objects.get(id=self.proyecto_id)
+        
+        if proyecto.sprint.filter(nombre=nombre).exclude(id=self.sp_id):
+            raise forms.ValidationError('Nombre de sprint ya registrado.')
+        return nombre
 
-    id = forms.IntegerField(required=False)
-    nombre = forms.CharField(max_length = 50, required=False)
-    descripcion = forms.CharField(max_length = 50, required=False)
+class CambiarEstadoSprintForm(forms.Form):
+    estado = forms.IntegerField(required=False)

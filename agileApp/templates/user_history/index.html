@@ -17,6 +17,7 @@
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
 					<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                		</ul>
 				</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
@@ -96,13 +97,10 @@
 								<tr class="cabeceraTabla">
 									<td width="8%">ÍTEM</td>
 									<td width="7%">ID</td>
-									<td width="15%">NOMBRE</td>
-									<td width="15%">DESCRIPCION</td>
+									<td width="20%">NOMBRE</td>
+									<td width="30%">DESCRIPCION</td>
 									<td width="15%">TIPO</td>
-									<td width="8%">PRIORIDAD</td>
-									<td width="8%">V. NEGOCIOS</td>
-									<td width="8%">V. TÉCNICO</td>
-									<td width="6%">SIZE</td>
+									<td width="10%">ESTADO</td>
 									<td width="5%">Assign</td>
 									<td width="5%">Update</td>
 									<td width="5%">&nbsp;</td>
@@ -116,17 +114,18 @@
 											<tr class="itemImparTabla">
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{us.id}}</div></td>
-												<td width="15%"><div align="center">{{us.nombre}}</div></td>
-												<td width="15%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="20%"><div align="center">{{us.nombre}}</div></td>
+												<td width="30%"><div align="center">{{us.descripcion}}</div></td>
 												{% if us.tipo %}
 													<td width="15%"><div align="center">{{us.tipo}}</div></td>
 												{% else %}
 													<td width="15%">&nbsp;</td>
 												{% endif %}
-												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
-												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
-												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
-												<td width="6%"><div align="center">{{us.size}}</div></td>
+												{% if us.estado %}
+													<td width="10%"><div align="center">Activo</div></td>
+												{% else %}
+													<td width="10%"><div align="center">Inactivo</div></td>
+												{% endif %}
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 											</tr>
@@ -134,19 +133,20 @@
 											<tr class="itemParTabla"> 
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{us.id}}</div></td>
-												<td width="15%"><div align="center">{{us.nombre}}</div></td>
-												<td width="15%"><div align="center">{{us.descripcion}}</div></td>
+												<td width="20%"><div align="center">{{us.nombre}}</div></td>
+												<td width="30%"><div align="center">{{us.descripcion}}</div></td>
 												{% if us.tipo %}
 													<td width="15%"><div align="center">{{us.tipo}}</div></td>
 												{% else %}
 													<td width="15%">&nbsp;</td>
 												{% endif %}
-												<td width="8%"><div align="center">{{us.nivel_prioridad}}</div></td>
-												<td width="8%"><div align="center">{{us.valor_negocios}}</div></td>
-												<td width="8%"><div align="center">{{us.valor_tecnico}}</div></td>
-												<td width="6%"><div align="center">{{us.size}}</div></td>
+												{% if us.estado %}
+													<td width="10%"><div align="center">Activo</div></td>
+												{% else %}
+													<td width="10%"><div align="center">Inactivo</div></td>
+												{% endif %}
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>												
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 											</tr>
 										{% endif %}
 									{% endfor %}

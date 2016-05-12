@@ -14,6 +14,7 @@ BuscarSprintForm, CrearSprintForm, EditarSprintForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
 Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint
 from django.contrib.auth.hashers import make_password
+from agileApp.forms import CambiarEstadoSprintForm
 
 def inicio(request): 
     """
@@ -1582,7 +1583,6 @@ def index_sprint(request, user_id, proyecto_id):
         request.session['last_activity'] = str(now)
                 
         saludo = saludo_dia()
-        usuario = Usuarios.objects.get(id=user_id)
         proyecto = Proyectos.objects.get(id=proyecto_id)
                 
         us = proyecto.sprint.all()
@@ -1676,20 +1676,22 @@ def modificar_sprint(request, user_id, proyecto_id, sp_id):
         
         saludo = saludo_dia()
         if request.method == 'POST':
-            form = EditarSprintForm(request.POST)
+            form = EditarSprintForm(request.POST, proyecto_id=proyecto_id, sp_id=sp_id)
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 duracion = cleaned_data.get('duracion')
                 
-                sp.nombre = nombre
-                sp.duracion = duracion
+                if nombre:
+                    sp.nombre = nombre
+                if duracion:
+                    sp.duracion = duracion
                 
                 sp.save()
                 
                 return render_to_response('sprints/gracias.html', {'sp':sp, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
-            form = EditarSprintForm()
+            form = EditarSprintForm(proyecto_id=proyecto_id, sp_id=sp_id)
         return render(request, 'sprints/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
     else:
         return HttpResponseRedirect('/index')
@@ -1716,6 +1718,104 @@ def ver_sprint(request, user_id, proyecto_id, sp_id):
         lista_us = sp.listaUS.all()
         
         return render(request, 'sprints/ver.html', {'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
+    else:
+        return HttpResponseRedirect('/index')
+
+def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Asignar US a Sprint"
+   
+
+    staff = verificar_permiso(usuario, accion)
+    
+    sp = proyecto.sprint.get(id=sp_id)
+    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1)
+    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2)
+    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3)
+    user_stories = map(None, us1, us2, us3)
+    
+    if staff:
+        aid = 3
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+
+            lista_user_stories = request.POST.getlist(u'userstories')
+                    
+            asignar_us_sp(request, sp_id, lista_user_stories)
+            sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
+            sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
+            sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
+            sp_us = map(None, sp_us1, sp_us2, sp_us3)
+                
+            return render_to_response('sprints/gracias.html', {'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+
+        return render(request, 'sprints/asignar.html', {'user_stories':user_stories, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
+    else:
+        return HttpResponseRedirect('/index')
+
+def asignar_us_sp(request, sp_id, lista_user_stories):
+   
+    sprint = get_object_or_404(Sprint, id=sp_id)
+    
+    for us_id in lista_user_stories:
+        
+        us = User_Story.objects.get(id=us_id)   
+        spus = US_Sprint(sprint=sprint, user_story=us)
+        spus.save()
+       
+    return spus 
+
+def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Cambiar estado Sprint"
+   
+    staff = verificar_permiso(usuario, accion)
+    
+    sp = proyecto.sprint.get(id=sp_id)
+    
+    if staff:
+        aid = 4
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        lista_us = sp.listaUS.all()
+        if request.method == 'POST':
+            form = CambiarEstadoSprintForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                estado = cleaned_data.get('estado')
+                
+                if estado:
+                    sp.estado = estado
+            
+                if lista_us:
+                    for us in lista_us:
+                        if estado==2:
+                            us.estado = True
+                        elif estado>=3:
+                            us.estado = False
+                        us.save()
+                    
+                sp.save()
+                
+                return render_to_response('sprints/gracias.html', {'sp':sp, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = CambiarEstadoSprintForm()
+        return render(request, 'sprints/cambiar_estado.html', {'lista_us':lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1761,7 +1861,7 @@ def comprobar(request):
     if restaminutos >= 10:
         logout(request)
         return HttpResponseRedirect('/ingresar')
-    
+
 def verificar_permiso(usuario, accion):
     """
     Verifica si el usuario tiene un rol asociado, y si éste cuenta con el o los permisos necesarios,
@@ -1996,7 +2096,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False 
     
-    elif accion=="Crear Sprint" or accion=="Modificar Sprint" or accion=="Visualizar Sprint":
+    elif accion=="Listar Sprint" or accion=="Crear Sprint" or accion=="Modificar Sprint" or accion=="Visualizar Sprint" or accion=="Asignar US a Sprint" or accion=="Cambiar estado Sprint":
         permiso = Permisos.objects.filter(nombre="Administración de Sprints")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)

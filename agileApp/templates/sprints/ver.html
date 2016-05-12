@@ -16,7 +16,7 @@
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
 					<ul>
-                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
                     	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                		</ul>
 				</li>
@@ -49,6 +49,11 @@
 									<tr>
 										<td><b>Nombre </b></td>
 									    <td colspan="2">{{sp.nombre}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Duración </b></td>
+									    <td colspan="2">{{sp.duracion}} hs.</td>
 								    </tr>
 							</table>	
 						</div>

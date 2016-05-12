@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from agileApp.models import Usuarios, Permisos, Roles, Permisos_Roles, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos
+Usuarios_Proyectos, User_Story, US_Proyectos, Sprint, Sprint_Proyectos
 
 
 class Command(BaseCommand):
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         u2 = crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', True)
         u3 = crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', True)
         u4 = crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
-        u5 = crear_usuario('Usuario', 'Prueba', 'uprueba', 'a123', 'usuario_prueba@gmail.com', False)
+        u5 = crear_usuario('Usuario', 'Prueba1', 'uprueba1', 'a123', 'usuario_prueba1@gmail.com', True)
         
         proyecto1 = crear_proyecto("Proyecto de Prueba Nro. 1", "Proy1", "Escenario de prueba 1.")
         proyecto2 = crear_proyecto("Proyecto de Prueba Nro. 2", "Proy2", "Escenario de prueba 2.")
@@ -55,10 +55,22 @@ class Command(BaseCommand):
         asignar_usuarios()
         
         us1 = crear_us("US de Prueba Nro.1", "Escenario de prueba 1.", 1, 2, 3, 4, u1)
-        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 4, 3, 2, 1, u2)
+        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 2, 3, 2, 1, u2)
+        us3 = crear_us("US de Prueba Nro.3", "Escenario de prueba 3.", 1, 2, 3, 4, u4)
+        us4 = crear_us("US de Prueba Nro.4", "Escenario de prueba 4.", 2, 3, 2, 1, u3)
+        us5 = crear_us("US de Prueba Nro.5", "Escenario de prueba 5.", 1, 2, 3, 4, u5)
         
         asignar_us_proyecto(us1, proyecto1)
         asignar_us_proyecto(us2, proyecto2)
+        asignar_us_proyecto(us4, proyecto1)
+        asignar_us_proyecto(us3, proyecto2)
+        asignar_us_proyecto(us5, proyecto1)
+        
+        sp1 = crear_sprint("Sprint de Prueba Nro.1", 150, 1)
+        sp2 = crear_sprint("Sprint de Prueba Nro.2", 200, 1)
+        
+        asignar_sprint_proyecto(sp1, proyecto1)
+        asignar_sprint_proyecto(sp2, proyecto2)
 
 def crear_roles(nombre, tipo, observacion):
     rol = Roles()
@@ -156,6 +168,14 @@ def asignar_usuarios():
             
             rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
             rup.save()
+        
+        elif idx == 4:
+
+            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
+            up.save()
+            
+            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
+            rup.save()
 
 def crear_us(nombre, descripcion, nprioridad, vnegocios, vtecnico, size, user):
     uh = User_Story()
@@ -172,3 +192,15 @@ def crear_us(nombre, descripcion, nprioridad, vnegocios, vtecnico, size, user):
 def asignar_us_proyecto(us, proyecto):
     us_proy = US_Proyectos(proyecto=proyecto, user_story=us)
     us_proy.save()
+
+def crear_sprint(nombre, duracion, estado):
+    sp = Sprint()
+    sp.nombre = nombre
+    sp.duracion = duracion
+    sp.estado = estado
+    sp.save()
+    return sp
+    
+def asignar_sprint_proyecto(sprint, proyecto):
+    sprint_proy = Sprint_Proyectos(proyecto=proyecto, sprint=sprint)
+    sprint_proy.save()

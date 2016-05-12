@@ -67,7 +67,7 @@ class User_Story(models.Model):
     size = models.IntegerField(null=True)
     tiempo_estimado = models.IntegerField(default=0)
     tiempo_real = models.IntegerField(default=0)
-    estado = models.BooleanField(default = True)
+    estado = models.BooleanField(default = False)
     fecha_creacion = models.DateField(null = True)
     fecha_inicio = models.DateField(null = True)
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
@@ -76,6 +76,8 @@ class User_Story(models.Model):
     id_sprint = models.IntegerField(null=True)
     f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
     f_actividad = models.IntegerField(null=True) #Nro. de actividad del flujo.
+    def __str__(self):
+        return self.nombre
 
 
 class Sprint(models.Model):
@@ -99,6 +101,7 @@ class Proyectos(models.Model):
     estado = models.IntegerField(default=1) #1: Pendiente. 2: Anulado. 3: Activo. 4: Finalizado.
     usuarios = models.ManyToManyField(Usuarios, through='Usuarios_Proyectos')
     user_stories = models.ManyToManyField(User_Story, through='US_Proyectos')
+    sprint = models.ManyToManyField(Sprint, through='Sprint_Proyectos')
     
     def __str__(self):
         return self.nombre_largo

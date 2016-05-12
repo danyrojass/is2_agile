@@ -3,8 +3,9 @@
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
-			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>.<br></br>
-			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!<br></br>
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
 			<a href="javascript:history.go(-1)">Atrás</a> | 
 			<a href="javascript:history.go(1)">Adelante</a>
 		</div>
@@ -14,7 +15,7 @@
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
-	{% if staff %}	<ul>
+	{% if staff1 %}	<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
                     	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                     	
@@ -45,7 +46,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR USER STORY</div>
+					<div id="tituloForm" class="header">MODIFICAR SPRINT</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -60,7 +61,7 @@
 								    <td width="43%"><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="50" maxlength="50" value=""></td>
 								</tr>	
 								<tr>
-									<td width="15%"><b>Duración</b></td>
+									<td width="15%"><b>Duración en Horas</b></td>
 								    <td width="43%"><input NAME="duracion" type="text" class="cajaGrande" id="duracion" size="50" maxlength="50" value="{{us.nivel_prioridad}}"></td>
 								</tr>	
 																
