@@ -60,6 +60,20 @@
 											<td><b>Descripción</b></td>
 										    <td colspan="2">{{sp.duracion}}</td>
 									    </tr>
+									    
+									    <tr>
+											<td><b>Estado</b></td>
+										    {% if sp.estado == 1 %}
+												<td width="35%">Planificado</td>
+											{% elif sp.estado == 2 %}											
+												<td width="35%">En Ejecución</td>
+											{% elif sp.estado == 3 %}											
+												<td width="35%">Finalizado</td>
+											{% elif sp.estado == 4 %}											
+												<td width="35%">Cancelado</td>
+											{% endif %}
+									    </tr>
+									    
 								    {% else %}
 								    <tr>
 										<td width="35%"><u><b>PRIORIDAD ALTA</b></u></td>

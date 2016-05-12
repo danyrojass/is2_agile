@@ -283,7 +283,9 @@ class EditarUSForm(forms.Form):
 
 class AsignarUSForm(forms.Form):
     id_user = forms.IntegerField()
-    
+
+class CambiarEstadoUSForm(forms.Form):
+    estado = forms.IntegerField(required=False)    
 
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)

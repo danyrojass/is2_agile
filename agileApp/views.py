@@ -10,7 +10,7 @@ from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm,\
-BuscarSprintForm, CrearSprintForm, EditarSprintForm
+BuscarSprintForm, CrearSprintForm, EditarSprintForm, CambiarEstadoUSForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
 Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint
 from django.contrib.auth.hashers import make_password
@@ -199,7 +199,6 @@ def index_usuarios(request):
                         
                 if not uid and not uusername and not uemail and not first_name and not last_name and not utipo:
                     results = None
-                print results
                 if results:
                     results.order_by('id')
                 return render_to_response('usuarios/results.html', {'usuario':usuario, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
@@ -1019,7 +1018,7 @@ def editar_proyectos(request, proyecto_id):
 
 def desasignar_usuarios(request, user_id, proyecto_id):
     """
-    Método para desasignar a un usuarios existente del proyecto.
+    Método para desasignar a un usuario existente del proyecto.
     
     @param request: Http request
     @param request: proyecto_id
@@ -1133,6 +1132,16 @@ def index_proyectos(request):
 
 
 def index_ususario_proyecto(request, user_id, proyecto_id):
+    """
+    Método que muestra la página de inicio de un Usuario no administrador, en un Proyecto seleccionado.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template inicio_usuario.html cuando accede a un proyecto seleccionado.
+    
+    """
+    
     comprobar(request)
     if(request.user.is_anonymous()):
         return HttpResponseRedirect('/ingresar')
@@ -1149,6 +1158,19 @@ def index_ususario_proyecto(request, user_id, proyecto_id):
     return render_to_response('inicio_usuario.html', {'staff':staff, 'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
 
 def index_proyecto_usuario(request, user_id, proyecto_id):
+    """
+    Método que muestra la página de inicio de Proyecto de un Usuario, en un Proyecto seleccionado.
+    Si es Scrum Master, muesta la lista de Usuarios y User Stories asignados al Proyecto.
+    Si es Usuario Regular, muestra la lista de User Stories.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template proyecto_usuario/index.html para ver página de inicio de proyecto. 
+             render al template proyecto_usiario/results.html para obtener resultado de búsqueda.
+    
+    """
+    
     user = request.user
     accion = "Definir Proyectos/Servicios"
     accion2 = "Listar US"
@@ -1170,7 +1192,7 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
     rol = get_object_or_404(Roles, nombre=rup.roles.nombre)
     usuarios = proyecto.usuarios.all().exclude(id=user.id).exclude(user__is_active=False)
     filas = usuarios.count()
-    uh = proyecto.user_stories.all()
+    uh = proyecto.user_stories.all().order_by('id')
     filax = uh.count()
     
     if staff:    
@@ -1223,6 +1245,20 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
         else:
             form = BuscarUserForm()
     if staff or staff2:
+        us_us1 = User_Story.objects.filter(usuario_asignado=usuario)
+        us_us = None
+        activo = 1
+        if us_us1:
+            us_us = User_Story.objects.get(usuario_asignado=usuario)
+        
+            us_sp1 = US_Sprint.objects.filter(user_story=us_us)
+            if us_sp1:
+                us_sp = US_Sprint.objects.get(user_story=us_us)
+                if us_sp:
+                    activo = us_sp.sprint.estado
+                else:
+                    activo = 1
+            
         if request.method == 'POST':
             results = proyecto.usuarios.all().exclude(id=usuario.id)
             form = BuscarUSForm(request.POST)
@@ -1248,11 +1284,21 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
                 return render_to_response('proyecto_usuario/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarUSForm()
-        return render_to_response('proyecto_usuario/index.html', {'filax':filax, 'uh':uh, 'filas':filas, 'staff2':staff2, 'staff':staff, 'usuarios':usuarios, 'rol':rol, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('proyecto_usuario/index.html', {'activo':activo, 'us_us':us_us, 'filax':filax, 'uh':uh, 'filas':filas, 'staff2':staff2, 'staff':staff, 'usuarios':usuarios, 'rol':rol, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
     
 def eliminar_usuario_proyecto(request, user_id, userd_id, proyecto_id):
+    """
+    Método que permite desasignar un Usuario de un Proyecto, así como también el Rol asociado al Usuario.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema, que realiza la acción (Scrum Master).
+    @param userd_id: Id de un usuario registrado en el sistema, que es objeto de la acción (Usuario Regular).
+    @return: render al template proyecto_usuario/gracias.html cuando se ha desasignado correctamente.
+             Usuario desasignado del Proyecto.
+             Rol desasignado del Usuario.
+    """
     user = request.user
     accion = "Definir Proyectos/Servicios"
     staff = verificar_permiso(user, accion)
@@ -1328,13 +1374,25 @@ def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
 
 "Gestión de US"
 def crear_us(request, user_id, proyecto_id):
+    """
+    Método que permite crear un User Story en un Proyecto determinado.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/crear.html para la cración. 
+             render al template user_history/gracias.html cuando se ha creado correctamente.
+             User Story creado.
+    """
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     accion = "Crear US"
-    
+    accion1 = "Desarrollar US"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
-    if staff:
+    if staff or staff1:
         aid = 1
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1374,17 +1432,30 @@ def crear_us(request, user_id, proyecto_id):
                 us_p = US_Proyectos(proyecto=proyecto, user_story=us)
                 us_p.save()
                 
-                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearUSForm(proyecto_id=proyecto_id)
-        return render(request, 'user_history/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        return render(request, 'user_history/crear.html', {'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
     
 def modificar_us(request, us_id, user_id, proyecto_id):
+    """
+    Método que permite modificar un User Story seleccionado en un Proyecto determinado.
+    
+    @param request: Http request
+    @param us_id: Id de un user story registrado en el sistema.
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/modificar.html para la modificación. 
+             render al template user_history/gracias.html cuando se ha modificado correctamente.
+             User Story modificado.
+    """
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
-
+    
+    accion = "Crear US"
     accion1 = "Modificar US - ValNeg"
     accion2 = "Modificar US - ValTec"
     accion3 = "Modificar US - Size"         
@@ -1396,6 +1467,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     accion9 = "Modificar US - TEst"
     accion10 = "Modificar US - Desarrollador"
 
+    staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
     staff2 = verificar_permiso(usuario, accion2)
     staff3 = verificar_permiso(usuario, accion3)
@@ -1417,6 +1489,9 @@ def modificar_us(request, us_id, user_id, proyecto_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
+        list_usuarios_asginados = []
+        usuarios = proyecto.usuarios.all()
+        
         if request.method == 'POST':
             form = EditarUSForm(request.POST)
             if form.is_valid():
@@ -1452,12 +1527,10 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 
                 if staff10:
                     userstories = proyecto.user_stories.all()
-                    list_usuarios_asginados = []
     
                     for uh in userstories:
                         list_usuarios_asginados.append(uh.usuario_asignado)
 
-                    usuarios = proyecto.usuarios.all()
                     usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US")
                     
                     if id_user:
@@ -1466,16 +1539,27 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                         
                 us.save()
                 
-                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
         else:
             form = EditarUSForm()
-        return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1,\
+        return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1, 'staff':staff,\
                                                                'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7,\
                                                                'staff8':staff8, 'staff9':staff9, 'staff10':staff10, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
     else:
         return HttpResponseRedirect('/index')
 
 def asignar_us(request, user_id, proyecto_id, us_id):
+    """
+    Método que permite asignar un User Story a un Usuario en un Proyecto determinado.
+    
+    @param request: Http request
+    @param us_id: Id de un user story registrado en el sistema.
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/asginar.html para la asignación. 
+             render al template user_history/gracias.html cuando se ha asignado correctamente.
+             User Story asignado a un Usuario.
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1520,7 +1604,17 @@ def asignar_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
     
-def index_us(request, user_id, proyecto_id):  
+def index_us(request, user_id, proyecto_id):
+    """
+    Método de inicio que permite ver los User Stories de un Proyecto determinado, así como también la búsqueda de los mismos.
+    
+    @param request: Http request
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/index.html para la página de inicio.
+             render al template user_history/results.html para obtener resultados de la búsqueda.  
+             Listado de US.
+    """
     user = request.user
     accion = "Listar US"
     
@@ -1537,7 +1631,7 @@ def index_us(request, user_id, proyecto_id):
         usuario = Usuarios.objects.get(id=user_id)
         proyecto = Proyectos.objects.get(id=proyecto_id)
                 
-        uh = proyecto.user_stories.all()
+        uh = proyecto.user_stories.all().order_by('id')
         filax = uh.count()
     
         if request.method == 'POST':
@@ -1569,6 +1663,67 @@ def index_us(request, user_id, proyecto_id):
     else:
         return HttpResponseRedirect('/index')
 
+def ver_us(request, user_id, proyecto_id, us_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Visualizar US"
+   
+    staff = verificar_permiso(usuario, accion)
+    
+    us = proyecto.user_stories.get(id=us_id)
+        
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        
+        return render(request, 'user_history/ver.html', {'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+    else:
+        return HttpResponseRedirect('/index')
+
+def cambiar_estado_us(request, user_id, proyecto_id, us_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Crear US"
+    accion1 = "Cambiar estado US"
+    staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
+    us = proyecto.user_stories.get(id=us_id)
+        
+    if staff or staff1:
+        aid = 4
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = CambiarEstadoUSForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                estado = cleaned_data.get('estado')
+                
+                if estado:
+                    us.estado = estado
+                us.save()
+                
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = CambiarEstadoUSForm()
+        return render(request, 'user_history/cambiar_estado.html', {'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+    else:
+        return HttpResponseRedirect('/index')
+
+
+""" Administración de Sprints. """
 def index_sprint(request, user_id, proyecto_id):  
     user = request.user
     accion = "Listar Sprint"
@@ -1606,7 +1761,6 @@ def index_sprint(request, user_id, proyecto_id):
                     
                 if results:
                     results.order_by('id')
-                print results
                 return render_to_response('sprints/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo ,'us':us, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarSprintForm()
@@ -1731,9 +1885,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     staff = verificar_permiso(usuario, accion)
     
     sp = proyecto.sprint.get(id=sp_id)
-    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1)
-    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2)
-    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3)
+    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1)
+    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1)
+    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1)
     user_stories = map(None, us1, us2, us3)
     
     if staff:
@@ -1770,6 +1924,9 @@ def asignar_us_sp(request, sp_id, lista_user_stories):
         us = User_Story.objects.get(id=us_id)   
         spus = US_Sprint(sprint=sprint, user_story=us)
         spus.save()
+        
+        us.id_sprint = sp_id
+        us.save()
        
     return spus 
 
@@ -1805,9 +1962,11 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                 if lista_us:
                     for us in lista_us:
                         if estado==2:
-                            us.estado = True
-                        elif estado>=3:
-                            us.estado = False
+                            us.estado = 2
+                        elif estado==3:
+                            us.estado = 3
+                        elif estado==4:
+                            us.estado = 4
                         us.save()
                     
                 sp.save()
@@ -1965,8 +2124,18 @@ def verificar_permiso(usuario, accion):
             staff = True
         else:
             staff = False
-            
+    
     elif accion=="Crear US":
+        permiso = Permisos.objects.filter(nombre="Creación de US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+            
+    elif accion=="Desarrollar US":
         permiso = Permisos.objects.filter(nombre="Desarrollo de US")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
@@ -2088,6 +2257,16 @@ def verificar_permiso(usuario, accion):
     
     elif accion=="Asignar US":
         permiso = Permisos.objects.filter(nombre="Asignación de US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False 
+            
+    elif accion=="Cambiar estado US" or accion=="Visualizar US":
+        permiso = Permisos.objects.filter(nombre="Desarrollo de US")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         

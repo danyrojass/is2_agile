@@ -45,26 +45,33 @@ class Command(BaseCommand):
         
         u1 = crear_usuario('Alfredo', 'Barrios', 'abarrios', 'a123', 'alfbarrios2010@gmail.com', True)
         u2 = crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', True)
-        u3 = crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', True)
-        u4 = crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
-        u5 = crear_usuario('Usuario', 'Prueba1', 'uprueba1', 'a123', 'usuario_prueba1@gmail.com', True)
+        u3 = crear_usuario('Usuario', 'Prueba1', 'uprueba1', 'a123', 'usuario_prueba1@gmail.com', True)
+        u4 = crear_usuario('Usuario', 'Prueba2', 'uprueba2', 'a123', 'usuario_prueba2@gmail.com', True)
+        u5 = crear_usuario('Usuario', 'Prueba3', 'uprueba3', 'a123', 'usuario_prueba3@gmail.com', True)
+        u6 = crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', True)
+        u7 = crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
+        u8 = crear_usuario('Usuario', 'Prueba4', 'uprueba4', 'a123', 'usuario_prueba4@gmail.com', True)
+        u9 = crear_usuario('Usuario', 'Prueba5', 'uprueba5', 'a123', 'usuario_prueba5@gmail.com', True)
+        u10 = crear_usuario('Usuario', 'Prueba6', 'uprueba6', 'a123', 'usuario_prueba6@gmail.com', True)
         
         proyecto1 = crear_proyecto("Proyecto de Prueba Nro. 1", "Proy1", "Escenario de prueba 1.")
         proyecto2 = crear_proyecto("Proyecto de Prueba Nro. 2", "Proy2", "Escenario de prueba 2.")
         
         asignar_usuarios()
         
-        us1 = crear_us("US de Prueba Nro.1", "Escenario de prueba 1.", 1, 2, 3, 4, u1)
-        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 2, 3, 2, 1, u2)
-        us3 = crear_us("US de Prueba Nro.3", "Escenario de prueba 3.", 1, 2, 3, 4, u4)
-        us4 = crear_us("US de Prueba Nro.4", "Escenario de prueba 4.", 2, 3, 2, 1, u3)
-        us5 = crear_us("US de Prueba Nro.5", "Escenario de prueba 5.", 1, 2, 3, 4, u5)
+        us1 = crear_us("US de Prueba Nro.1", "Escenario de prueba 1.", 1, 2, 3, 4, u2)
+        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 2, 4, 6, 8, u3)
+        us3 = crear_us("US de Prueba Nro.3", "Escenario de prueba 3.", 3, 4, 5, 6, u4)
+        us4 = crear_us("US de Prueba Nro.4", "Escenario de prueba 4.", 1, 2, 3, 4, u7)
+        us5 = crear_us("US de Prueba Nro.5", "Escenario de prueba 5.", 2, 4, 6, 8, u8)
+        us6 = crear_us("US de Prueba Nro.6", "Escenario de prueba 6.", 3, 4, 5, 6, u9)
         
         asignar_us_proyecto(us1, proyecto1)
-        asignar_us_proyecto(us2, proyecto2)
-        asignar_us_proyecto(us4, proyecto1)
-        asignar_us_proyecto(us3, proyecto2)
-        asignar_us_proyecto(us5, proyecto1)
+        asignar_us_proyecto(us2, proyecto1)
+        asignar_us_proyecto(us3, proyecto1)
+        asignar_us_proyecto(us4, proyecto2)
+        asignar_us_proyecto(us5, proyecto2)
+        asignar_us_proyecto(us6, proyecto2)
         
         sp1 = crear_sprint("Sprint de Prueba Nro.1", 150, 1)
         sp2 = crear_sprint("Sprint de Prueba Nro.2", 200, 1)
@@ -92,7 +99,7 @@ def crear_roles(nombre, tipo, observacion):
     elif nombre=="Scrum Master":
         permisos = Permisos.objects.all().exclude(nivel=0)
     else:
-        permisos = Permisos.objects.all().filter(nivel=3)
+        permisos = Permisos.objects.all().exclude(nivel=0).exclude(nivel=1)
     
     for p in permisos:  
         pr = Permisos_Roles(permisos=p, roles=rol)
@@ -136,45 +143,25 @@ def asignar_usuarios():
     proyecto2 = Proyectos.objects.get(nombre_largo="Proyecto de Prueba Nro. 2")
     
     for idx, usuario in enumerate(usuarios):
-        if idx == 0:
-
-            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
-            up.save()
-            
-            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto1)
-            rup.save()
-
-        elif idx == 1:
-
-            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
-            up.save()
-            
-            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto2)
-            rup.save()
-            
-        elif idx == 2:
-
-            
-            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
-            up.save()
-            
-            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto2)
-            rup.save()
-            
-        elif idx == 3:
-
-            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
-            up.save()
-            
-            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
-            rup.save()
         
-        elif idx == 4:
-
+        if idx >=5:
+            up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto2)
+            up.save()
+            
+            if idx == 5:
+                rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto2)
+            else:
+                rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto2)
+            rup.save()
+            
+        else:
             up = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto1)
             up.save()
             
-            rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
+            if idx == 0:
+                rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto1)
+            else:
+                rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
             rup.save()
 
 def crear_us(nombre, descripcion, nprioridad, vnegocios, vtecnico, size, user):

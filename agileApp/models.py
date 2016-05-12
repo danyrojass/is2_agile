@@ -67,7 +67,7 @@ class User_Story(models.Model):
     size = models.IntegerField(null=True)
     tiempo_estimado = models.IntegerField(default=0)
     tiempo_real = models.IntegerField(default=0)
-    estado = models.BooleanField(default = False)
+    estado = models.IntegerField(default = 1)
     fecha_creacion = models.DateField(null = True)
     fecha_inicio = models.DateField(null = True)
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
