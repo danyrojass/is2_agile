@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}Index de Sprints{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+
+		<script language="javascript">
+			
+			function crear_sprint() {
+				location.href="{% url 'agileApp:crear_sprint' user.id proyecto.id %}";
+			}
+			
+			function limpiar() {
+				document.getElementById("form_busqueda").reset();
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
+	
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<div id="pagina">
+			<div id="zonaContenidoPP">
+				<div align="center">	
+				<div id="tituloForm" class="header">BUSCAR SPRINT DENTRO DEL PROYECTO</div>
+				<div id="frmBusqueda">
+				<form id="form_busqueda" name="form_busqueda" method="post" action="">
+					{% csrf_token %}
+					<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+					{{ form.errors }}				
+						<tr>
+							<td width="16%">ID de Sprint </td>
+							<td width="68%"><input id="id" type="text" class="cajaPequena" NAME="id" maxlength="10" value=""></td>
+							<td width="5%">&nbsp;</td>
+							<td width="5%">&nbsp;</td>
+							<td width="6%" align="right"></td>
+						</tr>
+						<tr>
+							<td>Nombre de Sprint</td>
+							<td><input id="nombre" name="nombre" type="text" class="cajaGrande" maxlength="45" value=""></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+		
+					</table>
+					</div>
+					<div id="botonBusqueda">
+						<td style="text-align:right"><button class="button" type="submit">BUSCAR</button></td>
+        				<td style="text-align:right"><a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a></td>
+						<td style="text-align:left"><a onClick="crear_sprint()" onMouseOver="style.cursor=cursor" class="button" >CREAR SPRINT</a></td>
+							</div>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<div id="lineaResultado">
+			  <table class="fuente8" width="80%" cellspacing=0 cellpadding=3 border=0>
+			  	<tr>
+				<td width="50%" align="left">Nro. de Sprints encontrados. <input id=filax type="text" class="cajaPequena" NAME=filas maxlength="5" value="{{filax}}"></td>
+			  </table>
+			</div>
+					<div id="cabeceraResultado" class="header">
+						LISTA SPRINTS </div>
+						<div id="frmResultado">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								<tr class="cabeceraTabla">
+									<td width="8%">ÍTEM</td>
+									<td width="7%">ID</td>
+									<td width="20%">NOMBRE</td>
+									<td width="35%">ESTADO</td>
+								</tr>
+							</table>
+							<div class="ScrollStyle">
+							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
+								{% if us %}
+									{% for s in us %}
+										{% if forloop.counter|divisibleby:2  %}
+											<tr class="itemImparTabla">
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{s.id}}</div></td>
+												<td width="20%"><div align="center">{{s.nombre}}</div></td>
+												{% if s.estado == 1 %}
+													<td width="35%"><div align="center">Planificado</div></td>
+												{% elif s.estado == 2 %}											
+													<td width="35%"><div align="center">En Ejecución</div></td>
+												{% elif s.estado == 3 %}											
+													<td width="35%"><div align="center">Finalizado</div></td>
+												{% elif s.estado == 4 %}											
+													<td width="35%"><div align="center">Cancelado</div></td>
+												{% endif %}
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_sprint' user.id proyecto.id s.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_sprint' user.id proyecto.id s.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="visualizar"></a></div></td>
+					
+											
+											</tr>
+										{% else %}
+											<tr class="itemParTabla"> 
+												
+												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="7%"><div align="center">{{s.id}}</div></td>
+												<td width="20%"><div align="center">{{s.nombre}}</div></td>
+												{% if s.estado == 1 %}
+													<td width="35%"><div align="center">Planificado</div></td>
+												{% elif s.estado == 2 %}											
+													<td width="35%"><div align="center">En Ejecución</div></td>
+												{% elif s.estado == 3 %}											
+													<td width="35%"><div align="center">Finalizado</div></td>
+												{% elif s.estado == 4 %}											
+													<td width="35%"><div align="center">Cancelado</div></td>
+												{% endif %}
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_sprint' user.id proyecto.id s.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
+			                                    <td width="5%"><div align="center"><a href="{% url 'agileApp:ver_sprint' user.id proyecto.id s.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="visualizar"></a></div></td>
+					
+											</tr>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<p>No hay sprints registrados en la base de datos.</p>
+								{% endif %}
+								
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>							
+{% endblock content %}

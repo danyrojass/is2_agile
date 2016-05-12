@@ -9,9 +9,10 @@ from django.template import RequestContext
 from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
-EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm
+EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm,\
+BuscarSprintForm, CrearSprintForm, EditarSprintForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos, Tipo
+Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint
 from django.contrib.auth.hashers import make_password
 
 def inicio(request): 
@@ -1566,7 +1567,158 @@ def index_us(request, user_id, proyecto_id):
         return render_to_response('user_history/index.html', {'filax':filax, 'uh':uh, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
+
+def index_sprint(request, user_id, proyecto_id):  
+    user = request.user
+    accion = "Listar Sprint"
     
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+                
+        saludo = saludo_dia()
+        usuario = Usuarios.objects.get(id=user_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+                
+        us = proyecto.sprint.all()
+        
+        filax = us.count()
+        if request.method == 'POST':
+            results = us
+            form = BuscarSprintForm(request.POST)
+                
+            if form.is_valid():
+                sid = request.POST.get('id', None)
+                if sid:
+                    results = results.filter(id__iexact=sid)
+                snombre = request.POST.get('nombre', None)
+                if snombre:
+                    results = results.filter(nombre__icontains=snombre)
+                
+                
+                if not sid and not snombre:
+                    results = None
+                    
+                if results:
+                    results.order_by('id')
+                print results
+                return render_to_response('sprints/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo ,'us':us, 'results':results}, context_instance=RequestContext(request))
+        else:
+            form = BuscarSprintForm()
+        return render_to_response('sprints/index.html', {'filax':filax, 'us':us, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
+
+
+def crear_sprint(request, user_id, proyecto_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    accion = "Crear Sprint"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    if staff:
+        aid = 1
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = CrearSprintForm(request.POST, proyecto_id=proyecto_id)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                duracion = cleaned_data.get('duracion')
+                estado = cleaned_data.get('estado')
+                
+                sp = Sprint()
+                sp.nombre = nombre
+                sp.duracion = duracion
+                sp.estado = estado
+                
+                sp.save()
+                
+                ps=Sprint_Proyectos(sprint=sp, proyecto=proyecto)
+                ps.save()
+                 
+                return render_to_response('sprints/gracias.html', {'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp}, context_instance=RequestContext(request))
+        else:
+            form = CrearSprintForm(proyecto_id=proyecto_id)
+        return render(request, 'sprints/crear.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+
+def modificar_sprint(request, user_id, proyecto_id, sp_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion1 = "Modificar Sprint"
+   
+
+    staff1 = verificar_permiso(usuario, accion1)
+    
+    sp = proyecto.sprint.get(id=sp_id)
+    if staff1:
+        aid = 2
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = EditarSprintForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                duracion = cleaned_data.get('duracion')
+                
+                sp.nombre = nombre
+                sp.duracion = duracion
+                
+                sp.save()
+                
+                return render_to_response('sprints/gracias.html', {'sp':sp, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = EditarSprintForm()
+        return render(request, 'sprints/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
+    else:
+        return HttpResponseRedirect('/index')
+    
+def ver_sprint(request, user_id, proyecto_id, sp_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion1 = "Visualizar Sprint"
+   
+
+    staff1 = verificar_permiso(usuario, accion1)
+    
+    sp = proyecto.sprint.get(id=sp_id)
+    if staff1:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        
+        lista_us = sp.listaUS.all()
+        
+        return render(request, 'sprints/ver.html', {'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
+    else:
+        return HttpResponseRedirect('/index')
+
 def saludo_dia():
     """
     Función de saludo. 
@@ -1843,6 +1995,16 @@ def verificar_permiso(usuario, accion):
             staff = True
         else:
             staff = False 
+    
+    elif accion=="Crear Sprint" or accion=="Modificar Sprint" or accion=="Visualizar Sprint":
+        permiso = Permisos.objects.filter(nombre="Administración de Sprints")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
     
     return staff
     

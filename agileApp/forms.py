@@ -283,3 +283,34 @@ class EditarUSForm(forms.Form):
 
 class AsignarUSForm(forms.Form):
     id_user = forms.IntegerField()
+    
+
+class CrearSprintForm(forms.Form):
+    nombre = forms.CharField(max_length=25)
+    duracion = forms.IntegerField()
+    estado = forms.IntegerField()
+    
+    def __init__(self, *args, **kwargs):
+        self.proyecto_id = kwargs.pop('proyecto_id')
+        return super(CrearSprintForm, self).__init__(*args, **kwargs)
+        
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en el proyecto."""
+        nombre = self.cleaned_data['nombre']
+        proyecto = Proyectos.objects.get(id=self.proyecto_id)
+        
+        if proyecto.sprint.filter(nombre=nombre):
+            raise forms.ValidationError('Nombre de sprint ya registrado.')
+        return nombre
+
+class BuscarSprintForm(forms.Form):
+    id=forms.IntegerField(required=False)
+    nombre = forms.CharField(max_length=25, required=False)
+
+class EditarSprintForm(forms.Form):    
+    nombre = forms.CharField(max_length=25)
+    duracion = forms.IntegerField()
+
+    id = forms.IntegerField(required=False)
+    nombre = forms.CharField(max_length = 50, required=False)
+    descripcion = forms.CharField(max_length = 50, required=False)

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Gracias{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+	{% if staff %}	<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+               		</ul>
+	{% endif %}	</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						{% if aid == 1 %}
+							<div id="tituloForm" class="header">SPRINT CREADO</div>
+						{% elif aid == 2 %}
+							<div id="tituloForm" class="header">SPRINT MODIFICADO</div>
+						{% endif %}
+							<div id="frmBusqueda">
+								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+									<colgroup>
+										<col width="16%">
+										<col width="21%">
+										<col width="21%">
+										<col width="21%">
+										<col width="21%">
+									</colgroup>
+									<tr>
+										<td><b>ID</b></td>
+										<td colspan="2">{{sp.id}}</td>
+								    </tr>
+								    
+									<tr>
+										<td><b>Nombre</b></td>
+									    <td colspan="2">{{sp.nombre}}</td>
+								    </tr>
+								    
+								    <tr>
+										<td><b>Descripción</b></td>
+									    <td colspan="2">{{sp.duracion}}</td>
+								    </tr>
+								    
+				
+								</table>
+							</div>
+							
+							<div id="botonBusqueda">
+        							<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
+        					</div>        							
+        					<a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}" class="button" type="submit">VOLVER</a>
+						</div>
+					</div>
+				</div>
+			</div>
+{% endblock content %}

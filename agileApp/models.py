@@ -77,6 +77,13 @@ class User_Story(models.Model):
     f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
     f_actividad = models.IntegerField(null=True) #Nro. de actividad del flujo.
 
+
+class Sprint(models.Model):
+    nombre=models.CharField(max_length=25, default="")
+    duracion=models.IntegerField(default=0)
+    estado=models.IntegerField(default=1)
+    listaUS=models.ManyToManyField(User_Story,through='US_Sprint')
+
 """
 Clase Proyectos.
 """
@@ -108,3 +115,12 @@ class Roles_Usuarios_Proyectos(models.Model):
 class US_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     user_story = models.ForeignKey(User_Story)
+
+class Sprint_Proyectos(models.Model):
+    proyecto = models.ForeignKey(Proyectos)
+    sprint = models.ForeignKey(Sprint)
+
+class US_Sprint(models.Model):
+    sprint = models.ForeignKey(Sprint)
+    user_story = models.ForeignKey(User_Story)
+    
