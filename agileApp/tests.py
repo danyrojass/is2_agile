@@ -9,8 +9,194 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
-from agileApp.models import Proyectos,Flujos,Actividades,Actividades_Flujos, Usuarios, Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles
+from agileApp.models import Proyectos,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles
 
+class test_User_Story(TestCase):
+    
+    def test_crearUserStory(self):
+        """
+        Prueba de creacion correcta de un User Story
+        """  
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        self.assertTrue(User_Story.objects.filter(nombre = 'prueba user Story').exists(), "El user story no se ha creado")   
+    
+    def test_asignarUserStoryaUsuario(self):
+        """
+        prueba para asignar User Story a Usuario       
+        """
+         #Se crea un usuario para la prueba
+        usuario = User()
+        usuario.username = "luis"
+        usuario.password = "luis"
+        usuario.email = "lutyma89@.com"
+        usuario.is_active = True
+        usuario.save()
+    
+        #se crea un user story para la prueba
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        usuario_asignado = usuario
+        us.tipo = 'prueba'
+        us.save()    
+        
+        self.assertTrue(User_Story.objects.filter(usuario = usuario ).exists(), "No se ha asignado el User Story, correctamente.") 
+
+            
+    def test_asignarUserStoryaProyecto(self):
+        """
+        prueba para asignar User Story a proyecto       
+        """
+         #Se crea un proyecto para la prueba
+         
+        proyecto = Proyectos()
+        proyecto.nombre_largo = 'Prueba_test'
+        proyecto.nombre_corto = 'test'
+        proyecto.tipo = True
+        proyecto.fecha_inicio = '2016-01-01'
+        proyecto.fecha_fin_estimado = '2016-01-02'
+        proyecto.fecha_fin_real = '2016-01-03'
+        proyecto.estado = 1
+        proyecto.observaciones = 'Prueba de un proyecto'
+        proyecto.save()
+            #se crea un user story para la prueba
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()    
+        
+        ac_fl = US_Proyectos(us=us, proyecto=proyecto)
+        ac_fl.save()
+        self.assertTrue(Proyectos.objects.filter(us = us).exists(), "No se ha asignado el user story correctamente.") 
+
+        
+class test_sprint(TestCase):
+    
+    def test_crearSprint(self):
+        """
+        prueba de creacion correcta de un sprint
+        """
+        sprint = Sprint()
+        sprint.nombre= 'Sprint Prueba'
+        sprint.duracion = '50'
+        sprint.estado = True
+        sprint.save()
+        
+        nombre = "Prueba Sprint"
+
+        self.assertTrue(Sprint.objects.filter(nombre = 'Sprint Prueba').exists(), "El sprint no se ha creado")   
+
+    def test_modificarSprint(self):
+        """
+        Prueba de modificacion correcta de un sprint
+        """    
+        sprint = Sprint()
+        sprint.nombre= 'Sprint Prueba'
+        sprint.duracion = '50'
+        sprint.estado = True
+        sprint.save()
+        
+        sprint.nombre = 'Sprint Prueba cambio'
+        sprint.save()
+        self.assertTrue(Sprint.objects.filter(nombre = 'Sprint Prueba cambio').exists(), "El sprint no se ha modificado")   
+    
+    
+    def test_crearUser_Story(self):
+        """
+        Prueba de creacion correcta de un User_Story
+        """    
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        self.assertTrue(User_Story.objects.filter(nombre = 'prueba user Story').exists(), "El user story no se ha creado")   
+    
+    def test_modificarUser_Story(self):
+        """
+        Prueba de modificar un User_Story
+        """    
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        us.nombre = 'prueba user Story 2'
+        us.save()
+        
+        self.assertTrue(Actividades.objects.filter(nombre = 'prueba user Story 2').exists(), "El user Story  no se ha modificado")   
+    
+    def test_asignar_UserStoryaSprint(self):
+        """
+        Prueba de asignar un user Story a un Sprint
+        """ 
+        sprint = Sprint()
+        sprint.nombre= 'Sprint Prueba'
+        sprint.duracion = '50'
+        sprint.estado = True
+        sprint.save()
+        
+        #Se crea dos UserStory para la prueba, el segundo es para probar la falla
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story 2' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        ac_fl = US_Sprint(us=us,sprint =sprint)
+        ac_fl.save()
+        self.assertTrue(Sprint.objects.filter(us = us).exists(), "No se ha asignado el User Story, correctamente.") 
 
 class test_flujoActividad(TestCase):
     
@@ -93,6 +279,45 @@ class test_flujoActividad(TestCase):
         ac_fl.save()
         self.assertTrue(Flujos.objects.filter(actividades = actividad).exists(), "No se ha asignado la actividad, correctamente.") 
 
+    def test_asignar_UsFlujo(self):
+        """
+        Prueba de asignar una User Story
+        """ 
+        flujo = Flujos()
+        flujo.nombre = 'Prueba flujo'
+        flujo.descripcion = 'Prueba flujo descripcion'
+        flujo.estado = True
+        flujo.save()
+        
+        #Se crea dos User Story  para la prueba, el segundo para el error
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story 2' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.tipo = 'prueba'
+        us.save()
+        
+        ac_fl = us_Flujos(us=us, flujo=flujo)
+        ac_fl.save()
+        self.assertTrue(Flujos.objects.filter(us = us).exists(), "No se ha asignado el user story correctamente.") 
+
+    
+    
     
 class test_proyecto(TestCase):
     
