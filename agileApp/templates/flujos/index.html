@@ -106,8 +106,7 @@
 									<td width="8%">VER</td>
 									<td width="8%">ACTIVIDAD</td>
 									<td width="10%">MODIFICAR</td>
-									
-								</tr>
+									</tr>
 							</table>
 							<div class="ScrollStyle">
 							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
@@ -124,7 +123,7 @@
 												<td width="9%"><div align="center"><a href="{% url 'agileApp:visualizar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="8%"><div align="center"><a href="{% url 'agileApp:crear_actividad' user.id proyecto.id f.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Actividades"></a></div></td>
 												<td width="10%"><div align="center"><a href="{% url 'agileApp:modificar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
-											</tr>
+												</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>

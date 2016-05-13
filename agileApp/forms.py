@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import string
 from .models import Roles, Roles_Usuarios, Proyectos, Usuarios_Proyectos, User_Story
 from django.shortcuts import get_object_or_404
+from agileApp.models import Flujos, Actividades
 
  
 TIPOS = ( 
@@ -273,6 +274,19 @@ class CrearFlujosForm(forms.Form):
     descripcion = forms.CharField(max_length=50)
     estado = forms.BooleanField(required=False)
     
+    def __init__(self, *args, **kwargs):
+        self.proyecto_id = 'proyecto_id'
+        return super(CrearFlujosForm, self).__init__(*args, **kwargs)
+        
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en el proyecto."""
+        nombre = self.cleaned_data['nombre']
+        proyecto = Proyectos.objects.get(id=self.proyecto_id)
+        
+        if proyecto.flujos.filter(nombre=nombre):
+            raise forms.ValidationError('Nombre de flujo ya registrado.')
+        return nombre
+    
 
 class BuscarFlujosForm(forms.Form):
     id = forms.IntegerField(required=False)
@@ -284,6 +298,7 @@ class CrearActividadForm(forms.Form):
     nombre = forms.CharField(max_length=20)
     descripcion = forms.CharField(max_length=30, required=False)
     estado = forms.IntegerField(required=False)
+    
     
 class BuscarFlujoForm(forms.Form):
     id=forms.IntegerField(required=False)

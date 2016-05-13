@@ -92,7 +92,8 @@ class test_flujoActividad(TestCase):
         ac_fl = Actividades_Flujos(actividad=actividad, flujo=flujo)
         ac_fl.save()
         self.assertTrue(Flujos.objects.filter(actividades = actividad).exists(), "No se ha asignado la actividad, correctamente.") 
- 
+
+    
 class test_proyecto(TestCase):
     
     def test_crearproyecto(self):

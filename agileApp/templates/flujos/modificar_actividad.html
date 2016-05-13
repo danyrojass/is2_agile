@@ -57,11 +57,11 @@
 								
 								<tr>
 									<td width="15%"><b>Nombre</b></td>
-								    <td width="43%"><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="50" maxlength="50" value=""></td>
+								    <td width="43%"><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="50" maxlength="50" value="{{actividad.nombre}}"></td>
 								</tr>	
 								<tr>
 									<td width="15%"><b>Descripcion</b></td>
-								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>
+								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{actividad.descripcion}}"></td>
 								</tr>
 																						
 							</table>	
@@ -70,8 +70,8 @@
 					</div>
 											
 					<div id="botonBusqueda">
-						<button class="button" type="submit">MODIFICAR ACTIVIDAD</button>
-				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
+						<td style="text-align:right"><button class="button" type="submit">MODIFICAR ACTIVIDAD</button></td>
+				  		<td style="text-align:left"><a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a></td>
 					</div>
 					</form>
 				</div>

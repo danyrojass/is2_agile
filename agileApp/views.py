@@ -1608,7 +1608,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False 
     
-    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad":
+    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad" or accion == "Borrar Flujos":
         permiso = Permisos.objects.filter(nombre="Administración de Flujos")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
