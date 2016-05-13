@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 import string
-from .models import Roles, Proyectos, Usuarios_Proyectos, User_Story
+from .models import Roles, Proyectos, Usuarios_Proyectos, User_Story, Flujos
 from django.shortcuts import get_object_or_404
 
  
@@ -329,3 +329,36 @@ class EditarSprintForm(forms.Form):
 
 class CambiarEstadoSprintForm(forms.Form):
     estado = forms.IntegerField(required=False)
+    
+
+class CrearFlujosForm(forms.Form):
+    nombre = forms.CharField(max_length = 30)
+    descripcion = forms.CharField(max_length=50)
+    estado = forms.BooleanField(required=False)
+    
+    
+    
+
+class BuscarFlujosForm(forms.Form):
+    id = forms.IntegerField(required=False)
+    nombre = forms.CharField(max_length = 30)
+    descripcion = forms.CharField(max_length=50, required=False)
+
+class CrearActividadForm(forms.Form):
+    nombre = forms.CharField(max_length=20)
+    descripcion = forms.CharField(max_length=30, required=False)
+    estado = forms.IntegerField(required=False)
+    
+    
+class BuscarFlujoForm(forms.Form):
+    id=forms.IntegerField(required=False)
+    nombre = forms.CharField(max_length=25, required=False)
+
+class EditarFlujoForm(forms.Form):    
+    nombre = forms.CharField(max_length=30)
+    descripcion = forms.CharField(max_length=50, required=False)
+
+class EditarActividadForm(forms.Form):    
+    nombre = forms.CharField(max_length=20)
+    descripcion = forms.CharField(max_length=30, required=False)
+    

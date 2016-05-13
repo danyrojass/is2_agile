@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Visualizar Proyecto{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						<div id="tituloForm" class="header">VISUALIZAR FLUJO </div>
+							<div id="frmBusqueda">
+								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+									<colgroup>
+										<col width="7%">
+										<col width="15%">
+										<col width="10%">
+										<col width="10%">
+									</colgroup>
+									<tr>
+										<td><b>ID:</b></td>
+										<td colspan="2">{{flujo.id}}</td>
+								    </tr>
+								    <tr>
+										<td><b>NOMBRE:</b></td>
+										<td colspan="2">{{flujo.nombre}}</td>
+								    </tr>
+								    <tr>
+										<td><b>DESCRIPCION:</b></td>
+										<td colspan="2">{{flujo.descripcion}}</td>
+								    </tr>
+								    <tr>
+										<td><b>TIPO:</b></td>
+										<td colspan="2">{{flujo.tipo}}</td>
+								    </tr>
+							</table>	
+						</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+							
+					<div id="tituloForm" class="header">ACTIVIDADES</div>
+					<div id="frmBusqueda">
+						<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+							<colgroup>
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+							</colgroup>
+
+										{% if up %}
+											{% for u in up %}
+									    		<td width="10%"><b>Nombre:</b> {{u.nombre}} <P> <b>Descripcion:</b> {{u.descripcion}} <P> <b>Modificar Actividad:</b> <a href="{% url 'agileApp:modificar_actividad' user.id proyecto.id flujo.id u.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a>												
+																								
+											</td>
+									    	{% endfor %}
+									    {% else %}
+									    	<td width="10%">Sin actividades.</td>
+									    {% endif %}
+
+								
+						</table>
+					</div>
+							
+							<div id="botonBusqueda">
+        							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
+        					</div>
+						</div>
+					</div>
+				</div>
+			</div>
+{% endblock content %}

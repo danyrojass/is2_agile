@@ -38,5 +38,11 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/sprint/(?P<sp_id>\d+)/ver/', views.ver_sprint, name='ver_sprint'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/sprint/(?P<sp_id>\d+)/asignar_US/', views.asignar_us_sprint, name='asignar_us_sprint'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/sprint/(?P<sp_id>\d+)/cambiar_estado/', views.cambiar_estado_sprint, name='cambiar_estado_sprint'),
-
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_flujo/$', views.index_flujo, name='index_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_flujo/$', views.crear_flujo, name='crear_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/crear_actividad/$', views.crear_actividad, name='crear_actividad'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/visualizar_flujo/$', views.visualizar_flujo, name='visualizar_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/modificar_flujo/$', views.modificar_flujo, name='modificar_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/actividad/(?P<actividad_id>\d+)/modificar_actividad/$', views.modificar_actividad, name='modificar_actividad'), 
+    
 ]
