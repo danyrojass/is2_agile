@@ -43,6 +43,8 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/crear_actividad/$', views.crear_actividad, name='crear_actividad'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/visualizar_flujo/$', views.visualizar_flujo, name='visualizar_flujo'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/modificar_flujo/$', views.modificar_flujo, name='modificar_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/cambiar_estado/$', views.cambiar_estado_flujo, name='cambiar_estado_flujo'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/asignar_flujo/$', views.asignar_flujo, name='asignar_flujo'),  
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/actividad/(?P<actividad_id>\d+)/modificar_actividad/$', views.modificar_actividad, name='modificar_actividad'), 
     
 ]

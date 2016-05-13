@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Crear Sprint{% endblock title %}
+{% block title %}Asignar US a Flujo{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -29,44 +29,41 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR SPRINT</div>
+					<div id="tituloForm" class="header">ASIGNAR US A FLUJO</div>
 					<div id="frmBusqueda">
-						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								
 								<tr>
-									<td width="14%"><b>Nombre</b></td>
-								    <td width="36%"><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="50" maxlength="25"></td>
-								</tr>	
-										
-								<tr>
-									<td><b>Duración en Horas</b></td>
-									<td><input NAME="duracion" type="number" class="cajaGrande" id="duracion" min=1 ></td>
+									<td width="35%"><u><b>PRIORIDAD ALTA</b></u></td>
+									<td width="35%"><u><b>PRIORIDAD MEDIA</b></u></td>
+									<td width="35%"><u><b>PRIORIDAD BAJA</b></u></td>
 								</tr>
 								
-								<tr>
-									<td><b>Estado</b></td>
-								    <td>
-										<select name="estado" id="estado">
-											<option selected="selected" disabled="disabled">--- Selecciona un Estado ---</option>
-											<option value="1">Planificado</option>
-											<option value="2">En Ejecución</option>
-											<option value="3">Finalizado</option>
-											<option value="4">Cancelado</option>
-										</select> 
-									</td>
-								</tr>
+								{% if user_stories %}
+									{% for p, q, r in user_stories %}
+										
+										<tr>
+											{% if p %}
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ p.id }}" value="{{ p.id }}">{{ p }}<br></td>
+											{% endif %}
+											{% if q %}
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ q.id }}" value="{{ q.id }}">{{ q }}<br></td>
+											{% endif %}
+											{% if r %}
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ r.id }}" value="{{ r.id }}">{{ r }}<br></td>
+											{% endif %}
+										</tr>
 											
-							</table>	
+									{% endfor %}
+								{% endif %}
+										
+							</table>
 					</div>
-					
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					
 
 					<div id="botonBusqueda">
-						<button class="button" type="submit">CREAR SPRINT</button>
-				  		<a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
+						<button class="button" type="submit">ASIGNAR USER STORIES A FLUJO</button>
+				  		<a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
 					</div>
 					</form>
 				</div>

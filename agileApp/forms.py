@@ -334,10 +334,9 @@ class CambiarEstadoSprintForm(forms.Form):
 class CrearFlujosForm(forms.Form):
     nombre = forms.CharField(max_length = 30)
     descripcion = forms.CharField(max_length=50)
+    tipo_id = forms.IntegerField(required=False) 
     estado = forms.BooleanField(required=False)
-    
-    
-    
+
 
 class BuscarFlujosForm(forms.Form):
     id = forms.IntegerField(required=False)
@@ -361,4 +360,7 @@ class EditarFlujoForm(forms.Form):
 class EditarActividadForm(forms.Form):    
     nombre = forms.CharField(max_length=20)
     descripcion = forms.CharField(max_length=30, required=False)
+    
+class CambiarEstadoFlujoForm(forms.Form):
+    estado = forms.BooleanField(required=False)
     

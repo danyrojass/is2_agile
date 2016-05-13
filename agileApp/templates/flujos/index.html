@@ -16,7 +16,8 @@
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
 					<ul>
-                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Ejecución</a></li>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                     	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
                		</ul>
 				</li>
@@ -97,15 +98,17 @@
 						<div id="frmResultado">
 							<table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0 ID="Table1">
 								<tr class="cabeceraTabla">
-									<td width="7%">ÍTEM</td>
-									<td width="7%">ID</td>
-									<td width="12%">NOMBRE</td>
-									<td width="12%">ESTADO</td>
-									<td width="30%">DESCRIPCION</td>
+									<td width="5%">ÍTEM</td>
+									<td width="5%">ID</td>
+									<td width="10%">NOMBRE</td>
+									<td width="7%">ESTADO</td>
+									<td width="20%">DESCRIPCION</td>
 									<td width="5%">TIPO</td>
-									<td width="8%">VER</td>
-									<td width="8%">ACTIVIDAD</td>
-									<td width="10%">MODIFICAR</td>
+									<td width="5%">VER</td>
+									<td width="5%">ACTIVIDAD</td>
+									<td width="5%">MODIFICAR</td>
+									<td width="5%">CAMBIAR ESTADO</td>
+									<td width="5%">ASIGNAR US</td>
 									</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -114,27 +117,41 @@
 									{% for f in flujo %}
 										{% if forloop.counter|divisibleby:2  %}
 											<tr class="itemImparTabla">
-												<td class="aCentro" width="7%"><div align="center">{{forloop.counter}}</div></td>
-												<td width="7%"><div align="center">{{f.id}}</div></td>
-												<td width="12%"><div align="center">{{f.nombre}}</div></td>
-												<td width="12%"><div align="center">{{f.estado}}</div></td>
-												<td width="30%"><div align="center">{{f.descripcion}}</div></td>
+												<td class="aCentro" width="5%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="5%"><div align="center">{{f.id}}</div></td>
+												<td width="10%"><div align="center">{{f.nombre}}</div></td>
+												<td width="7%"><div align="center">{{f.estado}}</div></td>
+												<td width="20%"><div align="center">{{f.descripcion}}</div></td>
 												<td width="5%"><div align="center">{{f.tipo}}</div></td>
-												<td width="9%"><div align="center"><a href="{% url 'agileApp:visualizar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
-												<td width="8%"><div align="center"><a href="{% url 'agileApp:crear_actividad' user.id proyecto.id f.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Actividades"></a></div></td>
-												<td width="10%"><div align="center"><a href="{% url 'agileApp:modificar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:crear_actividad' user.id proyecto.id f.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Actividades"></a></div></td>
+												{% if f in f_us %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_flujo' user.id proyecto.id f.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/doc.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>													
+													<td width="5%">&nbsp;</td>
+												{% endif %}													
 												</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
-												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
-												<td width="7%"><div align="center">{{f.id}}</div></td>
-												<td width="12%"><div align="center">{{f.nombre}}</div></td>
-												<td width="12%"><div align="center">{{f.estado}}</div></td>
-												<td width="30%"><div align="center">{{f.descripcion}}</div></td>
+												<td class="aCentro" width="5%"><div align="center">{{forloop.counter}}</div></td>
+												<td width="5%"><div align="center">{{f.id}}</div></td>
+												<td width="10%"><div align="center">{{f.nombre}}</div></td>
+												<td width="7%"><div align="center">{{f.estado}}</div></td>
+												<td width="20%"><div align="center">{{f.descripcion}}</div></td>
 												<td width="5%"><div align="center">{{f.tipo}}</div></td>
-												<td width="9%"><div align="center"><a href="{% url 'agileApp:visualizar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
-												<td width="8%"><div align="center"><a href="{% url 'agileApp:crear_actividad' user.id proyecto.id f.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Actividades"></a></div></td>
-												<td width="10%"><div align="center"><a href="{% url 'agileApp:modificar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>											
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:crear_actividad' user.id proyecto.id f.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Agregar Actividades"></a></div></td>
+												{% if f in f_us %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>													
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_flujo' user.id proyecto.id f.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_flujo' user.id proyecto.id f.id %}"><img src="/static/img/doc.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>	
+												{% else %}
+													<td width="10%">&nbsp;</td>													
+													<td width="10%">&nbsp;</td>
+												{% endif %}	
 												</tr>
 											
 										{% endif %}

@@ -14,8 +14,9 @@
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
-	{% if staff %}	<ul>
+	{% if staff1 %}	<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                     	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
                     	
                		</ul>
@@ -63,6 +64,18 @@
 									<td width="15%"><b>Descripcion</b></td>
 								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{flujo.descripcion}}"></td>
 								</tr>
+								<tr>
+									<td width="14%"><b>Tipo</b></td>
+									<td width="36%">
+										<select id="tipo_id" name="tipo_id" class="comboGrande">
+											<option selected="selected" disabled="disabled">--- Selecciona un Tipo ---</option> 
+												{% if tipos %}
+													{% for r in tipos %}
+														<option value="{{r.id}}" id="tipo_id">{{r.nombre}}</option>
+													{% endfor %}
+												{% endif %}
+										</select>
+									</td>
 																						
 							</table>	
 						</div>

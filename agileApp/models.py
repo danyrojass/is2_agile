@@ -53,10 +53,7 @@ class Permisos_Roles(models.Model):
     permisos = models.ForeignKey(Permisos)
     roles = models.ForeignKey(Roles)
 
-class Actividades(models.Model):
-    nombre = models.CharField(max_length=20, default="")
-    descripcion = models.CharField(max_length=30, default="")
-    estado = models.IntegerField(default=0) #0 = To Do, 1 = Doing, 2 = Done
+
     
 class Tipo(models.Model):
     nombre = models.CharField(max_length = 50, null=True)
@@ -84,7 +81,12 @@ class User_Story(models.Model):
     def __str__(self):
         return self.nombre
 
-
+class Actividades(models.Model):
+    nombre = models.CharField(max_length=20, default="")
+    descripcion = models.CharField(max_length=30, default="")
+    estado = models.IntegerField(default=0) #0 = To Do, 1 = Doing, 2 = Done
+    us = models.ManyToManyField(User_Story, through='us_Actividades')
+    
 class Sprint(models.Model):
     nombre=models.CharField(max_length=25, default="")
     duracion=models.IntegerField(default=0)
@@ -106,6 +108,11 @@ class Actividades_Flujos(models.Model):
 class us_Flujos(models.Model):
     flujo = models.ForeignKey(Flujos)
     us = models.ForeignKey(User_Story)
+    
+class us_Actividades(models.Model):
+    actividad = models.ForeignKey(Actividades)
+    us = models.ForeignKey(User_Story)
+    
 """
 Clase Proyectos.
 """
