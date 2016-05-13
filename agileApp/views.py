@@ -10,12 +10,12 @@ from datetime import datetime
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm,\
-BuscarSprintForm, CrearSprintForm, EditarSprintForm, CambiarEstadoUSForm
+BuscarSprintForm, CrearSprintForm, EditarSprintForm, CambiarEstadoUSForm 
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos,\
 Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm
-
+ 
 def inicio(request): 
     """
     Ingreso al sistema.
