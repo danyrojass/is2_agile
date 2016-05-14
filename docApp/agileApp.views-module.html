@@ -287,24 +287,6 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_roles_usuarios_proyecto" class="summary-sig-name">asignar_roles_usuarios_proyecto</a>(<span class="summary-sig-arg">request</span>,
-        <span class="summary-sig-arg">user_id</span>)</span><br />
-      M&#233;todo que permite asignar un Rol a un Usuario en un Proyecto determinado.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_roles_usuarios_proyecto">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="agileApp.views-module.html#crear_roles" class="summary-sig-name">crear_roles</a>(<span class="summary-sig-arg">request</span>)</span><br />
       M&#233;todo para la creaci&#243;n de roles con la asignaci&#243;n de sus permisos correspondientes.</td>
           <td align="right" valign="top">
@@ -467,6 +449,7 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="agileApp.views-module.html#definir_proyectos" class="summary-sig-name">definir_proyectos</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
         <span class="summary-sig-arg">proyecto_id</span>)</span><br />
       Metodo que define los parametros de un proyecto</td>
           <td align="right" valign="top">
@@ -503,9 +486,9 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="agileApp.views-module.html#desasignar_usuarios" class="summary-sig-name">desasignar_usuarios</a>(<span class="summary-sig-arg">request</span>,
-        <span class="summary-sig-arg">lista_usuarios</span>,
+        <span class="summary-sig-arg">user_id</span>,
         <span class="summary-sig-arg">proyecto_id</span>)</span><br />
-      M&#233;todo para desasignar a un usuarios existente del proyecto.</td>
+      M&#233;todo para desasignar a un usuario existente del proyecto.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.views-pysrc.html#desasignar_usuarios">source&nbsp;code</a></span>
             
@@ -543,6 +526,516 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
       Metodo que permite visualizar proyectos</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.views-pysrc.html#index_proyectos">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#index_ususario_proyecto" class="summary-sig-name">index_ususario_proyecto</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que muestra la p&#225;gina de inicio de un Usuario no administrador, en un Proyecto seleccionado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#index_ususario_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#index_proyecto_usuario" class="summary-sig-name">index_proyecto_usuario</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que muestra la p&#225;gina de inicio de Proyecto de un Usuario, en un Proyecto seleccionado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#index_proyecto_usuario">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#eliminar_usuario_proyecto" class="summary-sig-name">eliminar_usuario_proyecto</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">userd_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que permite desasignar un Usuario de un Proyecto, as&#237; como tambi&#233;n el Rol asociado al Usuario.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#eliminar_usuario_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_roles_usuarios_proyecto" class="summary-sig-name">asignar_roles_usuarios_proyecto</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que permite asignar un Rol a un Usuario en un Proyecto determinado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_roles_usuarios_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#crear_us" class="summary-sig-name">crear_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que permite crear un User Story en un Proyecto determinado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#crear_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#modificar_us" class="summary-sig-name">modificar_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">us_id</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que permite modificar un User Story seleccionado en un Proyecto determinado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#modificar_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_us" class="summary-sig-name">asignar_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      M&#233;todo que permite asignar un User Story a un Usuario en un Proyecto determinado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#index_us" class="summary-sig-name">index_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo de inicio que permite ver los User Stories de un Proyecto determinado, as&#237; como tambi&#233;n la b&#250;squeda de los mismos.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#index_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#ver_us" class="summary-sig-name">ver_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      M&#233;todo que nos permite ver los user stories de un proyecto especifico.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#ver_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#cambiar_estado_us" class="summary-sig-name">cambiar_estado_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      M&#233;todo que nos permite cambiar el estado de un user story especifico.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#index_sprint" class="summary-sig-name">index_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo de inicio que nos permite verificar todo lo relaciona a los sprint.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#index_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#crear_sprint" class="summary-sig-name">crear_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que nos permite crear un sprint nuevo relacionado a un proyecto.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#crear_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#modificar_sprint" class="summary-sig-name">modificar_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">sp_id</span>)</span><br />
+      M&#233;todo que nos permite modificar un sprint relacionado a un proyecto.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#modificar_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#ver_sprint" class="summary-sig-name">ver_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">sp_id</span>)</span><br />
+      M&#233;todo que nos permite ver los sprints relacionado a un proyecto.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#ver_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_us_sprint" class="summary-sig-name">asignar_us_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">sp_id</span>)</span><br />
+      M&#233;todo que nos permite asignar user stories a sprints.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_us_sp" class="summary-sig-name">asignar_us_sp</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">sp_id</span>,
+        <span class="summary-sig-arg">lista_user_stories</span>)</span><br />
+      M&#233;todo que realiza la acci&#243;n de asignar user stories a sprints.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#cambiar_estado_sprint" class="summary-sig-name">cambiar_estado_sprint</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">sp_id</span>)</span><br />
+      M&#233;todo que nos permite cambiar el estado de un sprint especifico.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#crear_flujo" class="summary-sig-name">crear_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo que nos permite crear un nuevo flujo para un proyecto dado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#crear_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#index_flujo" class="summary-sig-name">index_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>)</span><br />
+      M&#233;todo de inicio para la gestion de flujos relacionado a proyectos existentes en el sistema.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#index_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#crear_actividad" class="summary-sig-name">crear_actividad</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      M&#233;todo que nos permite crear una actividad nueva dentro de un flujo de un proyecto existente en el sistema.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#crear_actividad">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#visualizar_flujo" class="summary-sig-name">visualizar_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      M&#233;todo que nos permite visualizar flujos de un proyecto dado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#visualizar_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#modificar_flujo" class="summary-sig-name">modificar_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      M&#233;todo que nos permite modificar flujos de un proyecto dado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#modificar_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#modificar_actividad" class="summary-sig-name">modificar_actividad</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>,
+        <span class="summary-sig-arg">actividad_id</span>)</span><br />
+      M&#233;todo que nos permite modificar la actividad de un flujo relacionado a un proyecto existente en el sistema.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#modificar_actividad">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#cambiar_estado_flujo" class="summary-sig-name">cambiar_estado_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      M&#233;todo que nos permite modificar el estado de un flujo.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_flujo" class="summary-sig-name">asignar_flujo</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      M&#233;todo que nos permite asignar un flujo a un proyecto dado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_us_f" class="summary-sig-name">asignar_us_f</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">f_id</span>,
+        <span class="summary-sig-arg">lista_user_stories</span>)</span><br />
+      M&#233;todo que realiza la acci&#243;n de asignar un user story a un flujo dado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_f">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -913,7 +1406,6 @@ Elimina a un Usuario del sistema, es decir lo pone en estado inactivo.
 M&#233;todo que permite modificar la contrase&#241;a, del usuario solicitante.
 
 @param request: Http request
-@type  request:HtpptRequest
 @return: render al template usuarios/modificar_contrasena.html para la modificaci&#243;n. 
          render al template usuarios/gracias.html cuando se ha modificado correctamente.
 
@@ -959,36 +1451,6 @@ Muestra a un Usuario del sistema.
   </dl>
 </td></tr></table>
 </div>
-<a name="asignar_roles_usuarios_proyecto"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_roles_usuarios_proyecto</span>(<span class="sig-arg">request</span>,
-        <span class="sig-arg">user_id</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_roles_usuarios_proyecto">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <pre class="literalblock">
-
-M&#233;todo que permite asignar un Rol a un Usuario en un Proyecto determinado.
-
-@param request: Http request
-@type  request:HtpptRequest
-@param user_id: Id de un usuario registrado en el sistema.
-@return: render al template usuarios/asignar.html para la asignaci&#243;n. 
-         render al template usuarios/gracias.html cuando se ha asignado correctamente.
-
-</pre>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <a name="crear_roles"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1008,7 +1470,6 @@ M&#233;todo que permite asignar un Rol a un Usuario en un Proyecto determinado.
 M&#233;todo para la creaci&#243;n de roles con la asignaci&#243;n de sus permisos correspondientes.
 
 @param request:Http request
-@type  request:HtpptRequest
 @return:render a roles/crear.html que cuenta con las especificaciones para la creaci&#243;n del rol.
 
 </pre>
@@ -1038,7 +1499,6 @@ M&#233;todo para asignar los permisos con los que contara un rol.
 
 
 @param request:Http request
-@type  request:HtpptRequest
 @param user_id:Id de un rol existente en el sistema.
 @return: rol con los permisos asignados recientemente.
 
@@ -1067,7 +1527,6 @@ M&#233;todo para asignar los permisos con los que contara un rol.
 M&#233;todo que nos permite modificar un rol existente en el sistema.
 
 @param request: Http request
-@type  request:HtpptRequest
 @param role_id: Id de un rol registrado en el sistema
 @return: render a roles/editar.html con la descripci&#243;n del rol modificado.
 
@@ -1098,7 +1557,6 @@ Nos permite modificar los permisos de un rol registrado en el sistema.
 
 
 @param request: Http request
-@type  request:HtpptRequest
 @param role_id: Id de un rol registrado en el sistema
 @return: render a roles/ver.html con sus respectivos permisos a modificar.
 
@@ -1128,7 +1586,6 @@ Nos permite modificar los permisos de un rol registrado en el sistema.
 
  
 @param request: Http request
-@type  request:HtpptRequest
 @param role_id: Id de un rol registrado en el sistema
 @return: render a roles/ver.html.
 
@@ -1160,7 +1617,6 @@ M&#233;todo para eliminar un rol existente del sistema.
 
 
 @param request: Http request
-@type  request:HtpptRequest
 @param role_id: Id de un rol registrado en el sistema
 @return: render a roles/eliminar.html.  
 
@@ -1188,7 +1644,6 @@ M&#233;todo para eliminar un rol existente del sistema.
 
  Establece el estado de un rol a False
 @param request: Http request
-@type  request:HtpptRequest
 @param rol_id: Id de un rol registrado en el sistema
 @return:roles/gracias.html
 
@@ -1259,6 +1714,7 @@ Metodo que crea un Nuevo proyecto en el sistema
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">definir_proyectos</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
         <span class="sig-arg">proyecto_id</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1271,7 +1727,7 @@ Metodo que crea un Nuevo proyecto en el sistema
 Metodo que define los parametros de un proyecto
 
 @param request: Http request
-@type  request:HtpptRequest
+@type  request:HtpptRequest 
 @param request: proyecto_id
 @return: render al template proyectos/gracias.html
 
@@ -1300,7 +1756,7 @@ Metodo que define los parametros de un proyecto
 Metodo que edita los parametros de un proyecto
 
 @param request: Http request
-@type  request:HtpptRequest
+@type  request:HtpptRequest 
 @param request: proyecto_id
 @return: render al template proyectos/gracias.html
 
@@ -1317,7 +1773,7 @@ Metodo que edita los parametros de un proyecto
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">desasignar_usuarios</span>(<span class="sig-arg">request</span>,
-        <span class="sig-arg">lista_usuarios</span>,
+        <span class="sig-arg">user_id</span>,
         <span class="sig-arg">proyecto_id</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1327,10 +1783,10 @@ Metodo que edita los parametros de un proyecto
   
   <pre class="literalblock">
 
-M&#233;todo para desasignar a un usuarios existente del proyecto.
+M&#233;todo para desasignar a un usuario existente del proyecto.
 
 @param request: Http request
-@type  request:HtpptRequest
+@type  request:HtpptRequest 
 @param request: proyecto_id
 @return: se eliminaron los registros que relacionan al usuario con el proyecto, con el rol. 
 
@@ -1359,7 +1815,7 @@ M&#233;todo para desasignar a un usuarios existente del proyecto.
 Metodo que permite visualizar el proyecto seleccionado
 
 @param request: Http request
-@type  request:HtpptRequest
+@type  request:HtpptRequest 
 @param request: proyecto_id
 @return: render al template proyectos/ver.html
 
@@ -1387,8 +1843,856 @@ Metodo que permite visualizar el proyecto seleccionado
 Metodo que permite visualizar proyectos
 
 @param request: Http request
-@type  request:HtpptRequest
+@type  request:HtpptRequest 
 @return: render al template proyectos/results.html
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="index_ususario_proyecto"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">index_ususario_proyecto</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#index_ususario_proyecto">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que muestra la p&#225;gina de inicio de un Usuario no administrador, en un Proyecto seleccionado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template inicio_usuario.html cuando accede a un proyecto seleccionado.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="index_proyecto_usuario"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">index_proyecto_usuario</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#index_proyecto_usuario">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que muestra la p&#225;gina de inicio de Proyecto de un Usuario, en un Proyecto seleccionado.
+Si es Scrum Master, muesta la lista de Usuarios y User Stories asignados al Proyecto.
+Si es Usuario Regular, muestra la lista de User Stories.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template proyecto_usuario/index.html para ver p&#225;gina de inicio de proyecto. 
+         render al template proyecto_usiario/results.html para obtener resultado de b&#250;squeda.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="eliminar_usuario_proyecto"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">eliminar_usuario_proyecto</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">userd_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#eliminar_usuario_proyecto">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que permite desasignar un Usuario de un Proyecto, as&#237; como tambi&#233;n el Rol asociado al Usuario.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema, que realiza la acci&#243;n (Scrum Master).
+@param userd_id: Id de un usuario registrado en el sistema, que es objeto de la acci&#243;n (Usuario Regular).
+@return: render al template proyecto_usuario/gracias.html cuando se ha desasignado correctamente.
+         Usuario desasignado del Proyecto.
+         Rol desasignado del Usuario.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_roles_usuarios_proyecto"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_roles_usuarios_proyecto</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_roles_usuarios_proyecto">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que permite asignar un Rol a un Usuario en un Proyecto determinado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@return: render al template usuarios/asignar.html para la asignaci&#243;n. 
+         render al template usuarios/gracias.html cuando se ha asignado correctamente.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="crear_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">crear_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#crear_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que permite crear un User Story en un Proyecto determinado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/crear.html para la craci&#243;n. 
+         render al template user_history/gracias.html cuando se ha creado correctamente.
+         User Story creado.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="modificar_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">modificar_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">us_id</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#modificar_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que permite modificar un User Story seleccionado en un Proyecto determinado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param us_id: Id de un user story registrado en el sistema.
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/modificar.html para la modificaci&#243;n. 
+         render al template user_history/gracias.html cuando se ha modificado correctamente.
+         User Story modificado.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que permite asignar un User Story a un Usuario en un Proyecto determinado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param us_id: Id de un user story registrado en el sistema.
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/asginar.html para la asignaci&#243;n. 
+         render al template user_history/gracias.html cuando se ha asignado correctamente.
+         User Story asignado a un Usuario.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="index_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">index_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#index_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo de inicio que permite ver los User Stories de un Proyecto determinado, as&#237; como tambi&#233;n la b&#250;squeda de los mismos.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/index.html para la p&#225;gina de inicio.
+         render al template user_history/results.html para obtener resultados de la b&#250;squeda.  
+         Listado de US.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ver_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ver_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#ver_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite ver los user stories de un proyecto especifico.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/ver.html.
+         
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cambiar_estado_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cambiar_estado_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite cambiar el estado de un user story especifico.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/cambiar_estado.html.
+         
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="index_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">index_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#index_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo de inicio que nos permite verificar todo lo relaciona a los sprint.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template user_history/index.html para la p&#225;gina de inicio.
+         render al template user_history/results.html para obtener resultados de la b&#250;squeda.  
+         Listado de US.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="crear_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">crear_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#crear_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite crear un sprint nuevo relacionado a un proyecto.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template sprints/crear.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="modificar_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">modificar_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">sp_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#modificar_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite modificar un sprint relacionado a un proyecto.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template sprints/modificar.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ver_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ver_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">sp_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#ver_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite ver los sprints relacionado a un proyecto.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template sprints/ver.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_us_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_us_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">sp_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite asignar user stories a sprints.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param sp_id: Id de un sprint registrado en el sistema.
+@return: render al template sprints/asignar.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_us_sp"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_us_sp</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">sp_id</span>,
+        <span class="sig-arg">lista_user_stories</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sp">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que realiza la acci&#243;n de asignar user stories a sprints.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param sp_id: Id de un sprint registrado en el sistema.
+@return: Informa si el user story a sido asignado.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cambiar_estado_sprint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cambiar_estado_sprint</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">sp_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_sprint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite cambiar el estado de un sprint especifico.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param sp_id: Id de un sprint registrado en el sistema.
+@return: render al template sprints/cambiar_estado.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="crear_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">crear_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#crear_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite crear un nuevo flujo para un proyecto dado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template flujos/crear.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="index_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">index_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#index_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo de inicio para la gestion de flujos relacionado a proyectos existentes en el sistema.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@return: render al template flujos/index.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="crear_actividad"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">crear_actividad</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#crear_actividad">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite crear una actividad nueva dentro de un flujo de un proyecto existente en el sistema.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render al template flujos/crear_actividades.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="visualizar_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">visualizar_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#visualizar_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite visualizar flujos de un proyecto dado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render al template flujos/visualizar_flujo.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="modificar_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">modificar_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#modificar_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite modificar flujos de un proyecto dado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render al template flujos/modificar.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="modificar_actividad"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">modificar_actividad</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>,
+        <span class="sig-arg">actividad_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#modificar_actividad">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite modificar la actividad de un flujo relacionado a un proyecto existente en el sistema.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@param actividad_id: Id de una actividad registrada en el sistema.
+@return: render al flujos/modificar_actividad.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cambiar_estado_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cambiar_estado_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite modificar el estado de un flujo.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render al flujos/cambiar_estado.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_flujo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_flujo</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_flujo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que nos permite asignar un flujo a un proyecto dado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render al flujos/asignar.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="asignar_us_f"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_us_f</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">f_id</span>,
+        <span class="sig-arg">lista_user_stories</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_f">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+M&#233;todo que realiza la acci&#243;n de asignar un user story a un flujo dado.
+
+@param request: Http request
+@type  request:HtpptRequest
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: Nos informa si el user story a sido asignado.  
 
 </pre>
   <dl class="fields">
@@ -1505,7 +2809,7 @@ para realizar una acci&#243;n determinada.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Apr 29 21:44:33 2016
+    Generated by Epydoc 3.0.1 on Fri May 13 20:13:48 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

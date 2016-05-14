@@ -905,6 +905,7 @@ def definir_proyectos(request, user_id, proyecto_id):
     Metodo que define los parametros de un proyecto
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param request: proyecto_id
     @return: render al template proyectos/gracias.html
     
@@ -961,6 +962,7 @@ def editar_proyectos(request, proyecto_id):
     Metodo que edita los parametros de un proyecto
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param request: proyecto_id
     @return: render al template proyectos/gracias.html
     
@@ -1023,6 +1025,7 @@ def desasignar_usuarios(request, user_id, proyecto_id):
     Método para desasignar a un usuario existente del proyecto.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param request: proyecto_id
     @return: se eliminaron los registros que relacionan al usuario con el proyecto, con el rol. 
     
@@ -1043,6 +1046,7 @@ def ver_proyectos(request, proyecto_id):
     Metodo que permite visualizar el proyecto seleccionado
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param request: proyecto_id
     @return: render al template proyectos/ver.html
     """
@@ -1079,6 +1083,7 @@ def index_proyectos(request):
     Metodo que permite visualizar proyectos
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @return: render al template proyectos/results.html
     """
     usuario = request.user
@@ -1138,6 +1143,7 @@ def index_ususario_proyecto(request, user_id, proyecto_id):
     Método que muestra la página de inicio de un Usuario no administrador, en un Proyecto seleccionado.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
     @return: render al template inicio_usuario.html cuando accede a un proyecto seleccionado.
@@ -1166,6 +1172,7 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
     Si es Usuario Regular, muestra la lista de User Stories.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
     @return: render al template proyecto_usuario/index.html para ver página de inicio de proyecto. 
@@ -1295,6 +1302,7 @@ def eliminar_usuario_proyecto(request, user_id, userd_id, proyecto_id):
     Método que permite desasignar un Usuario de un Proyecto, así como también el Rol asociado al Usuario.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema, que realiza la acción (Scrum Master).
     @param userd_id: Id de un usuario registrado en el sistema, que es objeto de la acción (Usuario Regular).
     @return: render al template proyecto_usuario/gracias.html cuando se ha desasignado correctamente.
@@ -1326,6 +1334,7 @@ def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
     Método que permite asignar un Rol a un Usuario en un Proyecto determinado.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema.
     @return: render al template usuarios/asignar.html para la asignación. 
              render al template usuarios/gracias.html cuando se ha asignado correctamente.
@@ -1380,6 +1389,7 @@ def crear_us(request, user_id, proyecto_id):
     Método que permite crear un User Story en un Proyecto determinado.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
     @return: render al template user_history/crear.html para la cración. 
@@ -1446,6 +1456,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     Método que permite modificar un User Story seleccionado en un Proyecto determinado.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param us_id: Id de un user story registrado en el sistema.
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
@@ -1555,6 +1566,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
     Método que permite asignar un User Story a un Usuario en un Proyecto determinado.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param us_id: Id de un user story registrado en el sistema.
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
@@ -1611,6 +1623,7 @@ def index_us(request, user_id, proyecto_id):
     Método de inicio que permite ver los User Stories de un Proyecto determinado, así como también la búsqueda de los mismos.
     
     @param request: Http request
+    @type  request:HtpptRequest 
     @param user_id: Id de un usuario registrado en el sistema.
     @param proyecto_id: Id de un proyecto registrado en el sistema.
     @return: render al template user_history/index.html para la página de inicio.
@@ -1666,6 +1679,17 @@ def index_us(request, user_id, proyecto_id):
         return HttpResponseRedirect('/index')
 
 def ver_us(request, user_id, proyecto_id, us_id):
+    """
+    Método que nos permite ver los user stories de un proyecto especifico.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/ver.html.
+             
+    """
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1689,6 +1713,17 @@ def ver_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 
 def cambiar_estado_us(request, user_id, proyecto_id, us_id):
+    """
+    Método que nos permite cambiar el estado de un user story especifico.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/cambiar_estado.html.
+             
+    """
+
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1726,7 +1761,18 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
 
 
 """ Administración de Sprints. """
-def index_sprint(request, user_id, proyecto_id):  
+def index_sprint(request, user_id, proyecto_id):
+    """
+    Método de inicio que nos permite verificar todo lo relaciona a los sprint.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/index.html para la página de inicio.
+             render al template user_history/results.html para obtener resultados de la búsqueda.  
+             Listado de US.
+    """  
     user = request.user
     accion = "Listar Sprint"
     
@@ -1772,6 +1818,18 @@ def index_sprint(request, user_id, proyecto_id):
 
 
 def crear_sprint(request, user_id, proyecto_id):
+    
+    """
+    Método que nos permite crear un sprint nuevo relacionado a un proyecto.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template sprints/crear.html.  
+    
+    """
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     accion = "Crear Sprint"
@@ -1813,6 +1871,17 @@ def crear_sprint(request, user_id, proyecto_id):
         return HttpResponseRedirect('/index')
 
 def modificar_sprint(request, user_id, proyecto_id, sp_id):
+    
+    """
+    Método que nos permite modificar un sprint relacionado a un proyecto.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template sprints/modificar.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1853,6 +1922,18 @@ def modificar_sprint(request, user_id, proyecto_id, sp_id):
         return HttpResponseRedirect('/index')
     
 def ver_sprint(request, user_id, proyecto_id, sp_id):
+    """
+    Método que nos permite ver los sprints relacionado a un proyecto.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template sprints/ver.html.  
+    
+    """
+    
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1878,6 +1959,18 @@ def ver_sprint(request, user_id, proyecto_id, sp_id):
         return HttpResponseRedirect('/index')
 
 def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
+    
+    """
+    Método que nos permite asignar user stories a sprints.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param sp_id: Id de un sprint registrado en el sistema.
+    @return: render al template sprints/asignar.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1918,7 +2011,16 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
         return HttpResponseRedirect('/index')
 
 def asignar_us_sp(request, sp_id, lista_user_stories):
-   
+    
+    """
+    Método que realiza la acción de asignar user stories a sprints.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param sp_id: Id de un sprint registrado en el sistema.
+    @return: Informa si el user story a sido asignado.  
+    
+    """
     sprint = get_object_or_404(Sprint, id=sp_id)
     
     for us_id in lista_user_stories:
@@ -1933,6 +2035,17 @@ def asignar_us_sp(request, sp_id, lista_user_stories):
     return spus 
 
 def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
+    """
+    Método que nos permite cambiar el estado de un sprint especifico.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param sp_id: Id de un sprint registrado en el sistema.
+    @return: render al template sprints/cambiar_estado.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1983,6 +2096,16 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
 
 "Gestión de Flujos"
 def crear_flujo(request, user_id, proyecto_id):
+    """
+    Método que nos permite crear un nuevo flujo para un proyecto dado.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template flujos/crear.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     accion = "Crear Flujo"
@@ -2026,7 +2149,17 @@ def crear_flujo(request, user_id, proyecto_id):
     else:
         return HttpResponseRedirect('/index')
 
-def index_flujo(request, user_id, proyecto_id):  
+def index_flujo(request, user_id, proyecto_id): 
+    """
+    Método de inicio para la gestion de flujos relacionado a proyectos existentes en el sistema.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template flujos/index.html.  
+    
+    """ 
     user = request.user
     accion = "Listar Flujo"
     
@@ -2081,6 +2214,17 @@ def index_flujo(request, user_id, proyecto_id):
         return HttpResponseRedirect('/index')
 
 def crear_actividad(request, user_id, proyecto_id, flujo_id):
+    """
+    Método que nos permite crear una actividad nueva dentro de un flujo de un proyecto existente en el sistema.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render al template flujos/crear_actividades.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
@@ -2121,7 +2265,17 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
 
 def visualizar_flujo(request, user_id, proyecto_id, flujo_id):
+    """
+    Método que nos permite visualizar flujos de un proyecto dado.
     
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render al template flujos/visualizar_flujo.html.  
+    
+    """    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
@@ -2150,6 +2304,17 @@ def visualizar_flujo(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
 
 def modificar_flujo(request, user_id, proyecto_id, flujo_id):
+    """
+    Método que nos permite modificar flujos de un proyecto dado.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render al template flujos/modificar.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2194,6 +2359,18 @@ def modificar_flujo(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
 
 def modificar_actividad(request, user_id, proyecto_id, flujo_id, actividad_id):
+    """
+    Método que nos permite modificar la actividad de un flujo relacionado a un proyecto existente en el sistema.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @param actividad_id: Id de una actividad registrada en el sistema.
+    @return: render al flujos/modificar_actividad.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2232,6 +2409,17 @@ def modificar_actividad(request, user_id, proyecto_id, flujo_id, actividad_id):
         return HttpResponseRedirect('/index')
 
 def cambiar_estado_flujo(request, user_id, proyecto_id, flujo_id):
+    """
+    Método que nos permite modificar el estado de un flujo.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render al flujos/cambiar_estado.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2269,6 +2457,17 @@ def cambiar_estado_flujo(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
 
 def asignar_flujo(request, user_id, proyecto_id, flujo_id):
+    """
+    Método que nos permite asignar un flujo a un proyecto dado.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render al flujos/asignar.html.  
+    
+    """ 
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2310,7 +2509,15 @@ def asignar_flujo(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
 
 def asignar_us_f(request, f_id, lista_user_stories):
-   
+    """
+    Método que realiza la acción de asignar un user story a un flujo dado.
+    
+    @param request: Http request
+    @type  request:HtpptRequest
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: Nos informa si el user story a sido asignado.  
+    
+    """ 
     flujo = get_object_or_404(Flujos, id=f_id)
     
     for us_id in lista_user_stories:
