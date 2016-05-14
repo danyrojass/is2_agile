@@ -25,7 +25,6 @@ class test_User_Story(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
         self.assertTrue(User_Story.objects.filter(nombre = 'prueba user Story').exists(), "El user story no se ha creado")   
@@ -41,6 +40,10 @@ class test_User_Story(TestCase):
         usuario.email = "lutyma89@.com"
         usuario.is_active = True
         usuario.save()
+        
+        user = Usuarios()
+        user.user = usuario
+        user.save()
     
         #se crea un user story para la prueba
         
@@ -52,12 +55,10 @@ class test_User_Story(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        usuario_asignado = usuario
-        us.tipo = 'prueba'
+        us.usuario_asignado = user
         us.save()    
         
-        self.assertTrue(User_Story.objects.filter(usuario = usuario ).exists(), "No se ha asignado el User Story, correctamente.") 
-
+        self.assertEqual(us.usuario_asignado, user, "No se ha asignado correctamente.")
             
     def test_asignarUserStoryaProyecto(self):
         """
@@ -85,12 +86,11 @@ class test_User_Story(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()    
         
-        ac_fl = US_Proyectos(us=us, proyecto=proyecto)
+        ac_fl = US_Proyectos(user_story=us, proyecto=proyecto)
         ac_fl.save()
-        self.assertTrue(Proyectos.objects.filter(us = us).exists(), "No se ha asignado el user story correctamente.") 
+        self.assertTrue(Proyectos.objects.filter(user_stories = us).exists(), "No se ha asignado el user story correctamente.") 
 
         
 class test_sprint(TestCase):
@@ -136,7 +136,6 @@ class test_sprint(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
         self.assertTrue(User_Story.objects.filter(nombre = 'prueba user Story').exists(), "El user story no se ha creado")   
@@ -153,13 +152,12 @@ class test_sprint(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
         us.nombre = 'prueba user Story 2'
         us.save()
         
-        self.assertTrue(Actividades.objects.filter(nombre = 'prueba user Story 2').exists(), "El user Story  no se ha modificado")   
+        self.assertTrue(User_Story.objects.filter(nombre = 'prueba user Story 2').exists(), "El user Story  no se ha modificado")   
     
     def test_asignar_UserStoryaSprint(self):
         """
@@ -180,7 +178,6 @@ class test_sprint(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
         us = User_Story()
@@ -191,12 +188,11 @@ class test_sprint(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
-        ac_fl = US_Sprint(us=us,sprint =sprint)
+        ac_fl = US_Sprint(user_story=us,sprint =sprint)
         ac_fl.save()
-        self.assertTrue(Sprint.objects.filter(us = us).exists(), "No se ha asignado el User Story, correctamente.") 
+        self.assertTrue(Sprint.objects.filter(listaUS = us).exists(), "No se ha asignado el User Story, correctamente.") 
 
 class test_flujoActividad(TestCase):
     
@@ -298,19 +294,17 @@ class test_flujoActividad(TestCase):
         us.valor_tecnico = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
         us.save()
         
-        us = User_Story()
-        us.nombre = 'prueba user Story 2' 
-        us.descripcion = 'descripcion prueba'
-        us.nivel_prioridad = '5'
-        us.valor_negocios = '5'
-        us.valor_tecnico = '5'
-        us.size = '10'
-        us.tiempo_estimado = '20'
-        us.tipo = 'prueba'
-        us.save()
+        us1 = User_Story()
+        us1.nombre = 'prueba user Story 2' 
+        us1.descripcion = 'descripcion prueba'
+        us1.nivel_prioridad = '5'
+        us1.valor_negocios = '5'
+        us1.valor_tecnico = '5'
+        us1.size = '10'
+        us1.tiempo_estimado = '20'
+        us1.save()
         
         ac_fl = us_Flujos(us=us, flujo=flujo)
         ac_fl.save()
@@ -379,7 +373,7 @@ class test_proyecto(TestCase):
         
         us_proyecto = Usuarios_Proyectos(usuarios=usuario, proyecto=proyecto)
         us_proyecto.save()
-        self.assertTrue(Proyectos.objects.filter(usuarios = usuario1).exists(), "No se ha asignado el usuario, correctamente.") 
+        self.assertTrue(Proyectos.objects.filter(usuarios = usuario).exists(), "No se ha asignado el usuario, correctamente.") 
     
     def test_eliminar_Proyecto(self):
         """
