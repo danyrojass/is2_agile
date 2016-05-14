@@ -1994,15 +1994,16 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
+        sp_us = None
         if request.method == 'POST':
 
             lista_user_stories = request.POST.getlist(u'userstories')
-                    
-            asignar_us_sp(request, sp_id, lista_user_stories)
-            sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
-            sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
-            sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
-            sp_us = map(None, sp_us1, sp_us2, sp_us3)
+            if lista_user_stories:
+                asignar_us_sp(request, sp_id, lista_user_stories)
+                sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
+                sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
+                sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
+                sp_us = map(None, sp_us1, sp_us2, sp_us3)
                 
             return render_to_response('sprints/gracias.html', {'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
@@ -2478,9 +2479,9 @@ def asignar_flujo(request, user_id, proyecto_id, flujo_id):
     
     f = proyecto.flujos.get(id=flujo_id)
     tipo = f.tipo
-    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1).filter(tipo=tipo)
-    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1).filter(tipo=tipo)
-    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1).filter(tipo=tipo)
+    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(tipo=tipo)
+    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(tipo=tipo)
+    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(tipo=tipo)
     user_stories = map(None, us1, us2, us3)
     
     if staff:
@@ -2492,15 +2493,16 @@ def asignar_flujo(request, user_id, proyecto_id, flujo_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
+        f_us = None
         if request.method == 'POST':
 
             lista_user_stories = request.POST.getlist(u'userstories')
-                    
-            asignar_us_f(request, flujo_id, lista_user_stories)
-            f_us1 = f.us.all().filter(nivel_prioridad=1).filter(tipo=tipo)
-            f_us2 = f.us.all().filter(nivel_prioridad=2).filter(tipo=tipo)
-            f_us3 = f.us.all().filter(nivel_prioridad=3).filter(tipo=tipo)
-            f_us = map(None, f_us1, f_us2, f_us3)
+            if lista_user_stories:     
+                asignar_us_f(request, flujo_id, lista_user_stories)
+                f_us1 = f.us.all().filter(nivel_prioridad=1).filter(tipo=tipo)
+                f_us2 = f.us.all().filter(nivel_prioridad=2).filter(tipo=tipo)
+                f_us3 = f.us.all().filter(nivel_prioridad=3).filter(tipo=tipo)
+                f_us = map(None, f_us1, f_us2, f_us3)
                 
             return render_to_response('flujos/gracias.html', {'f_us':f_us,'flujo':f, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 

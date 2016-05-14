@@ -80,17 +80,17 @@ class Command(BaseCommand):
         asignar_sprint_proyecto(sp1, proyecto1)
         asignar_sprint_proyecto(sp2, proyecto2)
         
-        f1 = crear_sprint("Flujo de Prueba Nro.1", "Escenario de prueba Nro.1")
-        f2 = crear_sprint("Flujo de Prueba Nro.2", "Escenario de prueba Nro.1")
+        f1 = crear_flujo("Flujo de Prueba Nro.1", "Escenario de prueba Nro.1")
+        f2 = crear_flujo("Flujo de Prueba Nro.2", "Escenario de prueba Nro.2")
         
         asignar_flujo_proyecto(f1, proyecto1)
         asignar_flujo_proyecto(f2, proyecto2)
         
-        act1 = crear_actividades("Actividad de Prueba Nro.1", "Escenario de prueba Nro.1")
-        act2 = crear_actividades("Actividad de Prueba Nro.2", "Escenario de prueba Nro.2")
+        act1 = crear_actividades("Act de Prueba Nro.1", "Escenario de prueba Nro.1")
+        act2 = crear_actividades("Act de Prueba Nro.2", "Escenario de prueba Nro.2")
         
         asignar_actividad_flujo(act1, f1)
-        asignar_actividad_flujo(act2, f2)
+        asignar_actividad_flujo(act2, f1)
 
 def crear_roles(nombre, tipo, observacion):
     rol = Roles()
@@ -222,6 +222,7 @@ def crear_actividades(nombre, descripcion):
     actividad.nombre = nombre
     actividad.descripcion = descripcion
     actividad.save()
+    return actividad
     
 def asignar_actividad_flujo(actividad, flujo):
     act_flujo = Actividades_Flujos(actividad=actividad, flujo=flujo)
