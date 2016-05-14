@@ -3,7 +3,8 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from agileApp.models import Usuarios, Permisos, Roles, Permisos_Roles, Proyectos, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos, Sprint, Sprint_Proyectos
+Usuarios_Proyectos, User_Story, US_Proyectos, Sprint, Sprint_Proyectos, Flujos, Flujos_Proyectos, Actividades,\
+Actividades_Flujos
 
 
 class Command(BaseCommand):
@@ -78,6 +79,18 @@ class Command(BaseCommand):
         
         asignar_sprint_proyecto(sp1, proyecto1)
         asignar_sprint_proyecto(sp2, proyecto2)
+        
+        f1 = crear_sprint("Flujo de Prueba Nro.1", "Escenario de prueba Nro.1")
+        f2 = crear_sprint("Flujo de Prueba Nro.2", "Escenario de prueba Nro.1")
+        
+        asignar_flujo_proyecto(f1, proyecto1)
+        asignar_flujo_proyecto(f2, proyecto2)
+        
+        act1 = crear_actividades("Actividad de Prueba Nro.1", "Escenario de prueba Nro.1")
+        act2 = crear_actividades("Actividad de Prueba Nro.2", "Escenario de prueba Nro.2")
+        
+        asignar_actividad_flujo(act1, f1)
+        asignar_actividad_flujo(act2, f2)
 
 def crear_roles(nombre, tipo, observacion):
     rol = Roles()
@@ -191,3 +204,25 @@ def crear_sprint(nombre, duracion, estado):
 def asignar_sprint_proyecto(sprint, proyecto):
     sprint_proy = Sprint_Proyectos(proyecto=proyecto, sprint=sprint)
     sprint_proy.save()
+    
+def crear_flujo(nombre, descripcion):
+    flujo = Flujos()
+    flujo.nombre = nombre
+    flujo.descripcion = descripcion
+    flujo.estado = True
+    flujo.save()
+    return flujo
+
+def asignar_flujo_proyecto(flujo, proyecto):
+    flujo_proy = Flujos_Proyectos(proyecto=proyecto, flujo=flujo)
+    flujo_proy.save()
+    
+def crear_actividades(nombre, descripcion):
+    actividad = Actividades()
+    actividad.nombre = nombre
+    actividad.descripcion = descripcion
+    actividad.save()
+    
+def asignar_actividad_flujo(actividad, flujo):
+    act_flujo = Actividades_Flujos(actividad=actividad, flujo=flujo)
+    act_flujo.save()
