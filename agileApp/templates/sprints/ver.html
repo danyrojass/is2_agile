@@ -80,7 +80,10 @@
 
 										{% if lista_us %}
 											{% for us in lista_us %}
-									    		<tr><td width="10%">{{us.nombre}}</td></tr>
+									    		<tr>
+									    			<td width="10%"><b>Nombre: </b>{{us.nombre}}</td>
+									    			<td width="10%"><b>Estado: </b>{{us.estado}}</td>
+									    		</tr>
 									    	{% endfor %}
 									    {% else %}
 									    	<td width="10%">Sin user stories.</td>
