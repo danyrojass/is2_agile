@@ -44,7 +44,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR USER STORY</div>
+					<div id="tituloForm" class="header">ASIGNAR USER STORY A USUARIO</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -59,6 +59,11 @@
 								</tr>
 								
 								<tr>
+									<td width="15%"><b>Tiempo Estimado</b></td>
+								    <td width="43%">{{us.tiempo_estimado}} hs.</td>
+								</tr>
+								
+								<tr>
 									<td width="15%"><b>Usuario</b></td>
 									<td width="43%">
 										<select id="id_user" name="id_user" class="comboGrande">
@@ -66,7 +71,7 @@
 												{% if usuarios %}
 													{% for u in usuarios %}
 														{% if not u in list_usuarios_asginados %}
-															<option value="{{u.id}}" id="id_user">{{u.user}}</option>
+															<option value="{{u.id}}" id="id_user">{{u.user}} | {{u.horas_por_dia}} hs/día.</option>
 														{% endif %}
 													{% endfor %}
 												{% endif %}

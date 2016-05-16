@@ -1357,7 +1357,7 @@ def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
         saludo = saludo_dia()
         
         roles = Roles.objects.filter(estado=True).exclude(nombre="Administrador").exclude(nombre="Scrum Master")
-        usuarios = User.objects.all().exclude(id=user_id).exclude(is_active=False).exclude(id=1)
+        usuarios = Usuarios.objects.all().exclude(id=user_id).exclude(user__is_active=False).exclude(id=1)
         usuariox = proyecto.usuarios.all()
         
         if request.method == 'POST':
@@ -1980,9 +1980,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     staff = verificar_permiso(usuario, accion)
     
     sp = proyecto.sprint.get(id=sp_id)
-    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1)
-    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1)
-    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1)
+    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1).filter(id_sprint=None)
+    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1).filter(id_sprint=None)
+    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1).filter(id_sprint=None)
     user_stories = map(None, us1, us2, us3)
     
     if staff:

@@ -44,16 +44,16 @@ class Command(BaseCommand):
         crear_roles("Scrum Master", True, "Líder del Proyecto.")
         crear_roles("Usuario Regular", False, "Soporte.")
         
-        u1 = crear_usuario('Alfredo', 'Barrios', 'abarrios', 'a123', 'alfbarrios2010@gmail.com', True)
-        u2 = crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', True)
-        u3 = crear_usuario('Usuario', 'Prueba1', 'uprueba1', 'a123', 'usuario_prueba1@gmail.com', True)
-        u4 = crear_usuario('Usuario', 'Prueba2', 'uprueba2', 'a123', 'usuario_prueba2@gmail.com', True)
-        u5 = crear_usuario('Usuario', 'Prueba3', 'uprueba3', 'a123', 'usuario_prueba3@gmail.com', True)
-        u6 = crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', True)
-        u7 = crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', True)
-        u8 = crear_usuario('Usuario', 'Prueba4', 'uprueba4', 'a123', 'usuario_prueba4@gmail.com', True)
-        u9 = crear_usuario('Usuario', 'Prueba5', 'uprueba5', 'a123', 'usuario_prueba5@gmail.com', True)
-        u10 = crear_usuario('Usuario', 'Prueba6', 'uprueba6', 'a123', 'usuario_prueba6@gmail.com', True)
+        u1 = crear_usuario('Alfredo', 'Barrios', 'abarrios', 'a123', 'alfbarrios2010@gmail.com', 7)
+        u2 = crear_usuario('Christian', 'Pérez', 'cperez', 'a123', 'criper123@gmail.com', 7)
+        u3 = crear_usuario('Usuario', 'Prueba1', 'uprueba1', 'a123', 'usuario_prueba1@gmail.com', 6)
+        u4 = crear_usuario('Usuario', 'Prueba2', 'uprueba2', 'a123', 'usuario_prueba2@gmail.com', 6)
+        u5 = crear_usuario('Usuario', 'Prueba3', 'uprueba3', 'a123', 'usuario_prueba3@gmail.com', 8)
+        u6 = crear_usuario('Daniel', 'Rojas', 'drojas', 'a123', 'danyrojassimon@gmail.com', 8)
+        u7 = crear_usuario('Luis', 'Soto', 'lsoto', 'a123', 'lutyma89@gmail.com', 5)
+        u8 = crear_usuario('Usuario', 'Prueba4', 'uprueba4', 'a123', 'usuario_prueba4@gmail.com', 5)
+        u9 = crear_usuario('Usuario', 'Prueba5', 'uprueba5', 'a123', 'usuario_prueba5@gmail.com', 4)
+        u10 = crear_usuario('Usuario', 'Prueba6', 'uprueba6', 'a123', 'usuario_prueba6@gmail.com', 4)
         
         proyecto1 = crear_proyecto("Proyecto de Prueba Nro. 1", "Proy1", "Escenario de prueba 1.")
         proyecto2 = crear_proyecto("Proyecto de Prueba Nro. 2", "Proy2", "Escenario de prueba 2.")
@@ -118,18 +118,18 @@ def crear_roles(nombre, tipo, observacion):
         pr = Permisos_Roles(permisos=p, roles=rol)
         pr.save()
         
-def crear_usuario(nombre, apellido, username, password, email, activo):
+def crear_usuario(nombre, apellido, username, password, email, horas_por_dia):
     user = User()
     user.first_name = nombre
     user.last_name = apellido
     user.username = username
     user.set_password(password)
     user.email = email
-    user.is_active = activo
     user.save()
     
     usuario = Usuarios()
     usuario.user = user
+    usuario.horas_por_dia = horas_por_dia
     usuario.save()
     return usuario
         

@@ -45,13 +45,13 @@
 										
 										<tr>
 											{% if p %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ p.id }}" value="{{ p.id }}">{{ p }}<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ p.id }}" value="{{ p.id }}">{{ p }} | {{p.tiempo_estimado}} hs.<br></td>
 											{% endif %}
 											{% if q %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ q.id }}" value="{{ q.id }}">{{ q }}<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ q.id }}" value="{{ q.id }}">{{ q }} | {{q.tiempo_estimado}} hs.<br></td>
 											{% endif %}
 											{% if r %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ r.id }}" value="{{ r.id }}">{{ r }}<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ r.id }}" value="{{ r.id }}">{{ r }} | {{r.tiempo_estimado}} hs.<br></td>
 											{% endif %}
 										</tr>
 											
