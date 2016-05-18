@@ -2,7 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Usuarios, Permisos, Roles, Proyectos, Permisos_Roles, Roles_Usuarios_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos, Flujos, Flujos_Proyectos, Actividades_Flujos, Actividades
+Usuarios_Proyectos, User_Story, US_Proyectos, Flujos, Flujos_Proyectos, Actividades_Flujos, Actividades,\
+Usuarios_Sprint, US_Sprint
 
 admin.site.register(Usuarios)
 admin.site.register(Permisos)
@@ -17,3 +18,5 @@ admin.site.register(Flujos)
 admin.site.register(Flujos_Proyectos)
 admin.site.register(Actividades)
 admin.site.register(Actividades_Flujos)
+admin.site.register(Usuarios_Sprint)
+admin.site.register(US_Sprint)

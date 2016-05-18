@@ -29,7 +29,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CAMBIAR ESTADO DE SPRINT</div>
+					<div id="tituloForm" class="header">CAMBIAR ESTADO DE US</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -58,6 +58,12 @@
 										</select> 
 									</td>
 								</tr>
+								
+								<tr>
+									<td><b>Duración Real en Horas</b></td>
+									<td><input NAME="tiempo_real" type="text" class="cajaGrande" id="tiempo_real" size="50" maxlength="50" value=""></td>								
+								</tr>
+								
 							</table>	
 					</div>
 					
@@ -65,7 +71,7 @@
 					<td>&nbsp;</td>
 					
 
-					<<div id="botonBusqueda">
+					<div id="botonBusqueda">
 						<button class="button" type="submit">CAMBIAR ESTADO DE US</button>
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>

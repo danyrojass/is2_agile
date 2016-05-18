@@ -12,11 +12,11 @@ EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, 
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm,\
 BuscarSprintForm, CrearSprintForm, EditarSprintForm, CambiarEstadoUSForm , BuscarFlujosForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos, Flujos_Proyectos,\
-Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint, Flujos, Actividades, Actividades_Flujos
+Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint, Flujos, Actividades, Actividades_Flujos,\
+us_Flujos, Usuarios_Sprint
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
 CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm
-from agileApp.models import us_Flujos
  
 def inicio(request): 
     """
@@ -1579,8 +1579,9 @@ def asignar_us(request, user_id, proyecto_id, us_id):
 
     accion = "Asignar US"
     staff = verificar_permiso(usuario, accion)
-
+    
     us = proyecto.user_stories.get(id=us_id)
+    sp = Sprint.objects.get(id=us.id_sprint)
     
     userstories = proyecto.user_stories.all()
     list_usuarios_asginados = []
@@ -1588,8 +1589,8 @@ def asignar_us(request, user_id, proyecto_id, us_id):
     for uh in userstories:
         list_usuarios_asginados.append(uh.usuario_asignado)
 
-    usuarios = proyecto.usuarios.all()
-    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US")
+    usuarios = sp.desarrolladores.all()
+    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US").filter(asignado=False)
 
     if staff:
         aid = 3
@@ -1611,7 +1612,17 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 us.usuario_asignado = usuario_asignado
                 us.save()
                 
-                return render_to_response('user_history/gracias.html', {'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                usuario_asignado.asignado = True
+                usuario_asignado.save()
+                
+                ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado, sprint=sp)
+                if not ussp.user_story:
+                    ussp.user_story = us
+                    ussp.save()
+                else:
+                    ussp = Usuarios_Sprint(desarrolladores=usuario_asignado, sprint=sp, user_story=us)
+                
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = AsignarUSForm()
         return render(request, 'user_history/asignar.html', {'form': form, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
@@ -1747,9 +1758,12 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 estado = cleaned_data.get('estado')
+                tiempo_real = cleaned_data.get('tiempo_real')
                 
                 if estado:
                     us.estado = estado
+                    if estado == 3:
+                        us.tiempo_real = tiempo_real
                 us.save()
                 
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
@@ -1953,8 +1967,9 @@ def ver_sprint(request, user_id, proyecto_id, sp_id):
         saludo = saludo_dia()
         
         lista_us = sp.listaUS.all()
+        lista_usuarios = sp.desarrolladores.all()
         
-        return render(request, 'sprints/ver.html', {'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
+        return render(request, 'sprints/ver.html', {'lista_usuarios':lista_usuarios,'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1979,7 +1994,11 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
 
     staff = verificar_permiso(usuario, accion)
     
+    usuarios = proyecto.usuarios.all().filter(asignado=False)
+    
     sp = proyecto.sprint.get(id=sp_id)
+    usuarios_sprint = sp.desarrolladores.all()
+    
     us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1).filter(id_sprint=None)
     us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1).filter(id_sprint=None)
     us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1).filter(id_sprint=None)
@@ -1998,20 +2017,22 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
         if request.method == 'POST':
 
             lista_user_stories = request.POST.getlist(u'userstories')
-            if lista_user_stories:
-                asignar_us_sp(request, sp_id, lista_user_stories)
+            lista_usuarios = request.POST.getlist(u'lusuarios')
+            if lista_user_stories or lista_usuarios:
+                asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios)
                 sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
                 sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
                 sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
                 sp_us = map(None, sp_us1, sp_us2, sp_us3)
+                sp_desarrolladores = sp.desarrolladores.all()
                 
-            return render_to_response('sprints/gracias.html', {'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+            return render_to_response('sprints/gracias.html', {'sp_desarrolladores':sp_desarrolladores, 'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
-        return render(request, 'sprints/asignar.html', {'user_stories':user_stories, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
+        return render(request, 'sprints/asignar.html', {'usuarios_sprint':usuarios_sprint, 'usuarios':usuarios, 'user_stories':user_stories, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
     else:
         return HttpResponseRedirect('/index')
 
-def asignar_us_sp(request, sp_id, lista_user_stories):
+def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios):
     
     """
     Método que realiza la acción de asignar user stories a sprints.
@@ -2023,16 +2044,26 @@ def asignar_us_sp(request, sp_id, lista_user_stories):
     
     """
     sprint = get_object_or_404(Sprint, id=sp_id)
+    ussp = None
+    spus = None
     
-    for us_id in lista_user_stories:
-        
-        us = User_Story.objects.get(id=us_id)   
-        spus = US_Sprint(sprint=sprint, user_story=us)
-        spus.save()
-        
-        us.id_sprint = sp_id
-        us.save()
-       
+    if lista_user_stories:
+        for us_id in lista_user_stories:
+            
+            us = User_Story.objects.get(id=us_id)   
+            spus = US_Sprint(sprint=sprint, user_story=us)
+            spus.save()
+            
+            us.id_sprint = sp_id
+            us.save()
+            
+    if lista_usuarios:
+        for user_id in lista_usuarios:
+            
+            user = Usuarios.objects.get(id=user_id)   
+            ussp = Usuarios_Sprint(sprint=sprint, desarrolladores=user)
+            ussp.save()
+    
     return spus 
 
 def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
@@ -2324,8 +2355,9 @@ def modificar_flujo(request, user_id, proyecto_id, flujo_id):
 
     staff1 = verificar_permiso(usuario, accion1)
     flujo = proyecto.flujos.get(id=flujo_id)
-    up = flujo.actividades.all()
     tipos = Tipo.objects.all()
+    f_us = flujo.us.all()
+    
     if staff1:
         aid = 2
         comprobar(request)
@@ -2342,15 +2374,13 @@ def modificar_flujo(request, user_id, proyecto_id, flujo_id):
                 nombre = cleaned_data.get('nombre')
                 descripcion = cleaned_data.get('descripcion')
                 tipo_id = cleaned_data.get('tipo_id')
-                    
-                if not flujo.us:
+                if not f_us:
                     flujo.nombre = nombre
                     flujo.descripcion = descripcion
                     tipo = Tipo.objects.get(id=tipo_id)
                     flujo.tipo = tipo
-
-                        
-                flujo.save()
+                    
+                    flujo.save()
                 
                 return render_to_response('flujos/gracias.html', {'flujo':flujo,'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:

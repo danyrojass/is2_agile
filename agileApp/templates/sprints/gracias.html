@@ -33,7 +33,7 @@
 						{% elif aid == 2 %}
 							<div id="tituloForm" class="header">SPRINT MODIFICADO</div>
 						{% elif aid == 3 %}
-							<div id="tituloForm" class="header">US ASIGNADO A SPRINT</div>
+							<div id="tituloForm" class="header">ASIGNADO A SPRINT</div>
 						{% elif aid == 4 %}
 							<div id="tituloForm" class="header">ESTADO DE SPRINT MODIFICADO</div>
 						{% endif %}
@@ -76,6 +76,20 @@
 									    </tr>
 									    
 								    {% else %}
+								    
+								     <tr>
+										<td><b><u>DESARROLLADORES</u></b></td>
+									 </tr>
+								    
+								    {% if sp_desarrolladores %}
+										{% for us in sp_desarrolladores %}
+											<tr>
+												<td width="35%">{{ us.user }} | {{us.horas_por_dia}} hs/día.</td>
+											</tr>
+										{% endfor %}
+									{% endif %}
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
 								    <tr>
 										<td width="35%"><u><b>PRIORIDAD ALTA</b></u></td>
 										<td width="35%"><u><b>PRIORIDAD MEDIA</b></u></td>

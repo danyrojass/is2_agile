@@ -285,7 +285,8 @@ class AsignarUSForm(forms.Form):
     id_user = forms.IntegerField()
 
 class CambiarEstadoUSForm(forms.Form):
-    estado = forms.IntegerField(required=False)    
+    estado = forms.IntegerField(required=False)
+    tiempo_real = forms.IntegerField(required=False)   
 
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)
@@ -356,7 +357,8 @@ class BuscarFlujoForm(forms.Form):
 class EditarFlujoForm(forms.Form):    
     nombre = forms.CharField(max_length=30)
     descripcion = forms.CharField(max_length=50, required=False)
-
+    tipo_id = forms.IntegerField(required=False)
+    
 class EditarActividadForm(forms.Form):    
     nombre = forms.CharField(max_length=20)
     descripcion = forms.CharField(max_length=30, required=False)

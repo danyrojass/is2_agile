@@ -29,11 +29,36 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
+					<div id="tituloForm" class="header">INFORMACIÓN DE SPRINT</div>
+					<div id="frmBusqueda">
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								<tr>
+									<td width="15%"><b>ID</b></td>
+								    <td width="43%">{{sp.id}}</td>
+								</tr>
+								
+								
+								<tr>
+									<td width="15%"><b>Nombre</b></td>
+								     <td width="43%">{{sp.nombre}}</td>
+								</tr>	
+								<tr>
+									<td width="15%"><b>Duración en Horas</b></td>
+								     <td width="43%">{{sp.duracion}}</td>
+								</tr>	
+								
+							</table>
+					</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					
 					<div id="tituloForm" class="header">ASIGNAR US A SPRINT</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
-								
+							
 								<tr>
 									<td width="35%"><u><b>PRIORIDAD ALTA</b></u></td>
 									<td width="35%"><u><b>PRIORIDAD MEDIA</b></u></td>
@@ -56,13 +81,33 @@
 										</tr>
 											
 									{% endfor %}
+								{% endif %}		
+							</table>
+					</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					
+					<div id="tituloForm" class="header">ASIGNAR USUARIOS A SPRINT</div>
+					<div id="frmBusqueda">
+						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
+							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								
+								{% if usuarios %}
+									{% for us in usuarios %}
+										{% if not us in usuarios_sprint %}
+											<tr>
+												<td width="35%"><input type="checkbox" name="lusuarios" id="option{{ us.id }}" value="{{ us.id }}">{{ us }} | {{us.horas_por_dia}} hs/día.<br></td>
+											</tr>
+										{% endif%}
+									{% endfor %}
 								{% endif %}
 										
 							</table>
-					</div>
+					</div>				
 
 					<div id="botonBusqueda">
-						<button class="button" type="submit">ASIGNAR USER STORIES A SPRINT</button>
+						<button class="button" type="submit">ASIGNAR A SPRINT</button>
 				  		<a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
 					</div>
 					</form>

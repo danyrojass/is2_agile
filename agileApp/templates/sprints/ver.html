@@ -68,6 +68,41 @@
 							<colgroup>
 								<col width="10%">
 								<col width="10%">
+
+							</colgroup>
+
+										{% if lista_us %}
+											{% for us in lista_us %}
+									    		<tr>
+									    			<td width="10%"><b>Nombre: </b>{{us.nombre}}</td>
+									    				{% if us.estado == 1 %}
+															<td width="10%"><b>Estado: </b>Planificado</td>
+														{% elif us.estado == 2 %}											
+															<td width="10%"><b>Estado: </b>En Ejecución</td>
+														{% elif us.estado == 3 %}											
+															<td width="10%"><b>Estado: </b>Finalizado</td>
+														{% elif us.estado == 4 %}											
+															<td width="10%"><b>Estado: </b>Cancelado</td>
+														{% endif %}
+									    		</tr>
+									    	{% endfor %}
+									    {% else %}
+									    	<td width="10%">Sin user stories.</td>
+									    {% endif %}
+
+								
+						</table>
+					</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					
+					<div id="tituloForm" class="header">DESARROLLADORES</div>
+					<div id="frmBusqueda">
+						<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+							<colgroup>
+								<col width="10%">
+								<col width="10%">
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
@@ -78,15 +113,14 @@
 								<col width="10%">
 							</colgroup>
 
-										{% if lista_us %}
-											{% for us in lista_us %}
+										{% if lista_usuarios %}
+											{% for user in lista_usuarios %}
 									    		<tr>
-									    			<td width="10%"><b>Nombre: </b>{{us.nombre}}</td>
-									    			<td width="10%"><b>Estado: </b>{{us.estado}}</td>
+									    			<td width="10%"><b>Nombre: </b>{{user.user}}</td>
 									    		</tr>
 									    	{% endfor %}
 									    {% else %}
-									    	<td width="10%">Sin user stories.</td>
+									    	<td width="10%">Sin desarrolladores.</td>
 									    {% endif %}
 
 								

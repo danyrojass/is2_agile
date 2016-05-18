@@ -44,6 +44,7 @@ class Usuarios(models.Model):
     tipo = models.CharField(max_length=10, default="")
     observacion = models.CharField(max_length=50, default="")
     horas_por_dia = models.IntegerField(null=True)
+    asignado = models.BooleanField(default=False)
     roles = models.ManyToManyField(Roles, through='Roles_Usuarios_Proyectos')
     
     def __str__(self):
@@ -52,8 +53,6 @@ class Usuarios(models.Model):
 class Permisos_Roles(models.Model):
     permisos = models.ForeignKey(Permisos)
     roles = models.ForeignKey(Roles)
-
-
     
 class Tipo(models.Model):
     nombre = models.CharField(max_length = 50, null=True)
@@ -73,7 +72,7 @@ class User_Story(models.Model):
     fecha_creacion = models.DateField(null = True)
     fecha_inicio = models.DateField(null = True)
     usuario_asignado = models.OneToOneField(Usuarios, null=True)
-    tipo = models.OneToOneField(Tipo, null=True)
+    tipo = models.ForeignKey(Tipo, null=True)
     id_flujo = models.IntegerField(null=True)
     id_sprint = models.IntegerField(null=True)
     f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
@@ -92,12 +91,13 @@ class Sprint(models.Model):
     duracion=models.IntegerField(default=0)
     estado=models.IntegerField(default=1)
     listaUS=models.ManyToManyField(User_Story,through='US_Sprint')
+    desarrolladores=models.ManyToManyField(Usuarios, through='Usuarios_Sprint')
 
 class Flujos(models.Model):
     nombre = models.CharField(max_length = 30, null = True)
     descripcion = models.CharField(max_length=50, default="")
     actividades = models.ManyToManyField(Actividades, through='Actividades_Flujos')
-    tipo = models.OneToOneField(Tipo, null=True)
+    tipo = models.ForeignKey(Tipo, null=True)
     estado = models.BooleanField(default=True)
     us = models.ManyToManyField(User_Story, through='us_Flujos')
 
@@ -158,4 +158,8 @@ class US_Sprint(models.Model):
 class Flujos_Proyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos)
     flujo = models.ForeignKey(Flujos)
-    
+
+class Usuarios_Sprint(models.Model):
+    sprint = models.ForeignKey(Sprint)
+    user_story = models.ForeignKey(User_Story, null=True)
+    desarrolladores = models.ForeignKey(Usuarios)

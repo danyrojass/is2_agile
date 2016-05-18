@@ -133,7 +133,11 @@
 												{% elif us.estado == 4 %}											
 													<td width="10%">Cancelado</td>
 												{% endif %}
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
+												{% if not us.id_sprint == None %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
+												{% endif %}
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_us' user.id proyecto.id us.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
@@ -158,8 +162,11 @@
 												{% elif us.estado == 4 %}											
 													<td width="10%">Cancelado</td>
 												{% endif %}
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_us' user.id proyecto.id us.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
+												{% if not us.id_sprint == None %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us' user.id proyecto.id us.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar a Usuario"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
+												{% endif %}												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_us' user.id proyecto.id us.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
 											</tr>
