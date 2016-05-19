@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Visualizar US{% endblock title %}
+{% block title %}Ver Reporte US{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -28,7 +28,7 @@
 			<div id="pagina">
 				<div id="zonaContenido">
 					<div align="center">
-						<div id="tituloForm" class="header">VISUALIZAR USER STORY</div>
+						<div id="tituloForm" class="header">VISUALIZAR REPORTE DE US</div>
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 									<colgroup>
@@ -38,63 +38,29 @@
 										<col width="21%">
 										<col width="21%">
 									</colgroup>
-									<tr>
-										<td><b>ID</b></td>
-										<td colspan="2">{{us.id}}</td>
-								    </tr>
-								    
-									<tr>
-										<td><b>Nombre</b></td>
-									    <td colspan="2">{{us.nombre}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Descripción</b></td>
-									    <td colspan="2">{{us.descripcion}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Nivel de Prioridad</b></td>
-									    <td colspan="2">{{us.nivel_prioridad}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Valor de Negocios</b></td>
-									    <td colspan="2">{{us.valor_negocios}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Valor Técnico</b></td>
-									    <td colspan="2">{{us.valor_tecnico}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Size</b></td>
-									    <td colspan="2">{{us.size}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Tipo</b></td>
-									    <td colspan="2">{{us.tipo}}</td>
-								    </tr>
-
-								    <tr>
-										<td><b>Usuario Asignado</b></td>
-									    <td colspan="2">{{us.usuario_asignado}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Estado</b></td>
-										{% if us.estado == 1 %}
-											<td width="35%">Planificado</td>
-										{% elif us.estado == 2 %}											
-											<td width="35%">En Ejecución</td>
-										{% elif us.estado == 3 %}											
-											<td width="35%">Finalizado</td>
-										{% elif us.estado == 4 %}											
-											<td width="35%">Cancelado</td>
-										{% endif %}
-									</tr>
+									{% if reportes %}
+										{% for reporte in reportes %}
+											<tr>
+												<td><b>Porcentaje Alcanzado (hasta el momento)</b></td>
+												<td width="36%">{{reporte.porcentaje_alcanzado}}%</td>									
+											</tr>
+																			
+											<tr>
+												<td><b>Horas Faltantes</b></td>
+												<td width="36%">{{reporte.horas_faltantes}} hs.</td>									
+											</tr>
+											
+											<tr>
+												<td><b>Fecha Reporte</b></td>
+												<td width="36%">{{reporte.fecha_reporte}}</td>									
+											</tr>
+											
+											<tr>
+												<td><b>Descripción Breve</b></td>
+												<td width="36%">{{reporte.descripcion}}</td>									
+											</tr>
+										{% endfor %}
+									{% endif %}
 								    
 								</table>
 							</div>

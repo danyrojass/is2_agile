@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Activar/Desactivar US{% endblock title %}
+{% block title %}Reportar Avance US{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -29,7 +29,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CAMBIAR ESTADO DE US</div>
+					<div id="tituloForm" class="header">REPORTAR AVANCE DE US</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -55,21 +55,19 @@
 								</tr>
 								
 								<tr>
-									<td><b>Estado</b></td>
-								    <td>
-										<select name="estado" id="estado">
-											<option selected="selected" disabled="disabled">--- Selecciona un Estado ---</option>
-											<option value="3">Finalizado</option>
-											<option value="4">Cancelado</option>
-										</select> 
-									</td>
+									<td><b>Porcentaje Alcanzado (hasta el momento)</b></td>
+									<td><input NAME="porcentaje_alcanzado" type="text" class="cajaGrande" id="porcentaje_alcanzado" size="50" maxlength="50" value=""></td>								
+								</tr>
+																
+								<tr>
+									<td><b>Horas Faltantes</b></td>
+									<td><input NAME="horas_faltantes" type="text" class="cajaGrande" id="horas_faltantes" size="50" maxlength="50" value=""></td>								
 								</tr>
 								
 								<tr>
-									<td><b>Duración Real en Horas</b></td>
-									<td><input NAME="tiempo_real" type="text" class="cajaGrande" id="tiempo_real" size="50" maxlength="50" value=""></td>								
+									<td><b>Descripción Breve</b></td>
+									<td><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>								
 								</tr>
-								
 							</table>	
 					</div>
 					
@@ -78,7 +76,7 @@
 					
 
 					<div id="botonBusqueda">
-						<button class="button" type="submit">CAMBIAR ESTADO DE US</button>
+						<button class="button" type="submit">REPORTAR AVANCE DE US</button>
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>

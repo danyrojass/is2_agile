@@ -68,7 +68,8 @@
 							<colgroup>
 								<col width="10%">
 								<col width="10%">
-
+								<col width="10%">
+								<col width="5%">
 							</colgroup>
 
 										{% if lista_us %}
@@ -84,6 +85,14 @@
 														{% elif us.estado == 4 %}											
 															<td width="10%"><b>Estado: </b>Cancelado</td>
 														{% endif %}
+									    				{% if us.nivel_prioridad == 1 %}
+															<td width="10%"><b>Nivel de Prioridad: </b>Alto</td>
+														{% elif us.nivel_prioridad == 2 %}											
+															<td width="10%"><b>Nivel de Prioridad: </b>Medio</td>
+														{% elif us.nivel_prioridad == 3 %}											
+															<td width="10%"><b>Nivel de Prioridad: </b>Bajo</td>
+														{% endif %}
+													<td width="5%"><div align="center"><b>Ver Reportes: </b><a href="{% url 'agileApp:ver_reporte_us' user.id proyecto.id us.id %}"><img src="/static/img/Performance.png" width="20" height="20" border="0" title="Ver Reportes"></a></div></td>
 									    		</tr>
 									    	{% endfor %}
 									    {% else %}

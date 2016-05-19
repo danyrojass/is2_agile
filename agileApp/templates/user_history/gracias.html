@@ -36,6 +36,8 @@
 							<div id="tituloForm" class="header">USER STORY ASIGNADO</div>
 						{% elif aid == 4 %}
 							<div id="tituloForm" class="header">ESTADO DE USER STORY MODIFICADO</div>
+						{% elif aid == 5 %}
+							<div id="tituloForm" class="header">REPORTE DE US CREADO</div>
 						{% endif %}
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -56,55 +58,77 @@
 									    <td colspan="2">{{us.nombre}}</td>
 								    </tr>
 								    
-								    <tr>
-										<td><b>Descripción</b></td>
-									    <td colspan="2">{{us.descripcion}}</td>
-								    </tr>
+								    {% if aid > 4 %}
+										<tr>
+											<td><b>Porcentaje Alcanzado (hasta el momento)</b></td>
+											<td width="36%">{{reporte.porcentaje_alcanzado }}</td>									
+										</tr>
+																		
+										<tr>
+											<td><b>Horas Faltantes</b></td>
+											<td width="36%">{{reporte.horas_faltantes}}</td>									
+										</tr>
+										
+										<tr>
+											<td><b>Fecha Reporte</b></td>
+											<td width="36%">{{reporte.fecha_reporte}}</td>									
+										</tr>
+										
+										<tr>
+											<td><b>Descripción Breve</b></td>
+											<td width="36%">{{reporte.descripcion}}</td>									
+										</tr>
+									{% else %}
 								    
-								    <tr>
-										<td><b>Nivel de Prioridad</b></td>
-									    <td colspan="2">{{us.nivel_prioridad}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Valor de Negocios</b></td>
-									    <td colspan="2">{{us.valor_negocios}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Valor Técnico</b></td>
-									    <td colspan="2">{{us.valor_tecnico}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Size</b></td>
-									    <td colspan="2">{{us.size}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Tipo</b></td>
-									    <td colspan="2">{{us.tipo}}</td>
-								    </tr>
-								    {% if aid == 3 %}
-								    <tr>
-										<td><b>Usuario Asignado</b></td>
-									    <td colspan="2">{{us.usuario_asignado}}</td>
-								    </tr>
-								    {% endif %}
-								    
-								    <tr>
-										<td><b>Estado</b></td>
-										{% if us.estado == 1 %}
-											<td width="35%">Planificado</td>
-										{% elif us.estado == 2 %}											
-											<td width="35%">En Ejecución</td>
-										{% elif us.estado == 3 %}											
-											<td width="35%">Finalizado</td>
-										{% elif us.estado == 4 %}											
-											<td width="35%">Cancelado</td>
-										{% endif %}
-									</tr>
-								    
+									    <tr>
+											<td><b>Descripción</b></td>
+										    <td colspan="2">{{us.descripcion}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Nivel de Prioridad</b></td>
+										    <td colspan="2">{{us.nivel_prioridad}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Valor de Negocios</b></td>
+										    <td colspan="2">{{us.valor_negocios}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Valor Técnico</b></td>
+										    <td colspan="2">{{us.valor_tecnico}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Size</b></td>
+										    <td colspan="2">{{us.size}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td><b>Tipo</b></td>
+										    <td colspan="2">{{us.tipo}}</td>
+									    </tr>
+									    {% if aid == 3 %}
+									    <tr>
+											<td><b>Usuario Asignado</b></td>
+										    <td colspan="2">{{us.usuario_asignado}}</td>
+									    </tr>
+									    {% endif %}
+									    
+									    <tr>
+											<td><b>Estado</b></td>
+											{% if us.estado == 1 %}
+												<td width="35%">Planificado</td>
+											{% elif us.estado == 2 %}											
+												<td width="35%">En Ejecución</td>
+											{% elif us.estado == 3 %}											
+												<td width="35%">Finalizado</td>
+											{% elif us.estado == 4 %}											
+												<td width="35%">Cancelado</td>
+											{% endif %}
+										</tr>
+								   {% endif %}
 								</table>
 							</div>
 							

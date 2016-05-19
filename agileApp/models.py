@@ -59,6 +59,25 @@ class Tipo(models.Model):
     def __str__(self):
         return self.nombre
 
+class Reporte(models.Model):
+    descripcion = models.CharField(max_length = 50, null=True)
+    porcentaje_alcanzado = models.IntegerField(null=True)
+    horas_faltantes = models.IntegerField(null=True)
+    fecha_reporte = models.DateField(default=timezone.now, null=True)
+
+class Nota(models.Model):
+    nombre = models.CharField(max_length = 25, null=True)
+    descripcion = models.CharField(max_length = 500, null=True)
+    usuario = models.ForeignKey(Usuarios, null=True)
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'uploads/user_{0}/{1}'.format(instance.user.id, filename)
+
+class Archivo(models.Model):
+    nombre = models.CharField(max_length = 25, null=True)
+    archivo = models.FileField(upload_to=user_directory_path)
+
 class User_Story(models.Model):
     nombre = models.CharField(max_length = 50, null = True)
     descripcion = models.CharField(max_length = 50, null = True)
@@ -77,8 +96,24 @@ class User_Story(models.Model):
     id_sprint = models.IntegerField(null=True)
     f_estado = models.IntegerField(null=True) #1. To do. #2. Doing. #3. Done.
     f_actividad = models.IntegerField(null=True) #Nro. de actividad del flujo.
+    reportes = models.ManyToManyField(Reporte, through="US_Reportes")
+    notas = models.ManyToManyField(Nota, through="US_Notas")
+    archivos = models.ManyToManyField(Archivo, through="US_Archivos")
+    
     def __str__(self):
         return self.nombre
+
+class US_Reportes(models.Model):
+    user_story = models.ForeignKey(User_Story)
+    reporte = models.ForeignKey(Reporte)
+    
+class US_Notas(models.Model):
+    user_story = models.ForeignKey(User_Story)
+    nota = models.ForeignKey(Nota)
+
+class US_Archivos(models.Model):
+    user_story = models.ForeignKey(User_Story)
+    archivo = models.ForeignKey(Archivo)
 
 class Actividades(models.Model):
     nombre = models.CharField(max_length=20, default="")

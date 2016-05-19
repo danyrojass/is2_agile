@@ -74,8 +74,8 @@ class Command(BaseCommand):
         asignar_us_proyecto(us5, proyecto2)
         asignar_us_proyecto(us6, proyecto2)
         
-        sp1 = crear_sprint("Sprint de Prueba Nro.1", 150, 1)
-        sp2 = crear_sprint("Sprint de Prueba Nro.2", 200, 1)
+        sp1 = crear_sprint("Sprint de Prueba Nro.1", 80, 1)
+        sp2 = crear_sprint("Sprint de Prueba Nro.2", 65, 1)
         
         asignar_sprint_proyecto(sp1, proyecto1)
         asignar_sprint_proyecto(sp2, proyecto2)

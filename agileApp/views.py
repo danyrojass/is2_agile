@@ -16,7 +16,8 @@ Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US
 us_Flujos, Usuarios_Sprint
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
-CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm
+CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm
+from agileApp.models import Reporte, US_Reportes
  
 def inicio(request): 
     """
@@ -1590,7 +1591,9 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         list_usuarios_asginados.append(uh.usuario_asignado)
 
     usuarios = sp.desarrolladores.all()
+    print usuarios
     usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US").filter(asignado=False)
+    print usuarios
 
     if staff:
         aid = 3
@@ -1626,6 +1629,87 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         else:
             form = AsignarUSForm()
         return render(request, 'user_history/asignar.html', {'form': form, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
+    else:
+        return HttpResponseRedirect('/index')
+
+def reportar_avance_us(request, user_id, proyecto_id, us_id):
+    """
+    Método de inicio que permite ver los User Stories de un Proyecto determinado, así como también la búsqueda de los mismos.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/index.html para la página de inicio.
+             render al template user_history/results.html para obtener resultados de la búsqueda.  
+             Listado de US.
+    """
+    user = request.user
+    accion = "Desarrollar US"
+    
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        aid = 5
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+                
+        saludo = saludo_dia()
+        
+        usuario = Usuarios.objects.get(id=user_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+        us = User_Story.objects.get(id=us_id)
+    
+        if request.method == 'POST':
+            form = ReportarUSForm(request.POST)
+                
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                descripcion = cleaned_data.get('descripcion')
+                horas_faltantes = cleaned_data.get('horas_faltantes')
+                porcentaje_alcanzado = cleaned_data.get('porcentaje_alcanzado')
+                
+                reporte = Reporte()
+                reporte.descripcion = descripcion
+                reporte.horas_faltantes = horas_faltantes
+                reporte.porcentaje_alcanzado = porcentaje_alcanzado
+                reporte.fecha_reporte = datetime.now()
+                reporte.save()
+
+                us_reporte = US_Reportes(user_story=us, reporte=reporte)
+                us_reporte.save()
+                                
+                return render_to_response('user_history/gracias.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+        else:
+            form = ReportarUSForm()
+        return render_to_response('user_history/reportar_avance.html', {'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
+
+def ver_reporte_us(request, user_id, proyecto_id, us_id):
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Visualizar US"
+   
+    staff = verificar_permiso(usuario, accion)
+    
+    us = proyecto.user_stories.get(id=us_id)
+        
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        reportes = us.reportes.all()
+        
+        return render(request, 'user_history/ver_reportes.html', {'reportes':reportes, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     
@@ -1743,6 +1827,7 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
     us = proyecto.user_stories.get(id=us_id)
+    sp = proyecto.sprint.get(id=us.id_sprint)
         
     if staff or staff1:
         aid = 4
@@ -1763,8 +1848,19 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
                 if estado:
                     us.estado = estado
                     if estado == 3:
-                        us.tiempo_real = tiempo_real
+                        if tiempo_real:
+                            us.tiempo_real = tiempo_real
                 us.save()
+                
+                if tiempo_real > sp.duracion:
+                    us_sp = US_Sprint.objects.get(user_story=us, sprint=sp)
+                    us_sp.delete()
+                    
+                    us.id_sprint = None
+                    us.tiempo_real = tiempo_real
+                    us.save()
+                    
+                    priorizar_us(us, proyecto)
                 
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
@@ -1773,6 +1869,16 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
 
+def priorizar_us(us, proyecto):
+    lista_sprints = proyecto.sprint.all().filter(estado=1)
+    sprint = lista_sprints.order_by('id')[:1].get()
+    
+    us.nivel_prioridad = 1
+    us.id_sprint = sprint.id
+    us.save()
+    
+    ussp = US_Sprint(sprint=sprint, user_story=us)
+    ussp.save()
 
 """ Administración de Sprints. """
 def index_sprint(request, user_id, proyecto_id):
@@ -1966,7 +2072,7 @@ def ver_sprint(request, user_id, proyecto_id, sp_id):
         
         saludo = saludo_dia()
         
-        lista_us = sp.listaUS.all()
+        lista_us = sp.listaUS.all().order_by('nivel_prioridad')
         lista_usuarios = sp.desarrolladores.all()
         
         return render(request, 'sprints/ver.html', {'lista_usuarios':lista_usuarios,'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})

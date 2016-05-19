@@ -288,6 +288,11 @@ class CambiarEstadoUSForm(forms.Form):
     estado = forms.IntegerField(required=False)
     tiempo_real = forms.IntegerField(required=False)   
 
+class ReportarUSForm(forms.Form):
+    descripcion = forms.CharField(max_length=50, required=False)
+    horas_faltantes = forms.IntegerField(required=False)
+    porcentaje_alcanzado = forms.IntegerField(required=False)
+
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)
     duracion = forms.IntegerField()
