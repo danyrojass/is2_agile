@@ -16,8 +16,8 @@ Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US
 us_Flujos, Usuarios_Sprint
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
-CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm
-from agileApp.models import Reporte, US_Reportes
+CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivoUSForm
+from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos
  
 def inicio(request): 
     """
@@ -1879,6 +1879,52 @@ def priorizar_us(us, proyecto):
     
     ussp = US_Sprint(sprint=sprint, user_story=us)
     ussp.save()
+    
+def adjuntar_archivo_us(request, user_id, proyecto_id,us_id):
+    
+    
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    accion = "Adjuntar archivo US"
+    staff = verificar_permiso(usuario, accion)
+    
+    if staff: 
+        aid = 1
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        us= User_Story.objects.get(id=us_id)
+        if request.method == 'POST':
+            form = archivoUSForm(request.POST, request.FILES)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                archivo = request.FILES['archivo']
+                
+                archivo1=Archivo()
+                archivo1.nombre=nombre
+                archivo1.archivo=archivo
+                archivo1.id_us=us_id
+                archivo1.save()
+                
+                
+                us_archivo = US_Archivos(archivo=archivo1, user_story=us)
+                us_archivo.save()
+                
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = archivoUSForm(proyecto_id=proyecto_id)
+        return render(request, 'user_history/adjuntar.html', {'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+    else:
+        return HttpResponseRedirect('/index')
+    
+    
+    
+    
 
 """ Administración de Sprints. """
 def index_sprint(request, user_id, proyecto_id):
@@ -2965,7 +3011,17 @@ def verificar_permiso(usuario, accion):
         if rol_usuario_profile:
             staff = True
         else:
-            staff = False 
+            staff = False
+    
+    elif accion=="Adjuntar archivo US":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Archivos adjuntos")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
     
     elif accion=="Listar Sprint" or accion=="Crear Sprint" or accion=="Modificar Sprint" or accion=="Visualizar Sprint" or accion=="Asignar US a Sprint" or accion=="Cambiar estado Sprint":
         permiso = Permisos.objects.filter(nombre="Administración de Sprints")

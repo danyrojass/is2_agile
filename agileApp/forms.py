@@ -293,6 +293,11 @@ class ReportarUSForm(forms.Form):
     horas_faltantes = forms.IntegerField(required=False)
     porcentaje_alcanzado = forms.IntegerField(required=False)
 
+class archivoUSForm(forms.Form):
+    nombre = forms.CharField(max_length=25)
+    archivo= forms.FileField()
+
+
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)
     duracion = forms.IntegerField()
