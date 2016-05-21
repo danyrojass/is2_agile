@@ -109,6 +109,8 @@
 									<td width="5%">MODIFICAR</td>
 									<td width="5%">CAMBIAR ESTADO</td>
 									<td width="5%">ASIGNAR US</td>
+									<td width="5%">KANBAN</td>
+									
 									</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -132,7 +134,9 @@
 												{% else %}
 													<td width="5%">&nbsp;</td>													
 													<td width="5%">&nbsp;</td>
-												{% endif %}													
+												{% endif %}
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id f.id %}"><img src="/static/img/doc.png" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
+																									
 												</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
@@ -152,6 +156,8 @@
 													<td width="10%">&nbsp;</td>													
 													<td width="10%">&nbsp;</td>
 												{% endif %}	
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id f.id %}"><img src="/static/img/doc.png" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
+												
 												</tr>
 											
 										{% endif %}

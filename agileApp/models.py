@@ -86,6 +86,7 @@ class Actividades(models.Model):
     descripcion = models.CharField(max_length=30, default="")
     estado = models.IntegerField(default=0) #0 = To Do, 1 = Doing, 2 = Done
     us = models.ManyToManyField(User_Story, through='us_Actividades')
+    numero = models.IntegerField(default=0)
     
 class Sprint(models.Model):
     nombre=models.CharField(max_length=25, default="")

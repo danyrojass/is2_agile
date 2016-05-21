@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Visualizar Proyecto{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{usuario.username}}</a>!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+
+
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+	<caption><b>{{flujo.nombre}}</b></caption>
+   	<tr valign="bottom" align="center">
+      
+      {% if up %}
+	  {% for u in up %}
+      	<td>   
+         <table border="1" align="center" cellspacing="0" cellpadding="5"  width="500"  height="250">
+         	<caption><b>{{u.nombre}}</b></caption>
+         	<tr>
+         
+	
+         <td>
+          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
+          <caption><b>TO DO</b></caption>
+            	<tr>
+            	<td>
+            	{% if us %}
+	  			{% for k in us %}
+	  			{% if k.f_estado == 1 and k.f_actividad == u.id %}
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a>
+              	
+              	{% endif %}
+              	{% endfor %}
+				{% endif %}
+            	</td>
+            	</tr>
+         </table>
+      	</td>  
+
+		<td>
+        <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
+        <caption><b>DOING</b></caption>
+        	<tr>
+              {% if us %}
+	  			{% for k in us %}
+	  			{% if k.f_estado == 2 and k.f_actividad == u.id %}
+              	<td>  <li><a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a> </td>
+              	{% endif %}
+              	{% endfor %}
+				{% endif %}    
+            </tr>
+        </table>
+      	</td>  
+
+		<td>
+        <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
+        <caption><b>DONE</b></caption>
+            <tr>
+              {% if us %}
+	  			{% for k in us %}
+	  			{% if k.f_estado == 3 and k.f_actividad ==  u.id %}
+              	<td><li><a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a></td>
+              	{% endif %}
+              	{% endfor %}
+				{% endif %}    
+            </tr>
+        </table>
+      	</td>
+
+        </table>
+      	</td>
+   		
+   		</td>
+   	{% endfor %}
+	{% endif %}
+</table>
+{% endblock content %}

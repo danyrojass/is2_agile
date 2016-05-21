@@ -15,7 +15,8 @@ from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyect
 Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint, Flujos, Actividades, Actividades_Flujos
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
-CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm
+CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm,\
+    CambiarEstadoUSFlujoForm
 from agileApp.models import us_Flujos
  
 def inicio(request): 
@@ -2248,10 +2249,12 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 descripcion = cleaned_data.get('descripcion')
+                numero = cleaned_data.get('numero')
                 
                 actividad = Actividades()
                 actividad.nombre = nombre
                 actividad.descripcion = descripcion
+                actividad.numero = numero
                 actividad.save()
                 
                 af = Actividades_Flujos(actividad=actividad, flujo=flujo)
@@ -2521,7 +2524,7 @@ def asignar_us_f(request, f_id, lista_user_stories):
     
     """ 
     flujo = get_object_or_404(Flujos, id=f_id)
-    
+    actividades = flujo.actividades.all().order_by('id')
     for us_id in lista_user_stories:
         
         us = User_Story.objects.get(id=us_id)   
@@ -2529,10 +2532,83 @@ def asignar_us_f(request, f_id, lista_user_stories):
         fus.save()
         
         us.id_flujo = f_id
+        us.f_estado = 1
+        us.f_actividad = actividades[:1].get().id
         us.save()
        
     return fus 
 
+def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
+
+
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    flujo = proyecto.flujos.get(id=flujo_id)
+    accion = "Visualizar Flujo"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+            
+        saludo = saludo_dia()
+            
+        flujo = get_object_or_404(Flujos, id=flujo_id)
+        up = flujo.actividades.all()
+        us = flujo.us.all()
+
+        
+        return render(request, 'flujos/kanban.html', {'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
+    
+def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
+
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Cambiar estado Flujo"
+   
+    staff = verificar_permiso(usuario, accion)
+    
+    flujo = proyecto.flujos.get(id=flujo_id)
+    up = flujo.actividades.all()
+    print up
+    us = flujo.us.all()
+    us1 = flujo.us.get(id=us_id)
+    if staff:
+        aid = 4
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        if request.method == 'POST':
+            form = CambiarEstadoUSFlujoForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                estado = cleaned_data.get('estado')
+                
+                ac_id = cleaned_data.get('actividad_id')
+                if ac_id:
+                    us1.f_actividad = ac_id
+                if estado:
+                    us1.f_estado = estado
+                us1.save()
+                
+                return render_to_response('flujos/kanban.html', {'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        else:
+            form = CambiarEstadoUSFlujoForm()
+        return render(request, 'flujos/cambiar_estado_kanban.html', {'up':up,'us1':us1,'us':us,'flujo':flujo, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+    else:
+        return HttpResponseRedirect('/index')
 
 def saludo_dia():
     """
@@ -2841,7 +2917,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False
     
-    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad" or accion == "Cambiar estado Flujo" or accion == "Asignar US a Flujo":
+    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad" or accion == "Cambiar estado Flujo" or accion == "Asignar US a Flujo" or accion == "Visualizar kanban":
         permiso = Permisos.objects.filter(nombre="Administración de Flujos")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)

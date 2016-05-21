@@ -347,6 +347,7 @@ class CrearActividadForm(forms.Form):
     nombre = forms.CharField(max_length=20)
     descripcion = forms.CharField(max_length=30, required=False)
     estado = forms.IntegerField(required=False)
+    numero = forms.IntegerField(required=False)
     
     
 class BuscarFlujoForm(forms.Form):
@@ -363,4 +364,8 @@ class EditarActividadForm(forms.Form):
     
 class CambiarEstadoFlujoForm(forms.Form):
     estado = forms.BooleanField(required=False)
+    
+class CambiarEstadoUSFlujoForm(forms.Form):
+    estado = forms.IntegerField(required=False)
+    actividad_id = forms.IntegerField(required=False)
     
