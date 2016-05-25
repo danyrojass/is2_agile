@@ -1006,7 +1006,7 @@ def editar_proyectos(request, proyecto_id):
                     desasignar_usuarios(request, sm.id, proyecto_id)
                     user_profile = Usuarios.objects.get(id=user_id)
                     desasignar_usuarios(request, user_profile.id, proyecto_id)
-                      
+                    
                     up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                     up.save()
                       
@@ -1660,6 +1660,9 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                     duracion = us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
                     if duracion > sp.duracion:
                         sp.duracion = duracion
+                        now=datetime.datetime.now()
+                        holidays =[datetime.datetime(now.year,12,25),datetime.datetime(now.year+1,1,1)]
+                        sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, duracion, holidays )
                         sp.save()
                 
                 usuario_asignado.asignado = True
@@ -1678,6 +1681,19 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         return render(request, 'user_history/asignar.html', {'form': form, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
     else:
         return HttpResponseRedirect('/index')
+
+def date_by_adding_business_days(from_date, add_days,holidays):
+    business_days_to_add = add_days
+    current_date = from_date
+    while business_days_to_add > 0:
+        current_date += datetime.timedelta(days=1)
+        weekday = current_date.weekday()
+        if weekday >= 5: # sunday = 6
+            continue
+        if current_date in holidays:
+            continue
+        business_days_to_add -= 1
+    return current_date
 
 def reportar_avance_us(request, user_id, proyecto_id, us_id):
    
@@ -2348,6 +2364,7 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                     for us in lista_us:
                         if estado==2:
                             us.estado = 2
+                            sp.fechaInicio=datetime.now().strftime('%Y-%m-%d')
                         elif estado==3:
                             us.estado = 3
                         elif estado==4:
