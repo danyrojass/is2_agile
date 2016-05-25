@@ -1657,10 +1657,10 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                     us.save()
 
                 if not usuario_asignado.asignado:
-                    duracion = sp.duracion
-                    duracion = duracion + us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
-                    sp.duracion = duracion
-                    sp.save()
+                    duracion = us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
+                    if duracion > sp.duracion:
+                        sp.duracion = duracion
+                        sp.save()
                 
                 usuario_asignado.asignado = True
                 usuario_asignado.save()
@@ -2180,7 +2180,7 @@ def ver_sprint(request, user_id, proyecto_id, sp_id):
         
         saludo = saludo_dia()
         
-        lista_us = sp.listaUS.all().order_by('nivel_prioridad')
+        lista_us = sp.listaUS.all().order_by('prioridad_SM')
         lista_usuarios = sp.desarrolladores.all()
         
         return render(request, 'sprints/ver.html', {'lista_usuarios':lista_usuarios,'lista_us': lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp, 'staff1':staff1})
@@ -2213,9 +2213,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     sp = proyecto.sprint.get(id=sp_id)
     usuarios_sprint = sp.desarrolladores.all()
     
-    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
-    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
-    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
+    us1 = proyecto.user_stories.all().filter(prioridad_SM=1).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
+    us2 = proyecto.user_stories.all().filter(prioridad_SM=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
+    us3 = proyecto.user_stories.all().filter(prioridad_SM=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
     user_stories = map(None, us1, us2, us3)
     
     if staff:
@@ -2237,9 +2237,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
                 lista_horas_por_dia.remove('')
             if lista_user_stories or lista_usuarios:
                 asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
-                sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
-                sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
-                sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
+                sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
+                sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
+                sp_us3 = sp.listaUS.all().filter(prioridad_SM=3)
                 sp_us = map(None, sp_us1, sp_us2, sp_us3)
                 sp_desarrolladores = sp.desarrolladores.all()
                 
