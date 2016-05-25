@@ -84,7 +84,7 @@
 								    {% if sp_desarrolladores %}
 										{% for us in sp_desarrolladores %}
 											<tr>
-												<td width="35%">{{ us.user }} | {{us.horas_por_dia}} hs/día.</td>
+												<td width="35%">{{ us.user }} | {{us.horas_por_dia.cantidad_diaria}} hs/día.</td>
 											</tr>
 										{% endfor %}
 									{% endif %}

@@ -64,11 +64,31 @@
 								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{us.descripcion}}"></td>
 								</tr>	
 								{% endif %}
+								{% if staff8 %}
+								<tr>
+									<td width="15%"><b>Prioridad de Scrum Master</b></td>
+								    <td>
+										<select name="prioridad_SM" id="prioridad_SM">
+											<option selected="selected" disabled="disabled">--- Selecciona Prioridad de SM ---</option>
+											<option value="1">Urgente</option>
+											<option value="2">Medianamente urgente</option>
+											<option value="3">Para nada urgente</option>
+										</select> 
+									</td>
+								</tr>	
+								{% endif %}
 								{% if staff4 %}
 								<tr>
-									<td width="15%"><b>Nivel de Prioridad</b></td>
-								    <td width="43%"><input NAME="nivel_prioridad" type="text" class="cajaGrande" id="nivel_prioridad" size="50" maxlength="50" value="{{us.nivel_prioridad}}"></td>
-								</tr>	
+								      <td><b>Nivel de Prioridad</b></td>
+								      <td>
+										     <select name="nivel_prioridad" id="nivel_prioridad">
+											<option selected="selected" disabled="disabled">--- Selecciona un Nivel de Prioridad ---</option>
+											<option value="1">Alta</option>
+											<option value="2">Media</option>
+											<option value="3">Baja</option>
+										</select> 
+									</td>
+								</tr>  
 								{% endif %}
 								{% if staff1 %}
 								<tr>
@@ -94,16 +114,11 @@
 								    <td width="43%"><input NAME="tiempo_estimado" type="text" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value="{{us.tiempo_estimado}}"></td>
 								</tr>
 								{% endif %}
-								{% if staff8 %}
-								<tr>
-									<td width="15%"><b>Tipo</b></td>
-								    <td width="43%"><input NAME="tipo" type="text" class="cajaGrande" id="tipo" size="50" maxlength="50" value="{{us.tipo}}"></td>
-								</tr>	
-								{% endif %}								
+															
 							</table>	
 						</div>
 				{% if staff10 %}		
-				<div id="tituloForm" class="header">MODIFICAR DESARROLLADO DE US</div>
+				<div id="tituloForm" class="header">MODIFICAR DESARROLLADOR DE US</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>

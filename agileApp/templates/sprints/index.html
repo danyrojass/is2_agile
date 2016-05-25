@@ -75,7 +75,9 @@
 					<div id="botonBusqueda">
 						<td style="text-align:right"><button class="button" type="submit">BUSCAR</button></td>
         				<td style="text-align:right"><a onClick="limpiar()" onMouseOver="style.cursor=cursor" class="button">LIMPIAR</a></td>
-						<td style="text-align:left"><a onClick="crear_sprint()" onMouseOver="style.cursor=cursor" class="button" >CREAR SPRINT</a></td>
+        				{% if filaz < 2 %}
+							<td style="text-align:left"><a onClick="crear_sprint()" onMouseOver="style.cursor=cursor" class="button" >CREAR SPRINT</a></td>
+						{% endif %}
 							</div>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
@@ -119,11 +121,18 @@
 												{% elif s.estado == 4 %}											
 													<td width="35%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
+												{% if s.estado == 1 or s.estado == 4 or s.estado == 2 %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
+												{% endif %}
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_sprint' user.id proyecto.id s.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_sprint' user.id proyecto.id s.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_sprint' user.id proyecto.id s.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
-
+												{% if en_ejecucion == s or not en_ejecucion %}
+													<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_sprint' user.id proyecto.id s.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+												{% else %}
+													<td width="10%">&nbsp;</td>
+												{% endif %}
 											</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
@@ -140,11 +149,18 @@
 												{% elif s.estado == 4 %}											
 													<td width="35%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
+												{% if s.estado == 1 or s.estado == 4 or s.estado == 2 %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
+												{% endif %}
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_sprint' user.id proyecto.id s.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_sprint' user.id proyecto.id s.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_sprint' user.id proyecto.id s.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
-									
+												{% if en_ejecucion == s or not en_ejecucion %}
+													<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_sprint' user.id proyecto.id s.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+												{% else %}
+													<td width="10%">&nbsp;</td>
+												{% endif %}									
 											</tr>
 										{% endif %}
 									{% endfor %}

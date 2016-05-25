@@ -72,7 +72,7 @@
 												{% if usuarios %}
 													{% for u in usuarios %}
 														{% if not u in list_usuarios_asginados %}
-															<option value="{{u.id}}" id="id_user">{{u.user}} | {{u.horas_por_dia}} hs/día.</option>
+															<option value="{{u.id}}" id="id_user">{{u.user}} | {{u.horas_por_dia.cantidad_diaria}} hs/día.</option>
 														{% endif %}
 													{% endfor %}
 												{% endif %}

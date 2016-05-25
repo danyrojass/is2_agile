@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import string
 from .models import Roles, Proyectos, Usuarios_Proyectos, User_Story, Flujos
 from django.shortcuts import get_object_or_404
+from agileApp.models import Nota
 
  
 TIPOS = ( 
@@ -247,12 +248,14 @@ class CambiarEstadoForm(forms.Form):
 class CrearUSForm(forms.Form):
     nombre = forms.CharField(max_length = 50)
     descripcion = forms.CharField(max_length = 50, required=False)
+    prioridad_SM  = forms.CharField(max_length = 50, required=False)
     nivel_prioridad = forms.IntegerField(required=False)
     valor_negocios = forms.IntegerField(required=False)
     valor_tecnico = forms.IntegerField(required=False)
     size = forms.IntegerField(required=False)
     tiempo_estimado = forms.IntegerField(required=False)
     tipo = forms.CharField(max_length = 50, required=False)
+    tipo_creado = forms.CharField(max_length = 50, required=False)
     
     def __init__(self, *args, **kwargs):
         self.proyecto_id = kwargs.pop('proyecto_id')
@@ -300,7 +303,6 @@ class archivoUSForm(forms.Form):
 
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)
-    duracion = forms.IntegerField()
     estado = forms.IntegerField()
     
     def __init__(self, *args, **kwargs):
@@ -376,3 +378,13 @@ class EditarActividadForm(forms.Form):
 class CambiarEstadoFlujoForm(forms.Form):
     estado = forms.BooleanField(required=False)
     
+class NotasUSForm(forms.Form):
+    nombre = forms.CharField(max_length=25)
+    descripcion = forms.CharField(max_length=50, required=False) 
+    
+    def clean_nombre(self):
+        """Comprueba que no exista un nombre igual en la db"""
+        nombre = self.cleaned_data['nombre']
+        if Nota.objects.filter(nombre=nombre):
+            raise forms.ValidationError('Nombre de nota ya registrado.')
+        return nombre

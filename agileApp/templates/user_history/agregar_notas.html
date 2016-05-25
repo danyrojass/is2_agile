@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Crear Sprint{% endblock title %}
+{% block title %}Agregar Notas US{% endblock title %}
 {% block content %}
 	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
 		<div id="welcome" align="center">	
@@ -29,29 +29,21 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR SPRINT</div>
+					<div id="tituloForm" class="header">AGREGAR NOTA A US</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								
 								<tr>
-									<td width="14%"><b>Nombre</b></td>
-								    <td width="36%"><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="50" maxlength="25"></td>
-								</tr>	
+									<td><b>Nombre</b></td>
+									<td><input NAME="nombre" type="text" class="cajaGrande" id="nombre" size="25" maxlength="25" value=""></td>								
+								</tr>
+								
 								
 								<tr>
-									<td><b>Estado</b></td>
-								    <td>
-										<select name="estado" id="estado">
-											<option selected="selected" disabled="disabled">--- Selecciona un Estado ---</option>
-											<option value="1">Planificado</option>
-											<option value="2">En Ejecución</option>
-											<option value="3">Finalizado</option>
-											<option value="4">Cancelado</option>
-										</select> 
-									</td>
+									<td><b>Descripción Breve</b></td>
+									<td><textarea id="descripcion" name="descripcion" rows="10" cols="40">Escribe aquí tus comentarios</textarea></td>								
 								</tr>
-											
 							</table>	
 					</div>
 					
@@ -60,8 +52,8 @@
 					
 
 					<div id="botonBusqueda">
-						<button class="button" type="submit">CREAR SPRINT</button>
-				  		<a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}" class="button" type="submit">CANCELAR</a>
+						<button class="button" type="submit">AGREGAR NOTA A US</button>
+				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>
 				</div>

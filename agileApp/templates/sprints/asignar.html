@@ -44,7 +44,7 @@
 								     <td width="43%">{{sp.nombre}}</td>
 								</tr>	
 								<tr>
-									<td width="15%"><b>Duración en Horas</b></td>
+									<td width="15%"><b>Duración en Días</b></td>
 								     <td width="43%">{{sp.duracion}}</td>
 								</tr>	
 								
@@ -70,13 +70,37 @@
 										
 										<tr>
 											{% if p %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ p.id }}" value="{{ p.id }}">{{ p }} | {{p.tiempo_estimado}} hs.<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ p.id }}" value="{{ p.id }}">{{ p }} | {{p.tiempo_estimado}} hs. |
+													{% if p.prioridad_SM == 1 %} Urgente {% elif p.prioridad_SM == 2 %} Medianamente Urgente {% else %} Para nada urgente {% endif %}
+													{% if p.reestimar %}
+														| Cancelado. <a href="{% url 'agileApp:modificar_us' user.id proyecto.id p.id %}"><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Reestimar"></a>
+													{% endif %}
+													<a href="{% url 'agileApp:ver_us' user.id proyecto.id p.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></br>
+												</td>
+											{% else %}
+												<td width="35%">&nbsp;</td>
 											{% endif %}
 											{% if q %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ q.id }}" value="{{ q.id }}">{{ q }} | {{q.tiempo_estimado}} hs.<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ q.id }}" value="{{ q.id }}">{{ q }} | {{q.tiempo_estimado}} hs. |
+													{% if q.prioridad_SM == 1 %} Urgente {% elif q.prioridad_SM == 2 %} Medianamente Urgente {% else %} Para nada urgente {% endif %}
+													{% if q.reestimar %}
+														| Cancelado. <a href="{% url 'agileApp:modificar_us' user.id proyecto.id q.id %}"><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Reestimar"></a>
+													{% endif %}
+													<a href="{% url 'agileApp:ver_us' user.id proyecto.id q.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></br>
+												</td>
+											{% else %}
+												<td width="35%">&nbsp;</td>
 											{% endif %}
 											{% if r %}
-												<td width="35%"><input type="checkbox" name="userstories" id="option{{ r.id }}" value="{{ r.id }}">{{ r }} | {{r.tiempo_estimado}} hs.<br></td>
+												<td width="35%"><input type="checkbox" name="userstories" id="option{{ r.id }}" value="{{ r.id }}">{{ r }} | {{r.tiempo_estimado}} hs. | 
+													{% if r.prioridad_SM == 1 %} Urgente {% elif r.prioridad_SM == 2 %} Medianamente Urgente {% else %} Para nada urgente {% endif %}
+													{% if r.reestimar %}
+														| Cancelado. <a href="{% url 'agileApp:modificar_us' user.id proyecto.id r.id %}"><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Reestimar"></a>
+													{% endif %}
+													<a href="{% url 'agileApp:ver_us' user.id proyecto.id r.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a>
+												</td>
+											{% else %}
+												<td width="35%">&nbsp;</td>
 											{% endif %}
 										</tr>
 											
@@ -93,11 +117,16 @@
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 								
+								<tr>
+									<td width="20%"><b><u>Nombre de Usuario</u></b></td>
+									<td width="20%"><b><u>Horas de Trabajo al día</u></b></td>
+								</tr>
 								{% if usuarios %}
 									{% for us in usuarios %}
 										{% if not us in usuarios_sprint %}
 											<tr>
-												<td width="35%"><input type="checkbox" name="lusuarios" id="option{{ us.id }}" value="{{ us.id }}">{{ us }} | {{us.horas_por_dia}} hs/día.<br></td>
+												<td width="20%"><input type="checkbox" name="lusuarios" id="option{{ us.id }}" value="{{ us.id }}">{{ us }}</td>
+												<td width="80%"><input NAME="lhoras_por_dia" type="number" class="cajaGrande" id="lhoras_por_dia" size="50" maxlength="35"></td>
 											</tr>
 										{% endif%}
 									{% endfor %}

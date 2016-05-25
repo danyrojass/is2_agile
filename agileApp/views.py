@@ -16,8 +16,10 @@ Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US
 us_Flujos, Usuarios_Sprint
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
-CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivoUSForm
-from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos
+CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivoUSForm,\
+    NotasUSForm
+from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
+    Nota, US_Notas
  
 def inicio(request): 
     """
@@ -1205,6 +1207,16 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
     uh = proyecto.user_stories.all().order_by('id')
     filax = uh.count()
     
+    lista_roles = []
+    lista_usuarios = []
+    for u in usuarios:
+        r = get_object_or_404(Roles_Usuarios_Proyectos, proyecto=proyecto, usuarios=u)
+        lista_roles.append(r.roles)
+        lista_usuarios.append(u)
+    
+    pr = map(None, lista_usuarios, lista_roles)
+    print pr
+    
     if staff:    
         if request.method == 'POST':
             results = proyecto.usuarios.all().exclude(id=usuario.id)
@@ -1294,7 +1306,7 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
                 return render_to_response('proyecto_usuario/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarUSForm()
-        return render_to_response('proyecto_usuario/index.html', {'activo':activo, 'us_us':us_us, 'filax':filax, 'uh':uh, 'filas':filas, 'staff2':staff2, 'staff':staff, 'usuarios':usuarios, 'rol':rol, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('proyecto_usuario/index.html', {'pr':pr, 'activo':activo, 'us_us':us_us, 'filax':filax, 'uh':uh, 'filas':filas, 'staff2':staff2, 'staff':staff, 'usuarios':usuarios, 'rol':rol, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
     
@@ -1402,10 +1414,16 @@ def crear_us(request, user_id, proyecto_id):
     proyecto = Proyectos.objects.get(id=proyecto_id)
     accion = "Crear US"
     accion1 = "Desarrollar US"
+    accion2 = "Crear Tipo"
+    accion3 = "Definir Prioridad SM"
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
+    staff2 = verificar_permiso(usuario, accion2)
+    staff3 = verificar_permiso(usuario, accion3)
     
-    if staff or staff1:
+    tipos = Tipo.objects.all()
+    
+    if staff or staff1 or staff2:
         aid = 1
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1420,35 +1438,55 @@ def crear_us(request, user_id, proyecto_id):
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 descripcion = cleaned_data.get('descripcion')
+                prioridad_SM = cleaned_data.get('prioridad_SM')
                 nivel_prioridad = cleaned_data.get('nivel_prioridad')
                 valor_negocios = cleaned_data.get('valor_negocios')
                 valor_tecnico = cleaned_data.get('valor_tecnico')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
+                tipo_creado = cleaned_data.get('tipo_creado')
                 tipo = cleaned_data.get('tipo')
                 
-                type = Tipo(nombre=tipo)
-                type.save()
+                if tipo_creado:
+                    atype = Tipo(nombre=tipo_creado)
+                    atype.save()
+                else:
+                    atype = Tipo.objects.get(nombre=tipo)
                 
                 us = User_Story()
                 us.nombre = nombre
                 us.descripcion = descripcion
+                if staff3:
+                    us.prioridad_SM = prioridad_SM
                 us.nivel_prioridad = nivel_prioridad
                 us.valor_negocios = valor_negocios
                 us.valor_tecnico = valor_tecnico
                 us.size = size
                 us.tiempo_estimado = tiempo_estimado
                 us.fecha_creacion = datetime.now()
-                us.tipo = type
+                us.tipo = atype
                 us.save()
                 
                 us_p = US_Proyectos(proyecto=proyecto, user_story=us)
                 us_p.save()
                 
+                if staff2:
+                    if tipo_creado: 
+                        flujo = Flujos()
+                    else:
+                        flujo = Flujos.objects.get(tipo=atype)
+                    flujo.nombre = atype.nombre
+                    flujo.tipo = atype
+                    flujo.save()
+                    
+                    if tipo_creado: 
+                        f_p = Flujos_Proyectos(proyecto=proyecto, flujo=flujo)
+                        f_p.save()
+                
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearUSForm(proyecto_id=proyecto_id)
-        return render(request, 'user_history/crear.html', {'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        return render(request, 'user_history/crear.html', {'tipos':tipos, 'staff3':staff3, 'staff2':staff2, 'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
     
@@ -1477,7 +1515,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     accion5 = "Modificar US - Notas"
     accion6 = "Modificar US - ArchAdj"
     accion7 = "Modificar US - Descripción"
-    accion8 = "Modificar US - Tipo"
+    accion8 = "Definir Prioridad SM"
     accion9 = "Modificar US - TEst"
     accion10 = "Modificar US - Desarrollador"
 
@@ -1489,12 +1527,12 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     staff5 = verificar_permiso(usuario, accion5)
     staff6 = verificar_permiso(usuario, accion6)
     staff7 = verificar_permiso(usuario, accion7)
-    staff8 = verificar_permiso(usuario, accion8)
+    staff8 = verificar_permiso(usuario, accion8)    
     staff9 = verificar_permiso(usuario, accion9)
     staff10 = verificar_permiso(usuario, accion10)
     
     us = proyecto.user_stories.get(id=us_id)
-    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff8 or staff9 or staff10:
+    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff9 or staff10:
         aid = 2
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1511,14 +1549,14 @@ def modificar_us(request, us_id, user_id, proyecto_id):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 descripcion = cleaned_data.get('descripcion')
+                prioridad_SM = cleaned_data.get('prioridad_SM')
                 nivel_prioridad = cleaned_data.get('nivel_prioridad')
                 valor_negocios = cleaned_data.get('valor_negocios')
                 valor_tecnico = cleaned_data.get('valor_tecnico')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
-                tipo = cleaned_data.get('tipo')
                 id_user = cleaned_data.get('id_user')
-
+                
                 if staff7:
                     us.descripcion = descripcion
                 if staff4:
@@ -1529,15 +1567,10 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                     us.valor_tecnico = valor_tecnico
                 if staff3:
                     us.size = size
+                if staff8:
+                    us.prioridad_SM = prioridad_SM
                 if staff9:
                     us.tiempo_estimado = tiempo_estimado
-                if staff8:
-                    if us.tipo == None:
-                        type = Tipo(nombre=tipo)
-                        type.save()
-                        us.tipo = type
-                    else:
-                        us.tipo.nombre = tipo
                 
                 if staff10:
                     userstories = proyecto.user_stories.all()
@@ -1557,8 +1590,8 @@ def modificar_us(request, us_id, user_id, proyecto_id):
         else:
             form = EditarUSForm()
         return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1, 'staff':staff,\
-                                                               'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7,\
-                                                               'staff8':staff8, 'staff9':staff9, 'staff10':staff10, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
+                                                               'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7, 'staff8':staff8,\
+                                                               'staff9':staff9, 'staff10':staff10, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1612,8 +1645,22 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 
                 usuario_asignado = Usuarios.objects.get(id=id_user)
                 
-                us.usuario_asignado = usuario_asignado
-                us.save()
+                if not us.usuario_asignado:
+                    us.usuario_asignado = usuario_asignado
+                    us.save()
+                else:
+                    ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado, sprint=sp)
+                    ussp.delete()
+                    
+                    us.usuario_asignado.asignado = False
+                    us.usuario_asignado = usuario_asignado
+                    us.save()
+
+                if not usuario_asignado.asignado:
+                    duracion = sp.duracion
+                    duracion = duracion + us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
+                    sp.duracion = duracion
+                    sp.save()
                 
                 usuario_asignado.asignado = True
                 usuario_asignado.save()
@@ -1633,17 +1680,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 
 def reportar_avance_us(request, user_id, proyecto_id, us_id):
-    """
-    Método de inicio que permite ver los User Stories de un Proyecto determinado, así como también la búsqueda de los mismos.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @return: render al template user_history/index.html para la página de inicio.
-             render al template user_history/results.html para obtener resultados de la búsqueda.  
-             Listado de US.
-    """
+   
     user = request.user
     accion = "Desarrollar US"
     
@@ -1852,15 +1889,15 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
                             us.tiempo_real = tiempo_real
                 us.save()
                 
-                if tiempo_real > sp.duracion:
+                if tiempo_real > (sp.duracion*8):
                     us_sp = US_Sprint.objects.get(user_story=us, sprint=sp)
                     us_sp.delete()
                     
                     us.id_sprint = None
                     us.tiempo_real = tiempo_real
+                    us.estado = 4
+                    us.reestimar = True
                     us.save()
-                    
-                    priorizar_us(us, proyecto)
                 
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
@@ -1868,28 +1905,62 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
         return render(request, 'user_history/cambiar_estado.html', {'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
+    
+def notas_us(request, user_id, proyecto_id, us_id): 
+    user = request.user
+    accion = "Notas US"
+    
+    staff = verificar_permiso(user, accion)
+    
+    if staff:
+        aid = 6
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+                
+        saludo = saludo_dia()
+        
+        usuario = Usuarios.objects.get(id=user_id)
+        proyecto = Proyectos.objects.get(id=proyecto_id)
+        us = User_Story.objects.get(id=us_id)
+    
+        if request.method == 'POST':
+            form = NotasUSForm(request.POST)
+                
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                nombre = cleaned_data.get('nombre')
+                descripcion = cleaned_data.get('descripcion')
 
-def priorizar_us(us, proyecto):
-    lista_sprints = proyecto.sprint.all().filter(estado=1)
-    sprint = lista_sprints.order_by('id')[:1].get()
+                nota = Nota()
+                nota.nombre = nombre
+                nota.descripcion = descripcion
+                nota.usuario = usuario
+                nota.save()
+
+                us_nota = US_Notas(user_story=us, nota=nota)
+                us_nota.save()
+                                
+                return render_to_response('user_history/gracias.html', {'nota':nota, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+        else:
+            form = NotasUSForm()
+        return render_to_response('user_history/agregar_notas.html', {'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+    else:
+        return HttpResponseRedirect('/index')
     
-    us.nivel_prioridad = 1
-    us.id_sprint = sprint.id
-    us.save()
-    
-    ussp = US_Sprint(sprint=sprint, user_story=us)
-    ussp.save()
-    
-def adjuntar_archivo_us(request, user_id, proyecto_id,us_id):
-    
-    
+def ver_notas_us(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
-    accion = "Adjuntar archivo US"
+
+    accion = "Visualizar US"
+   
     staff = verificar_permiso(usuario, accion)
     
-    if staff: 
-        aid = 1
+    us = proyecto.user_stories.get(id=us_id)
+        
+    if staff:
         comprobar(request)
         if(request.user.is_anonymous()):
             return HttpResponseRedirect('/ingresar')
@@ -1897,34 +1968,24 @@ def adjuntar_archivo_us(request, user_id, proyecto_id,us_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
-        us= User_Story.objects.get(id=us_id)
-        if request.method == 'POST':
-            form = archivoUSForm(request.POST, request.FILES)
-            if form.is_valid():
-                cleaned_data = form.cleaned_data
-                nombre = cleaned_data.get('nombre')
-                archivo = request.FILES['archivo']
-                
-                archivo1=Archivo()
-                archivo1.nombre=nombre
-                archivo1.archivo=archivo
-                archivo1.id_us=us_id
-                archivo1.save()
-                
-                
-                us_archivo = US_Archivos(archivo=archivo1, user_story=us)
-                us_archivo.save()
-                
-                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
-        else:
-            form = archivoUSForm(proyecto_id=proyecto_id)
-        return render(request, 'user_history/adjuntar.html', {'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        notas = us.notas.all()
+        
+        return render(request, 'user_history/ver_notas.html', {'notas':notas, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     
+"""
+def priorizar_us(us, proyecto):
+    lista_sprints = proyecto.sprint.all().filter(estado=1)
+    sprint = lista_sprints.order_by('id')[:1].get()
     
+    us.reestimar = True
+    us.id_sprint = 0
+    us.save()
     
-    
+    ussp = US_Sprint(sprint=sprint, user_story=us)
+    ussp.save()
+"""   
 
 """ Administración de Sprints. """
 def index_sprint(request, user_id, proyecto_id):
@@ -1953,10 +2014,13 @@ def index_sprint(request, user_id, proyecto_id):
                 
         saludo = saludo_dia()
         proyecto = Proyectos.objects.get(id=proyecto_id)
-                
-        us = proyecto.sprint.all()
-        
+       
+        us = proyecto.sprint.all().order_by('id')
+        en_ejecucion = us.filter(estado=2)
+        if en_ejecucion:
+            en_ejecucion = us.get(estado=2)
         filax = us.count()
+        filaz = us.exclude(estado=3).exclude(estado=4).count()
         if request.method == 'POST':
             results = us
             form = BuscarSprintForm(request.POST)
@@ -1978,7 +2042,7 @@ def index_sprint(request, user_id, proyecto_id):
                 return render_to_response('sprints/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo ,'us':us, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarSprintForm()
-        return render_to_response('sprints/index.html', {'filax':filax, 'us':us, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('sprints/index.html', {'filaz':filaz, 'en_ejecucion':en_ejecucion, 'filax':filax, 'us':us, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
 
@@ -2016,12 +2080,10 @@ def crear_sprint(request, user_id, proyecto_id):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
-                duracion = cleaned_data.get('duracion')
                 estado = cleaned_data.get('estado')
                 
                 sp = Sprint()
                 sp.nombre = nombre
-                sp.duracion = duracion
                 sp.estado = estado
                 
                 sp.save()
@@ -2151,9 +2213,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     sp = proyecto.sprint.get(id=sp_id)
     usuarios_sprint = sp.desarrolladores.all()
     
-    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).filter(estado=1).filter(id_sprint=None)
-    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).filter(estado=1).filter(id_sprint=None)
-    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).filter(estado=1).filter(id_sprint=None)
+    us1 = proyecto.user_stories.all().filter(nivel_prioridad=1).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
+    us2 = proyecto.user_stories.all().filter(nivel_prioridad=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
+    us3 = proyecto.user_stories.all().filter(nivel_prioridad=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None).exclude(prioridad_SM=None)
     user_stories = map(None, us1, us2, us3)
     
     if staff:
@@ -2170,8 +2232,11 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
 
             lista_user_stories = request.POST.getlist(u'userstories')
             lista_usuarios = request.POST.getlist(u'lusuarios')
+            lista_horas_por_dia = request.POST.getlist('lhoras_por_dia')
+            while '' in lista_horas_por_dia:
+                lista_horas_por_dia.remove('')
             if lista_user_stories or lista_usuarios:
-                asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios)
+                asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
                 sp_us1 = sp.listaUS.all().filter(nivel_prioridad=1)
                 sp_us2 = sp.listaUS.all().filter(nivel_prioridad=2)
                 sp_us3 = sp.listaUS.all().filter(nivel_prioridad=3)
@@ -2184,7 +2249,7 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     else:
         return HttpResponseRedirect('/index')
 
-def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios):
+def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia):
     
     """
     Método que realiza la acción de asignar user stories a sprints.
@@ -2198,7 +2263,7 @@ def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios):
     sprint = get_object_or_404(Sprint, id=sp_id)
     ussp = None
     spus = None
-    
+    us_hp = None
     if lista_user_stories:
         for us_id in lista_user_stories:
             
@@ -2208,15 +2273,36 @@ def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios):
             
             us.id_sprint = sp_id
             us.save()
+        
+        for us_id in lista_user_stories:
+            us = User_Story.objects.get(id=us_id)
+            tipo = us.tipo
+            flujo = Flujos.objects.filter(tipo=tipo)
+            if flujo:
+                flujo = Flujos.objects.get(tipo=tipo)
             
-    if lista_usuarios:
-        for user_id in lista_usuarios:
+                us_f = us_Flujos(flujo=flujo, us=us)
+                us_f.save()
+        
+                us.id_flujo = flujo.id
+                us.save()
             
-            user = Usuarios.objects.get(id=user_id)   
-            ussp = Usuarios_Sprint(sprint=sprint, desarrolladores=user)
-            ussp.save()
-    
-    return spus 
+    if lista_usuarios and lista_horas_por_dia:
+        us_hp = map(None, lista_usuarios, lista_horas_por_dia)
+        for user_id, h in us_hp:
+            if user_id and h:
+                user = Usuarios.objects.get(id=user_id)   
+                ussp = Usuarios_Sprint(sprint=sprint, desarrolladores=user)
+                ussp.save()
+        
+                horas = Horas(cantidad_diaria=h)
+                horas.id_sprint = sp_id
+                horas.id_usuario = user.id
+                horas.save()
+                
+                user.horas_por_dia = horas
+                user.save()
+    return sprint
 
 def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
     """
@@ -2963,7 +3049,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False 
             
-    elif accion=="Modificar US - Tipo":
+    elif accion=="Crear Tipo" or accion=="Modificar US - Tipo":
         permiso = Permisos.objects.filter(nombre="Modificación de US - Tipo")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
@@ -3015,6 +3101,26 @@ def verificar_permiso(usuario, accion):
     
     elif accion=="Adjuntar archivo US":
         permiso = Permisos.objects.filter(nombre="Modificación de US - Archivos adjuntos")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Definir Prioridad SM":
+        permiso = Permisos.objects.filter(nombre="Asignar Prioridad de Scrum Master al US")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
+            staff = False
+    
+    elif accion=="Notas US":
+        permiso = Permisos.objects.filter(nombre="Modificación de US - Notas")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
         

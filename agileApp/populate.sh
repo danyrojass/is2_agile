@@ -12,7 +12,7 @@ echo "2. Local."
 read opcion
 
 echo "Por favor, ingrese el nombre del Tag."
-echo "V2: Tag Nro. 2."
+echo "V3: Tag Nro. 3."
 
 read nombreTag
 	sudo service postgresql restart 
@@ -36,20 +36,31 @@ read nombreTag
 		mkdir /home/dany/AmbienteDesarrollo
 		cd /home/dany/AmbienteDesarrollo
 		if [ "$opcion" -eq "1" ]; then
-			git clone -b $nombreTag --single-branch --depth 1 https://github.com/danyrojass/is2_agile.git
+			git clone -b $nombreTag https://github.com/danyrojass/is2_agile.git
 			cd /home/dany/AmbienteDesarrollo/is2_agile
+			
+			rm -r /home/dany/AmbienteDesarrollo/is2_agile/agileApp/migrations/__init__.pyc
+			rm -r /home/dany/AmbienteDesarrollo/is2_agile/agileApp/migrations/0001_initial.py
+			rm -r /home/dany/AmbienteDesarrollo/is2_agile/agileApp/migrations/0001_initial.pyc			
+
 			sed  -i  's/VIRTUAL_ENV="\/home\/dany\/agile\/agileEnv"/VIRTUAL_ENV="\/home\/dany\/AmbienteDesarrollo\/agile\/agileEnv"/g' /home/dany/AmbienteDesarrollo/is2_agile/agileEnv/bin/activate
 			source agileEnv/bin/activate
 		elif [ "$opcion" -eq "2" ]; then
 			git clone -b $nombreTag /home/dany/agile/.git
 			cd /home/dany/AmbienteDesarrollo/agile
+			
+			rm -r /home/dany/AmbienteDesarrollo/agile/agileApp/migrations/__init__.pyc
+			rm -r /home/dany/AmbienteDesarrollo/agile/agileApp/migrations/0001_initial.py
+			rm -r /home/dany/AmbienteDesarrollo/agile/agileApp/migrations/0001_initial.pyc			
+
 			sed  -i  's/VIRTUAL_ENV="\/home\/dany\/agile\/agileEnv"/VIRTUAL_ENV="\/home\/dany\/AmbienteDesarrollo\/agile\/agileEnv"/g' /home/dany/AmbienteDesarrollo/agile/agileEnv/bin/activate
 			source agileEnv/bin/activate
 		fi
 					
 		python manage.py syncdb
+		python manage.py makemigrations
 		python manage.py migrate
-		python /home/dany/agile/manage.py populate_db
+		python manage.py populate_db
 		
 		python manage.py runserver
 		deactivate
@@ -59,15 +70,25 @@ read nombreTag
 		mkdir /home/dany/AmbienteProduccion
 		cd /home/dany/AmbienteProduccion
 		if [ "$opcion" -eq "1" ]; then
-			git clone -b $nombreTag --single-branch --depth 1 https://github.com/danyrojass/is2_agile.git
+			git clone -b $nombreTag https://github.com/danyrojass/is2_agile.git
 			cd /home/dany/AmbienteProduccion/is2_agile
+
+			rm -r /home/dany/AmbienteProduccion/is2_agile/agileApp/migrations/__init__.pyc
+			rm -r /home/dany/AmbienteProduccion/is2_agile/agileApp/migrations/0001_initial.py
+			rm -r /home/dany/AmbienteProduccion/is2_agile/agileApp/migrations/0001_initial.pyc				
+
 		elif [ "$opcion" -eq "2" ]; then
 			git clone -b $nombreTag /home/dany/agile/.git
 			cd /home/dany/AmbienteProduccion/agile
+
+			rm -r /home/dany/AmbienteProduccion/agile/agileApp/migrations/__init__.pyc
+			rm -r /home/dany/AmbienteProduccion/agile/agileApp/migrations/0001_initial.py
+			rm -r /home/dany/AmbienteProduccion/agile/agileApp/migrations/0001_initial.pyc	
 		fi
 		python manage.py syncdb
+		python manage.py makemigrations
 		python manage.py migrate
-		python /home/dany/agile/manage.py populate_db
+		python manage.py populate_db
 		
 		python manage.py collectstatic
 		sudo chown :www-data /home/dany/AmbienteProduccion/agile

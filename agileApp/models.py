@@ -34,6 +34,13 @@ class Roles(models.Model):
     
     def __str__(self):
         return self.nombre
+
+class Horas(models.Model):
+    cantidad_diaria = models.IntegerField(null=True)
+    id_usuario = models.IntegerField(null=True)
+    id_sprint = models.IntegerField(null=True)
+    def __str__(self):
+        return self.cantidad_diaria
 """
 Clase Usuarios.
 """
@@ -43,7 +50,7 @@ class Usuarios(models.Model):
     direccion = models.CharField(max_length=45, default="")
     tipo = models.CharField(max_length=10, default="")
     observacion = models.CharField(max_length=50, default="")
-    horas_por_dia = models.IntegerField(null=True)
+    horas_por_dia = models.ForeignKey(Horas, null=True)
     asignado = models.BooleanField(default=False)
     roles = models.ManyToManyField(Roles, through='Roles_Usuarios_Proyectos')
     
@@ -55,7 +62,7 @@ class Permisos_Roles(models.Model):
     roles = models.ForeignKey(Roles)
     
 class Tipo(models.Model):
-    nombre = models.CharField(max_length = 50, null=True)
+    nombre = models.CharField(max_length = 50, null=True, unique=True)
     def __str__(self):
         return self.nombre
 
@@ -82,6 +89,8 @@ class Archivo(models.Model):
 class User_Story(models.Model):
     nombre = models.CharField(max_length = 50, null = True)
     descripcion = models.CharField(max_length = 50, null = True)
+    prioridad_SM = models.IntegerField(null=True)
+    reestimar = models.BooleanField(default=False)
     nivel_prioridad = models.IntegerField(null=True)
     valor_negocios = models.IntegerField(null=True)
     valor_tecnico = models.IntegerField(null=True)

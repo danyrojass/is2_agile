@@ -58,7 +58,19 @@
 									<td width="15%"><b>Descripción</b></td>
 								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value=""></td>
 								</tr>	
-								
+								{% if staff3 %}
+									<tr>
+										<td width="15%"><b>Prioridad de Scrum Master</b></td>
+									    <td>
+											<select name="prioridad_SM" id="prioridad_SM">
+												<option selected="selected" disabled="disabled">--- Selecciona Prioridad de SM ---</option>
+												<option value="1">Urgente</option>
+												<option value="2">Medianamente urgente</option>
+												<option value="3">Para nada urgente</option>
+											</select> 
+										</td>
+									</tr>	
+								{% endif %}
 								<tr>
 								      <td><b>Nivel de Prioridad</b></td>
 								      <td>
@@ -91,10 +103,40 @@
 								    <td width="43%"><input NAME="tiempo_estimado" type="text" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value=""></td>
 								</tr>
 								
-								<tr>
-									<td width="15%"><b>Tipo</b></td>
-								    <td width="43%"><input NAME="tipo" type="text" class="cajaGrande" id="tipo" size="50" maxlength="50" value=""></td>
-								</tr>	
+								{% if staff2 %}
+									<tr>
+										<td width="15%"><b>Tipo</b></td>
+										<td width="43%">
+											<select id="tipo" name="tipo" class="comboGrande">
+												<option selected="selected" disabled="disabled">--- Selecciona un Tipo ---</option> 
+													{% if tipos %}
+														{% for r in tipos %}
+															<option value="{{r.nombre}}" id="tipo">{{r.nombre}}</option>
+														{% endfor %}
+													{% endif %}
+											</select>
+										</td>
+									</tr>
+									
+									<tr>
+										<td width="15%"><b>Crear Tipo</b></td>
+									    <td width="43%"><input NAME="tipo_creado" type="text" class="cajaGrande" id="tipo_creado" size="50" maxlength="50" value=""></td>
+									</tr>
+								{% else %}
+									<tr>
+										<td width="15%"><b>Tipo</b></td>
+										<td width="43%">
+											<select id="tipo" name="tipo" class="comboGrande">
+												<option selected="selected" disabled="disabled">--- Selecciona un Tipo ---</option> 
+													{% if tipos %}
+														{% for r in tipos %}
+															<option value="{{r.nombre}}" id="tipo">{{r.nombre}}</option>
+														{% endfor %}
+													{% endif %}
+											</select>
+										</td>
+									</tr>
+								{% endif %}
 																
 							</table>	
 						</div>
