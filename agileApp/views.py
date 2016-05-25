@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from datetime import datetime
+from datetime import timedelta
 from .forms import RegistroUserForm, EditarUserForm, BuscarUserForm, CrearRolForm, BuscarRolForm,\
 EditarRolForm, ModificarContrasenaForm, CrearProyectoForm, DefinirProyectoForm, BuscarProyectoForm,\
 EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm, EditarUSForm, AsignarUSForm,\
@@ -28,7 +29,7 @@ def inicio(request):
     @type  request:HtpptRequest 
     @return: render a index.html con el Usuario
     """    
-       
+    
     if request.user.is_anonymous():
         return HttpResponseRedirect('/ingresar')
     else:
@@ -1659,10 +1660,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 if not usuario_asignado.asignado:
                     duracion = us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
                     if duracion > sp.duracion:
-                        sp.duracion = duracion
-                        now=datetime.datetime.now()
-                        holidays =[datetime.datetime(now.year,12,25),datetime.datetime(now.year+1,1,1)]
-                        sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, duracion, holidays )
+                        sp.duracion = duracion      
                         sp.save()
                 
                 usuario_asignado.asignado = True
@@ -1682,15 +1680,14 @@ def asignar_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
 
-def date_by_adding_business_days(from_date, add_days,holidays):
+
+def date_by_adding_business_days(from_date, add_days):
     business_days_to_add = add_days
     current_date = from_date
     while business_days_to_add > 0:
-        current_date += datetime.timedelta(days=1)
+        current_date += timedelta(days=1)
         weekday = current_date.weekday()
         if weekday >= 5: # sunday = 6
-            continue
-        if current_date in holidays:
             continue
         business_days_to_add -= 1
     return current_date
@@ -2364,7 +2361,10 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                     for us in lista_us:
                         if estado==2:
                             us.estado = 2
-                            sp.fechaInicio=datetime.now().strftime('%Y-%m-%d')
+                            sp.fechaInicio=datetime.now()
+                            now=datetime.now()
+                            
+                            sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, sp.duracion )
                         elif estado==3:
                             us.estado = 3
                         elif estado==4:
