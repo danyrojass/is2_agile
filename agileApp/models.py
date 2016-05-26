@@ -139,7 +139,7 @@ class Sprint(models.Model):
     desarrolladores=models.ManyToManyField(Usuarios, through='Usuarios_Sprint')
     fechaInicio=models.DateField(null = timezone.now)
     fechaFin=models.DateField(null = timezone.now)
-    
+    activar=models.BooleanField(default=False)
 
 class Flujos(models.Model):
     nombre = models.CharField(max_length = 30, null = True)

@@ -21,6 +21,7 @@ CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivo
     NotasUSForm
 from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
     Nota, US_Notas
+import math
  
 def inicio(request): 
     """
@@ -1216,7 +1217,6 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
         lista_usuarios.append(u)
     
     pr = map(None, lista_usuarios, lista_roles)
-    print pr
     
     if staff:    
         if request.method == 'POST':
@@ -1625,9 +1625,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
         list_usuarios_asginados.append(uh.usuario_asignado)
 
     usuarios = sp.desarrolladores.all()
-    print usuarios
     usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US").filter(asignado=False)
-    print usuarios
 
     if staff:
         aid = 3
@@ -1659,6 +1657,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
 
                 if not usuario_asignado.asignado:
                     duracion = us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
+                    duracion = math.ceil(duracion)
                     if duracion > sp.duracion:
                         sp.duracion = duracion      
                         sp.save()
@@ -1888,6 +1887,11 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
+        
+        cambio_estado = True
+        if sp.estado == 2:
+            cambio_estado = False
+            
         if request.method == 'POST':
             form = CambiarEstadoUSForm(request.POST)
             if form.is_valid():
@@ -1915,7 +1919,7 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CambiarEstadoUSForm()
-        return render(request, 'user_history/cambiar_estado.html', {'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/cambiar_estado.html', {'cambio_estado':cambio_estado, 'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     
@@ -2033,7 +2037,18 @@ def index_sprint(request, user_id, proyecto_id):
         if en_ejecucion:
             en_ejecucion = us.get(estado=2)
         filax = us.count()
-        filaz = us.exclude(estado=3).exclude(estado=4).count()
+        filaz = us.exclude(estado=3).exclude(estado=4).count()          
+        
+        for sp in us:
+            lUH = sp.listaUS.all()
+            for uh in lUH:
+                if not uh.usuario_asignado:
+                    sp.activar = False
+                    break
+                else:
+                    sp.activar = True
+            sp.save()
+
         if request.method == 'POST':
             results = us
             form = BuscarSprintForm(request.POST)
@@ -2248,13 +2263,16 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
             lista_horas_por_dia = request.POST.getlist('lhoras_por_dia')
             while '' in lista_horas_por_dia:
                 lista_horas_por_dia.remove('')
-            if lista_user_stories or lista_usuarios:
+            if lista_user_stories and lista_usuarios:
                 asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
                 sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
                 sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
                 sp_us3 = sp.listaUS.all().filter(prioridad_SM=3)
                 sp_us = map(None, sp_us1, sp_us2, sp_us3)
                 sp_desarrolladores = sp.desarrolladores.all()
+            else:
+                sp_us = None
+                sp_desarrolladores = None
                 
             return render_to_response('sprints/gracias.html', {'sp_desarrolladores':sp_desarrolladores, 'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
@@ -2348,6 +2366,11 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
         
         saludo = saludo_dia()
         lista_us = sp.listaUS.all()
+        
+        cambio_estado = True
+        if sp.estado == 2:
+            cambio_estado = False
+        
         if request.method == 'POST':
             form = CambiarEstadoSprintForm(request.POST)
             if form.is_valid():
@@ -2356,19 +2379,29 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                 
                 if estado:
                     sp.estado = estado
-            
+                
+                if estado == 2:
+                    sp.fechaInicio=datetime.now()
+                    now=datetime.now()
+                            
+                    sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, sp.duracion)
+                
                 if lista_us:
                     for us in lista_us:
                         if estado==2:
                             us.estado = 2
-                            sp.fechaInicio=datetime.now()
-                            now=datetime.now()
                             
-                            sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, sp.duracion )
                         elif estado==3:
                             us.estado = 3
+                            
                         elif estado==4:
                             us.estado = 4
+                            us.reestimar = True
+                            
+                            usuario_asignado = us.usuario_asignado
+                            usuario_asignado = False
+                            usuario_asignado.save()
+                            
                         us.save()
                     
                 sp.save()
@@ -2376,7 +2409,7 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                 return render_to_response('sprints/gracias.html', {'sp':sp, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CambiarEstadoSprintForm()
-        return render(request, 'sprints/cambiar_estado.html', {'lista_us':lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
+        return render(request, 'sprints/cambiar_estado.html', {'cambio_estado':cambio_estado, 'lista_us':lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
     else:
         return HttpResponseRedirect('/index')
 
@@ -2518,7 +2551,6 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
     accion = "Crear Actividad"
     
     staff = verificar_permiso(usuario, accion)
-    print staff
     if staff:
         aid = 1
         comprobar(request)

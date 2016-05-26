@@ -87,6 +87,10 @@
 												<td width="35%">{{ us.user }} | {{us.horas_por_dia.cantidad_diaria}} hs/día.</td>
 											</tr>
 										{% endfor %}
+									{% else %}
+										<tr>
+										<td width="35%">No se asignaron desarrolladores.</td>
+									</tr>
 									{% endif %}
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
