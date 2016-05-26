@@ -64,32 +64,7 @@
 								    <td width="43%"><input NAME="descripcion" type="text" class="cajaGrande" id="descripcion" size="50" maxlength="50" value="{{us.descripcion}}"></td>
 								</tr>	
 								{% endif %}
-								{% if staff8 %}
-								<tr>
-									<td width="15%"><b>Prioridad de Scrum Master</b></td>
-								    <td>
-										<select name="prioridad_SM" id="prioridad_SM">
-											<option selected="selected" disabled="disabled">--- Selecciona Prioridad de SM ---</option>
-											<option value="1">Urgente</option>
-											<option value="2">Medianamente urgente</option>
-											<option value="3">Para nada urgente</option>
-										</select> 
-									</td>
-								</tr>	
-								{% endif %}
-								{% if staff4 %}
-								<tr>
-								      <td><b>Nivel de Prioridad</b></td>
-								      <td>
-										     <select name="nivel_prioridad" id="nivel_prioridad">
-											<option selected="selected" disabled="disabled">--- Selecciona un Nivel de Prioridad ---</option>
-											<option value="1">Alta</option>
-											<option value="2">Media</option>
-											<option value="3">Baja</option>
-										</select> 
-									</td>
-								</tr>  
-								{% endif %}
+							
 								{% if staff1 %}
 								<tr>
 									<td width="15%"><b>Valor de Negocios</b></td>
@@ -98,8 +73,8 @@
 								{% endif %}
 								{% if staff2 %}
 								<tr>
-									<td width="15%"><b>Valor Técnico</b></td>
-								    <td width="43%"><input NAME="valor_tecnico" type="text" class="cajaGrande" id="valor_tecnico" size="50" maxlength="50" value="{{us.valor_tecnico}}"></td>
+									<td width="15%"><b>Urgencia</b></td>
+								    <td width="43%"><input NAME="urgencia" type="text" class="cajaGrande" id="urgencia" size="50" maxlength="50" value="{{us.valor_tecnico}}"></td>
 								</tr>
 								{% endif %}
 								{% if staff3 %}

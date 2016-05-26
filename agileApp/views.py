@@ -1442,7 +1442,7 @@ def crear_us(request, user_id, proyecto_id):
                 prioridad_SM = cleaned_data.get('prioridad_SM')
                 nivel_prioridad = cleaned_data.get('nivel_prioridad')
                 valor_negocios = cleaned_data.get('valor_negocios')
-                valor_tecnico = cleaned_data.get('valor_tecnico')
+                urgencia = cleaned_data.get('urgencia')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
                 tipo_creado = cleaned_data.get('tipo_creado')
@@ -1458,11 +1458,18 @@ def crear_us(request, user_id, proyecto_id):
                 us.nombre = nombre
                 us.descripcion = descripcion
                 if staff3:
+                    if urgencia*valor_negocios >= 1 and urgencia*valor_negocios <=8:
+                        prioridad_SM = 3
+                    elif urgencia*valor_negocios >= 9 and urgencia*valor_negocios <=17:
+                        prioridad_SM = 2
+                    else:
+                        prioridad_SM = 1
+                        
                     us.prioridad_SM = prioridad_SM
+                    us.valor_negocios = valor_negocios
+                    us.urgencia = urgencia
+                    us.size = size
                 us.nivel_prioridad = nivel_prioridad
-                us.valor_negocios = valor_negocios
-                us.valor_tecnico = valor_tecnico
-                us.size = size
                 us.tiempo_estimado = tiempo_estimado
                 us.fecha_creacion = datetime.now()
                 us.tipo = atype
@@ -1509,9 +1516,9 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     proyecto = Proyectos.objects.get(id=proyecto_id)
     
     accion = "Crear US"
-    accion1 = "Modificar US - ValNeg"
-    accion2 = "Modificar US - ValTec"
-    accion3 = "Modificar US - Size"         
+    accion1 = "Definir Prioridad SM"
+    accion2 = "Definir Prioridad SM"
+    accion3 = "Definir Prioridad SM"         
     accion4 = "Modificar US - Prioridad"
     accion5 = "Modificar US - Notas"
     accion6 = "Modificar US - ArchAdj"
@@ -1553,22 +1560,26 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 prioridad_SM = cleaned_data.get('prioridad_SM')
                 nivel_prioridad = cleaned_data.get('nivel_prioridad')
                 valor_negocios = cleaned_data.get('valor_negocios')
-                valor_tecnico = cleaned_data.get('valor_tecnico')
+                urgencia = cleaned_data.get('urgencia')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
                 id_user = cleaned_data.get('id_user')
                 
                 if staff7:
                     us.descripcion = descripcion
-                if staff4:
-                    us.nivel_prioridad = nivel_prioridad
                 if staff1:
                     us.valor_negocios = valor_negocios
                 if staff2:
-                    us.valor_tecnico = valor_tecnico
+                    us.urgencia = urgencia
                 if staff3:
                     us.size = size
                 if staff8:
+                    if urgencia*valor_negocios >= 1 and urgencia*valor_negocios <=8:
+                        prioridad_SM = 3
+                    elif urgencia*valor_negocios >= 9 and urgencia*valor_negocios <=17:
+                        prioridad_SM = 2
+                    else:
+                        prioridad_SM = 1
                     us.prioridad_SM = prioridad_SM
                 if staff9:
                     us.tiempo_estimado = tiempo_estimado

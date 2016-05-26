@@ -93,7 +93,7 @@ class User_Story(models.Model):
     reestimar = models.BooleanField(default=False)
     nivel_prioridad = models.IntegerField(null=True)
     valor_negocios = models.IntegerField(null=True)
-    valor_tecnico = models.IntegerField(null=True)
+    urgencia = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
     tiempo_estimado = models.IntegerField(default=0)
     tiempo_real = models.IntegerField(default=0)
