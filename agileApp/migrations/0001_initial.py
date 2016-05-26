@@ -14,6 +14,40 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Actividades',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(default=b'', max_length=20)),
+                ('descripcion', models.CharField(default=b'', max_length=30)),
+                ('estado', models.IntegerField(default=0)),
+                ('numero', models.IntegerField(default=0)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Actividades_Flujos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('actividad', models.ForeignKey(to='agileApp.Actividades')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Flujos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=30, null=True)),
+                ('descripcion', models.CharField(default=b'', max_length=50)),
+                ('estado', models.BooleanField(default=True)),
+                ('actividades', models.ManyToManyField(to='agileApp.Actividades', through='agileApp.Actividades_Flujos')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Flujos_Proyectos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('flujo', models.ForeignKey(to='agileApp.Flujos')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Permisos',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -42,6 +76,7 @@ class Migration(migrations.Migration):
                 ('fecha_fin_real', models.DateField(default=django.utils.timezone.now)),
                 ('observaciones', models.CharField(default=b'', max_length=50)),
                 ('estado', models.IntegerField(default=1)),
+                ('flujos', models.ManyToManyField(to='agileApp.Flujos', through='agileApp.Flujos_Proyectos')),
             ],
         ),
         migrations.CreateModel(
@@ -64,10 +99,41 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Sprint',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(default=b'', max_length=25)),
+                ('duracion', models.IntegerField(default=0)),
+                ('estado', models.IntegerField(default=1)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Sprint_Proyectos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('proyecto', models.ForeignKey(to='agileApp.Proyectos')),
+                ('sprint', models.ForeignKey(to='agileApp.Sprint')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Tipo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('nombre', models.CharField(max_length=50)),
+                ('nombre', models.CharField(max_length=50, null=True)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='us_Actividades',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('actividad', models.ForeignKey(to='agileApp.Actividades')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='us_Flujos',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('flujo', models.ForeignKey(to='agileApp.Flujos')),
             ],
         ),
         migrations.CreateModel(
@@ -75,6 +141,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('proyecto', models.ForeignKey(to='agileApp.Proyectos')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='US_Sprint',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('sprint', models.ForeignKey(to='agileApp.Sprint')),
             ],
         ),
         migrations.CreateModel(
@@ -89,9 +162,13 @@ class Migration(migrations.Migration):
                 ('size', models.IntegerField(null=True)),
                 ('tiempo_estimado', models.IntegerField(default=0)),
                 ('tiempo_real', models.IntegerField(default=0)),
-                ('estado', models.BooleanField(default=True)),
+                ('estado', models.IntegerField(default=1)),
                 ('fecha_creacion', models.DateField(null=True)),
                 ('fecha_inicio', models.DateField(null=True)),
+                ('id_flujo', models.IntegerField(null=True)),
+                ('id_sprint', models.IntegerField(null=True)),
+                ('f_estado', models.IntegerField(null=True)),
+                ('f_actividad', models.IntegerField(null=True)),
                 ('tipo', models.OneToOneField(null=True, to='agileApp.Tipo')),
             ],
         ),
@@ -103,6 +180,7 @@ class Migration(migrations.Migration):
                 ('direccion', models.CharField(default=b'', max_length=45)),
                 ('tipo', models.CharField(default=b'', max_length=10)),
                 ('observacion', models.CharField(default=b'', max_length=50)),
+                ('horas_por_dia', models.IntegerField(null=True)),
                 ('roles', models.ManyToManyField(to='agileApp.Roles', through='agileApp.Roles_Usuarios_Proyectos')),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
@@ -121,14 +199,39 @@ class Migration(migrations.Migration):
             field=models.OneToOneField(null=True, to='agileApp.Usuarios'),
         ),
         migrations.AddField(
+            model_name='us_sprint',
+            name='user_story',
+            field=models.ForeignKey(to='agileApp.User_Story'),
+        ),
+        migrations.AddField(
             model_name='us_proyectos',
             name='user_story',
             field=models.ForeignKey(to='agileApp.User_Story'),
         ),
         migrations.AddField(
+            model_name='us_flujos',
+            name='us',
+            field=models.ForeignKey(to='agileApp.User_Story'),
+        ),
+        migrations.AddField(
+            model_name='us_actividades',
+            name='us',
+            field=models.ForeignKey(to='agileApp.User_Story'),
+        ),
+        migrations.AddField(
+            model_name='sprint',
+            name='listaUS',
+            field=models.ManyToManyField(to='agileApp.User_Story', through='agileApp.US_Sprint'),
+        ),
+        migrations.AddField(
             model_name='roles_usuarios_proyectos',
             name='usuarios',
             field=models.ForeignKey(to='agileApp.Usuarios'),
+        ),
+        migrations.AddField(
+            model_name='proyectos',
+            name='sprint',
+            field=models.ManyToManyField(to='agileApp.Sprint', through='agileApp.Sprint_Proyectos'),
         ),
         migrations.AddField(
             model_name='proyectos',
@@ -144,5 +247,30 @@ class Migration(migrations.Migration):
             model_name='permisos_roles',
             name='roles',
             field=models.ForeignKey(to='agileApp.Roles'),
+        ),
+        migrations.AddField(
+            model_name='flujos_proyectos',
+            name='proyecto',
+            field=models.ForeignKey(to='agileApp.Proyectos'),
+        ),
+        migrations.AddField(
+            model_name='flujos',
+            name='tipo',
+            field=models.OneToOneField(null=True, to='agileApp.Tipo'),
+        ),
+        migrations.AddField(
+            model_name='flujos',
+            name='us',
+            field=models.ManyToManyField(to='agileApp.User_Story', through='agileApp.us_Flujos'),
+        ),
+        migrations.AddField(
+            model_name='actividades_flujos',
+            name='flujo',
+            field=models.ForeignKey(to='agileApp.Flujos'),
+        ),
+        migrations.AddField(
+            model_name='actividades',
+            name='us',
+            field=models.ManyToManyField(to='agileApp.User_Story', through='agileApp.us_Actividades'),
         ),
     ]

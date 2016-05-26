@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Index de Ejecución{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+
+		<script language="javascript">
+			
+			function crear_us() {
+				location.href="{% url 'agileApp:crear_us' user.id proyecto.id %}";
+			}
+			
+			function limpiar() {
+				document.getElementById("form_busqueda").reset();
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
+		
+
+				{% if us %}
+	  			{% for k in archivos %}
+	  			<td><LI><a href="{% url 'agileApp:send_file' user.id proyecto.id us.id k.id %}" title="Descargar">{{k.filename}}</a></td>
+	  			
+              	{% endfor %}
+              	{% endif %}
+              	
+          {% endblock %}

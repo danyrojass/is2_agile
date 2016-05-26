@@ -32,6 +32,11 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/asignar', views.asignar_us, name='asignar_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/ver/', views.ver_us, name='ver_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/cambiar_estado/', views.cambiar_estado_us, name='cambiar_estado_us'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/fileManager/', views.fileAdjunto, name='fileAdjunto'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/visualizar_archivos/', views.visualizar_archivos, name='visualizar_archivos'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/send_file/(?P<f_id>\d+)', views.send_file, name='send_file'),
+    
+    
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/index_sprints/$', views.index_sprint, name='index_sprint'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/crear_sprint/', views.crear_sprint, name='crear_sprint'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/sprint/(?P<sp_id>\d+)/modificar/', views.modificar_sprint, name='modificar_sprint'),

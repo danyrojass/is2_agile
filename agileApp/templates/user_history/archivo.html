@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Index de Ejecución{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+
+		<script language="javascript">
+			
+			function crear_us() {
+				location.href="{% url 'agileApp:crear_us' user.id proyecto.id %}";
+			}
+			
+			function limpiar() {
+				document.getElementById("form_busqueda").reset();
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+	
+
+	<form enctype="multipart/form-data" action="{% url 'agileApp:fileAdjunto' user.id proyecto.id hu.id %}" method="post" >
+		{% csrf_token %}
+		
+			<legend><font color="#888888">Adjuntar archivo</font></legend>
+			</br>
+			</br>
+			{% if proyecto.estado != 4 %}
+				<table>
+					<tr>
+						
+						<td><input type="file" value="file2" name= "file"required/></td>
+						<td><input type="submit" value="Guardar" /> <label style="color: red; font-size: 12pt">{{msg}}</label></td>
+					</tr>
+					<tr> <td><i>Limite 10 MB</i><td></tr>
+				</table>
+			{% endif %}
+	</form>
+	</br>
+	<table width=50%>
+		
+		
+		<tr>
+			<td><b>Archivo</b></td>
+			<td><b>Version</b></td>
+			{% if proyecto.estado_id != 4 %}
+				<td><b>Eliminar</b></td>
+			{% endif %}
+						
+		</tr>	
+		
+		
+		</UL>
+	</table>
+	
+		
+		
+	
+	
+{% endblock %}
+{% block atras %}
+	<a href="{% url 'apps:huprincipal' proyecto_id hu.id %}">Volver</a>
+{% endblock %}
+		

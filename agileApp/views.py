@@ -17,7 +17,8 @@ from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
 CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm,\
     CambiarEstadoUSFlujoForm
-from agileApp.models import us_Flujos
+from agileApp.models import us_Flujos, archivoAdjunto
+from django.http import HttpResponse
  
 def inicio(request): 
     """
@@ -2544,7 +2545,7 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
-    accion = "Visualizar Flujo"
+    accion = "Kanban"
     
     staff = verificar_permiso(usuario, accion)
     
@@ -2572,7 +2573,7 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Cambiar estado Flujo"
+    accion = "Kanban"
    
     staff = verificar_permiso(usuario, accion)
     
@@ -2599,6 +2600,7 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
                 ac_id = cleaned_data.get('actividad_id')
                 if ac_id:
                     us1.f_actividad = ac_id
+                    us1.f_estado = 1
                 if estado:
                     us1.f_estado = estado
                 us1.save()
@@ -2917,7 +2919,7 @@ def verificar_permiso(usuario, accion):
         else:
             staff = False
     
-    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad" or accion == "Cambiar estado Flujo" or accion == "Asignar US a Flujo" or accion == "Visualizar kanban":
+    elif accion=="Listar Flujo" or accion=="Crear Flujo" or accion == "Crear Actividad" or accion == "Visualizar Flujo" or accion == "Modificar Flujo" or accion == "Modificar Actividad" or accion == "Cambiar estado Flujo" or accion == "Asignar US a Flujo" or accion == "Kanban":
         permiso = Permisos.objects.filter(nombre="Administración de Flujos")
         rol = Roles.objects.filter(permisos=permiso)
         rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
@@ -2928,3 +2930,104 @@ def verificar_permiso(usuario, accion):
             staff = False 
     return staff
     
+def fileAdjunto(request, user_id,proyecto_id, us_id):
+
+    
+    usuario = request.user
+    accion1 = "Modificar Actividad"
+   
+
+    hu = User_Story.objects.get(id=us_id)
+    proyecto = Proyectos.objects.get(id = proyecto_id)
+    lista = archivoAdjunto.objects.filter(hu_id = us_id,actual = True) 
+    msg = ""
+    if request.method == 'POST':
+     
+        hu = User_Story.objects.get(id = us_id)
+        file = request.FILES['file']
+        print file.size
+        if file.size <= 10485760:
+            count = archivoAdjunto.objects.filter(filename = file.name, hu = us_id).count()
+            
+            print "count: " 
+            print count
+            if count >0:
+                oldAdjunto = archivoAdjunto.objects.get(filename = file.name, hu = us_id, actual = True)
+                oldAdjunto.actual = False;
+                
+                adjunto = archivoAdjunto()
+                data = file.read()
+                archivoAdjunto.set_data(adjunto, data)
+       
+                adjunto.hu=hu
+                adjunto.size = file.size
+                adjunto.filename = file.name
+                
+                adjunto.version = oldAdjunto.version +1
+                adjunto.save()  
+                oldAdjunto.save()
+        
+                return render_to_response('apps/hu_fileManager.html', {"msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
+            else:
+                adjunto = archivoAdjunto()
+                data = file.read()
+                archivoAdjunto.set_data(adjunto, data)
+       
+                adjunto.hu=hu
+                adjunto.size = file.size
+                adjunto.filename = file.name
+                
+                adjunto.save()  
+        
+                return render_to_response('user_history/archivo.html', {"msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
+        else:
+            msg = "Archivo sobrepaso 10 MB"
+        return render_to_response('user_history/archivo.html', {"msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
+
+    
+    
+    return render_to_response('user_history/archivo.html', {"msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
+
+def visualizar_archivos(request, user_id, proyecto_id, us_id):
+
+
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+    us = proyecto.user_stories.get(id=us_id)
+    accion = "Visualizar Flujo"
+    
+    staff = verificar_permiso(usuario, accion)
+    
+    
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+            
+        saludo = saludo_dia()
+            
+        us = get_object_or_404(User_Story, id=us_id)
+        #archivo = archivoadjunto.hu.all()
+        archivos = archivoAdjunto.objects.all()
+        
+        
+
+        
+        return render(request, 'user_history/archivo_ver.html', {'user_id':user_id,'us':us,'archivos':archivos, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto,'proyecto_id':proyecto_id})
+    else:
+        return HttpResponseRedirect('/index')
+    
+def send_file(request,user_id,proyecto_id,us_id,f_id):
+
+
+    archivo = archivoAdjunto.objects.get(id = f_id)
+    data = archivoAdjunto.get_data(archivo)
+    file_content = data
+    filename = archivo.filename
+    
+    response = HttpResponse(file_content, content_type='text/plain')
+    response['Content-Disposition'] = 'inline; filename=%s'%filename
+    
+    return response
