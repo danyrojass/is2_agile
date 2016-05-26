@@ -50,5 +50,7 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/cambiar_estado/$', views.cambiar_estado_flujo, name='cambiar_estado_flujo'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/asignar_flujo/$', views.asignar_flujo, name='asignar_flujo'),  
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/actividad/(?P<actividad_id>\d+)/modificar_actividad/$', views.modificar_actividad, name='modificar_actividad'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/visualizar_kanban/$', views.visualizar_kanban, name='visualizar_kanban'), 
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/cambiar_estado_kanban/(?P<us_id>\d+)/$', views.cambiar_estado_kanban, name='cambiar_estado_kanban'), 
     
 ]

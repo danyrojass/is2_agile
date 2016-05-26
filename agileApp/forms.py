@@ -388,3 +388,7 @@ class NotasUSForm(forms.Form):
         if Nota.objects.filter(nombre=nombre):
             raise forms.ValidationError('Nombre de nota ya registrado.')
         return nombre
+    
+class CambiarEstadoUSFlujoForm(forms.Form):
+    estado = forms.IntegerField(required=False)
+    actividad_id = forms.IntegerField(required=False)
