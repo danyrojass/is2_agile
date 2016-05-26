@@ -2576,6 +2576,7 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 af.save()
                 
                 
+                
                 return render_to_response('flujos/gracias_actividad.html', {'actividad':actividad, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearActividadForm()
