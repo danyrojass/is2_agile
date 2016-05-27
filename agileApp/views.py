@@ -20,7 +20,7 @@ from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarF
 CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivoUSForm,\
     NotasUSForm, CambiarEstadoUSFlujoForm
 from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
-    Nota, US_Notas
+    Nota, US_Notas, us_Actividades
 import math
  
 def inicio(request): 
@@ -1659,10 +1659,16 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                     us.usuario_asignado = usuario_asignado
                     us.save()
                 else:
-                    ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado, sprint=sp)
+                    usuario_asignado_anterior = us.usuario_asignado
+                    usuario_asignado_anterior.asignado = False
+                    usuario_asignado_anterior.save()
+
+                    ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado_anterior, sprint=sp)
                     ussp.delete()
+
+                    usuario_asignado.asignado = True
+                    usuario_asignado.save()
                     
-                    us.usuario_asignado.asignado = False
                     us.usuario_asignado = usuario_asignado
                     us.save()
 
@@ -1677,11 +1683,8 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 usuario_asignado.save()
                 
                 ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado, sprint=sp)
-                if not ussp.user_story:
-                    ussp.user_story = us
-                    ussp.save()
-                else:
-                    ussp = Usuarios_Sprint(desarrolladores=usuario_asignado, sprint=sp, user_story=us)
+                ussp.user_story = us
+                ussp.save()
                 
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
@@ -1703,18 +1706,6 @@ def date_by_adding_business_days(from_date, add_days):
     return current_date
 
 def reportar_avance_us(request, user_id, proyecto_id, us_id):
-   
-    """
-     se genera un reporte del avance en el desarrollo del user story especificado.
-     
-    @param request: http request
-    @type  request:HtpptRequest  
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/reportar_avance.html
-      
-    """
    
     user = request.user
     accion = "Desarrollar US"
@@ -1762,18 +1753,6 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 
 def ver_reporte_us(request, user_id, proyecto_id, us_id):
-    """
-     se muestra un reporte del avance en el desarrollo del user story especificado.
-     
-    @param request: http request
-    @type  request:HtpptRequest  
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/reportar_avance.html
-      
-    """
-    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1958,19 +1937,7 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
     
-def notas_us(request, user_id, proyecto_id, us_id):
-    """
-    Se agrega notas al user story que describe mejor el contenido del mismo.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/agregar_notas.html.
-             
-    """
-     
+def notas_us(request, user_id, proyecto_id, us_id): 
     user = request.user
     accion = "Notas US"
     
@@ -2015,18 +1982,6 @@ def notas_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
     
 def ver_notas_us(request, user_id, proyecto_id, us_id):
-    """
-    Se muestran las notas asociado al user story especificado.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/ver_notas.html.
-             
-    """
-
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2320,15 +2275,24 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
             lista_user_stories = request.POST.getlist(u'userstories')
             lista_usuarios = request.POST.getlist(u'lusuarios')
             lista_horas_por_dia = request.POST.getlist('lhoras_por_dia')
+            
             while '' in lista_horas_por_dia:
                 lista_horas_por_dia.remove('')
-            if lista_user_stories and lista_usuarios:
-                asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
-                sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
-                sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
-                sp_us3 = sp.listaUS.all().filter(prioridad_SM=3)
-                sp_us = map(None, sp_us1, sp_us2, sp_us3)
-                sp_desarrolladores = sp.desarrolladores.all()
+            
+            countusers = len(lista_usuarios)
+            counthours = len(lista_horas_por_dia)
+            
+            if lista_user_stories and lista_usuarios and lista_horas_por_dia:
+                if countusers == counthours:
+                    asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
+                    sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
+                    sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
+                    sp_us3 = sp.listaUS.all().filter(prioridad_SM=3)
+                    sp_us = map(None, sp_us1, sp_us2, sp_us3)
+                    sp_desarrolladores = sp.desarrolladores.all()
+                else:
+                    sp_us = None
+                    sp_desarrolladores = None
             else:
                 sp_us = None
                 sp_desarrolladores = None
@@ -2471,7 +2435,6 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
         return render(request, 'sprints/cambiar_estado.html', {'cambio_estado':cambio_estado, 'lista_us':lista_us, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
     else:
         return HttpResponseRedirect('/index')
-
 
 "Gestión de Flujos"
 def crear_flujo(request, user_id, proyecto_id):
@@ -2631,11 +2594,22 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 actividad.descripcion = descripcion
                 actividad.save()
                 
+                f_ac = flujo.actividades.all()
+                if not f_ac:
+                    user_stories = flujo.us.all()
+                
                 af = Actividades_Flujos(actividad=actividad, flujo=flujo)
                 af.save()
                 
-                
-                
+                if not f_ac:
+                    for uh in user_stories:
+                        uh.f_actividad = actividad.id
+                        uh.f_estado = 1
+                        uh.save()
+                        
+                        uh_ac = us_Actividades(us=uh, actividad=actividad)
+                        uh_ac.save()
+                    
                 return render_to_response('flujos/gracias_actividad.html', {'actividad':actividad, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearActividadForm()

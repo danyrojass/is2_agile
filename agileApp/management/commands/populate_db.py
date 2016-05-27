@@ -60,12 +60,12 @@ class Command(BaseCommand):
         
         asignar_usuarios()
         
-        us1 = crear_us("US de Prueba Nro.1", "Escenario de prueba 1.", 1, 2, 3, 4, 15, 1)
-        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 2, 4, 6, 8, 25, 2)
-        us3 = crear_us("US de Prueba Nro.3", "Escenario de prueba 3.", 3, 4, 5, 6, 18, 3)
-        us4 = crear_us("US de Prueba Nro.4", "Escenario de prueba 4.", 1, 2, 3, 4, 30, 1)
-        us5 = crear_us("US de Prueba Nro.5", "Escenario de prueba 5.", 2, 4, 6, 8, 20, 2)
-        us6 = crear_us("US de Prueba Nro.6", "Escenario de prueba 6.", 3, 4, 5, 6, 10, 3)
+        us1 = crear_us("US de Prueba Nro.1", "Escenario de prueba 1.", 1, 2, 4, 4, 15)
+        us2 = crear_us("US de Prueba Nro.2", "Escenario de prueba 2.", 2, 5, 5, 8, 25)
+        us3 = crear_us("US de Prueba Nro.3", "Escenario de prueba 3.", 3, 3, 5, 6, 18)
+        us4 = crear_us("US de Prueba Nro.4", "Escenario de prueba 4.", 1, 5, 4, 4, 30)
+        us5 = crear_us("US de Prueba Nro.5", "Escenario de prueba 5.", 2, 4, 3, 8, 20)
+        us6 = crear_us("US de Prueba Nro.6", "Escenario de prueba 6.", 3, 4, 1, 6, 10)
         
         asignar_us_proyecto(us1, proyecto1)
         asignar_us_proyecto(us2, proyecto1)
@@ -180,15 +180,21 @@ def asignar_usuarios():
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
             rup.save()
 
-def crear_us(nombre, descripcion, nprioridad, vnegocios, vtecnico, size, t_est, prioridad_SM):
+def crear_us(nombre, descripcion, nprioridad, vnegocios, urgencia, size, t_est):
     uh = User_Story()
     uh.nombre = nombre
     uh.descripcion = descripcion
     uh.nivel_prioridad = nprioridad
     uh.valor_negocios = vnegocios
-    uh.valor_tecnico = vtecnico
+    uh.urgencia = urgencia
     uh.size = size
     uh.tiempo_estimado = t_est
+    if urgencia*vnegocios >= 1 and urgencia*vnegocios <=8:
+        prioridad_SM = 3
+    elif urgencia*vnegocios >= 9 and urgencia*vnegocios <=17:
+        prioridad_SM = 2
+    else:
+        prioridad_SM = 1
     uh.prioridad_SM = prioridad_SM
     uh.save()
     return uh

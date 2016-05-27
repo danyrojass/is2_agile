@@ -9,9 +9,10 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
-from agileApp.models import Proyectos, Reporte,Nota,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles
+from agileApp.models import Proyectos, Reporte,Nota,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles,\
+    US_Notas, US_Reportes
 
-class US_Notas(TestCase):
+class test_Notas(TestCase):
     def test_CrearNotas(self):
         """
         Prueba para crear una nota de un user story.
@@ -46,27 +47,25 @@ class US_Notas(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia= '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()    
         
           
-        n_us = US_Notas(user_story=us, nota=nota)
+        n_us = US_Notas()
+        n_us.user_story = us
+        n_us.nota = nota
         n_us.save()
-        self.assertTrue(User_Story.objects.filter(nota = nota).exists(), "No se ha asignado la nota correctamente.") 
-        
+        self.assertTrue(User_Story.objects.filter(notas = nota).exists(), "No se ha asignado la nota correctamente.") 
 
-
-
-class US_Reportes(TestCase):
+class test_Reportes(TestCase):
     def test_CrearReporte(self):
         """
         Prueba para crear un reporte de un user story.
         
         """
         rp = Reporte()
-        rp.nombre= 'prueba'
         rp.descripcion = 'prueba'
         rp.porcentaje_alcanzado = '50'
         rp.horas_faltantes = '50'
@@ -75,7 +74,7 @@ class US_Reportes(TestCase):
         
         rp.save()
         
-        self.assertTrue(Reporte.objects.filter(nombre = 'prueba').exists(), "El reporte no se a creado")   
+        self.assertTrue(Reporte.objects.filter(descripcion = 'prueba').exists(), "El reporte no se a creado")   
         
     def test_AgregarReporteUs(self):    
         """
@@ -83,7 +82,6 @@ class US_Reportes(TestCase):
         
         """
         rp = Reporte()
-        rp.nombre= 'prueba'
         rp.descripcion = 'prueba'
         rp.porcentaje_alcanzado = '50'
         rp.horas_faltantes = '50'
@@ -91,7 +89,6 @@ class US_Reportes(TestCase):
         rp.save()
         
         rp1 = Reporte()
-        rp1.nombre= 'prueba2'
         rp1.descripcion = 'prueba2'
         rp1.porcentaje_alcanzado = '50'
         rp1.horas_faltantes = '50'
@@ -105,7 +102,7 @@ class US_Reportes(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()    
@@ -114,14 +111,6 @@ class US_Reportes(TestCase):
         rp_us = US_Reportes(user_story=us, reporte=rp)
         rp_us.save()
         self.assertTrue(User_Story.objects.filter(reportes = rp).exists(), "No se ha asignado el reporte  correctamente.") 
-        
-
-
-
-
-
-
-
 
 class test_User_Story(TestCase):
     
@@ -134,7 +123,7 @@ class test_User_Story(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -164,7 +153,7 @@ class test_User_Story(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.usuario_asignado = user
@@ -195,7 +184,7 @@ class test_User_Story(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()    
@@ -245,7 +234,7 @@ class test_sprint(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -261,7 +250,7 @@ class test_sprint(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -287,7 +276,7 @@ class test_sprint(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -297,7 +286,7 @@ class test_sprint(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -403,7 +392,7 @@ class test_flujoActividad(TestCase):
         us.descripcion = 'descripcion prueba'
         us.nivel_prioridad = '5'
         us.valor_negocios = '5'
-        us.valor_tecnico = '5'
+        us.urgencia = '5'
         us.size = '10'
         us.tiempo_estimado = '20'
         us.save()
@@ -413,7 +402,7 @@ class test_flujoActividad(TestCase):
         us1.descripcion = 'descripcion prueba'
         us1.nivel_prioridad = '5'
         us1.valor_negocios = '5'
-        us1.valor_tecnico = '5'
+        us1.urgencia = '5'
         us1.size = '10'
         us1.tiempo_estimado = '20'
         us1.save()
