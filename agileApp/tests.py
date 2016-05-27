@@ -9,7 +9,119 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
-from agileApp.models import Proyectos,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles
+from agileApp.models import Proyectos, Reporte,Nota,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles
+
+class US_Notas(TestCase):
+    def test_CrearNotas(self):
+        """
+        Prueba para crear una nota de un user story.
+        
+        """
+        nota=Nota()
+        nota.nombre= 'prueba'
+        nota.descripcion = 'prueba'
+        nota.save()
+        
+        self.assertTrue(Nota.objects.filter(nombre = 'prueba').exists(), "La nota no se a creado")   
+
+    def test_AgregarNot(self):    
+        """
+        Prueba para agregar una nota a un User Story.
+        
+        """
+        nota=Nota()
+        nota.nombre= 'prueba'
+        nota.descripcion = 'prueba'
+        nota.save()
+        
+        nota1=Nota()
+        nota1.nombre= 'prueba2'
+        nota1.descripcion = 'prueba2'
+        nota1.save()
+        
+        #se crea un user story para la prueba
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.save()    
+        
+          
+        n_us = US_Notas(user_story=us, nota=nota)
+        n_us.save()
+        self.assertTrue(User_Story.objects.filter(nota = nota).exists(), "No se ha asignado la nota correctamente.") 
+        
+
+
+
+class US_Reportes(TestCase):
+    def test_CrearReporte(self):
+        """
+        Prueba para crear un reporte de un user story.
+        
+        """
+        rp = Reporte()
+        rp.nombre= 'prueba'
+        rp.descripcion = 'prueba'
+        rp.porcentaje_alcanzado = '50'
+        rp.horas_faltantes = '50'
+        rp.fecha_reporte = '2016-01-01'
+        rp.save()
+        
+        rp.save()
+        
+        self.assertTrue(Reporte.objects.filter(nombre = 'prueba').exists(), "El reporte no se a creado")   
+        
+    def test_AgregarReporteUs(self):    
+        """
+        Prueba para generar un reporte de un user story.
+        
+        """
+        rp = Reporte()
+        rp.nombre= 'prueba'
+        rp.descripcion = 'prueba'
+        rp.porcentaje_alcanzado = '50'
+        rp.horas_faltantes = '50'
+        rp.fecha_reporte = '2016-01-01'
+        rp.save()
+        
+        rp1 = Reporte()
+        rp1.nombre= 'prueba2'
+        rp1.descripcion = 'prueba2'
+        rp1.porcentaje_alcanzado = '50'
+        rp1.horas_faltantes = '50'
+        rp1.fecha_reporte = '2016-01-01'
+        rp1.save() 
+        
+        #se crea un user story para la prueba
+        
+        us = User_Story()
+        us.nombre = 'prueba user Story' 
+        us.descripcion = 'descripcion prueba'
+        us.nivel_prioridad = '5'
+        us.valor_negocios = '5'
+        us.valor_tecnico = '5'
+        us.size = '10'
+        us.tiempo_estimado = '20'
+        us.save()    
+        
+          
+        rp_us = US_Reportes(user_story=us, reporte=rp)
+        rp_us.save()
+        self.assertTrue(User_Story.objects.filter(reportes = rp).exists(), "No se ha asignado el reporte  correctamente.") 
+        
+
+
+
+
+
+
+
 
 class test_User_Story(TestCase):
     

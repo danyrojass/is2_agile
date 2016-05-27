@@ -675,6 +675,63 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="date_by_adding_business_days"></a><span class="summary-sig-name">date_by_adding_business_days</span>(<span class="summary-sig-arg">from_date</span>,
+        <span class="summary-sig-arg">add_days</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#date_by_adding_business_days">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#reportar_avance_us" class="summary-sig-name">reportar_avance_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      se genera un reporte del avance en el desarrollo del user story especificado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#reportar_avance_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#ver_reporte_us" class="summary-sig-name">ver_reporte_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      se muestra un reporte del avance en el desarrollo del user story especificado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#ver_reporte_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="agileApp.views-module.html#index_us" class="summary-sig-name">index_us</a>(<span class="summary-sig-arg">request</span>,
         <span class="summary-sig-arg">user_id</span>,
         <span class="summary-sig-arg">proyecto_id</span>)</span><br />
@@ -721,6 +778,46 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
       M&#233;todo que nos permite cambiar el estado de un user story especifico.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#notas_us" class="summary-sig-name">notas_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      Se agrega notas al user story que describe mejor el contenido del mismo.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#notas_us">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#ver_notas_us" class="summary-sig-name">ver_notas_us</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      Se muestran las notas asociado al user story especificado.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#ver_notas_us">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -834,7 +931,9 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
         <tr>
           <td><span class="summary-sig"><a href="agileApp.views-module.html#asignar_us_sp" class="summary-sig-name">asignar_us_sp</a>(<span class="summary-sig-arg">request</span>,
         <span class="summary-sig-arg">sp_id</span>,
-        <span class="summary-sig-arg">lista_user_stories</span>)</span><br />
+        <span class="summary-sig-arg">lista_user_stories</span>,
+        <span class="summary-sig-arg">lista_usuarios</span>,
+        <span class="summary-sig-arg">lista_horas_por_dia</span>)</span><br />
       M&#233;todo que realiza la acci&#243;n de asignar user stories a sprints.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sp">source&nbsp;code</a></span>
@@ -1036,6 +1135,47 @@ dependiendo si es es un tipo administrador o un usuario normal.</td>
       M&#233;todo que realiza la acci&#243;n de asignar un user story a un flujo dado.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_f">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#visualizar_kanban" class="summary-sig-name">visualizar_kanban</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>)</span><br />
+      Se visualiza el kanban que contiene las actividades y los User Story.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#visualizar_kanban">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="agileApp.views-module.html#cambiar_estado_kanban" class="summary-sig-name">cambiar_estado_kanban</a>(<span class="summary-sig-arg">request</span>,
+        <span class="summary-sig-arg">user_id</span>,
+        <span class="summary-sig-arg">proyecto_id</span>,
+        <span class="summary-sig-arg">flujo_id</span>,
+        <span class="summary-sig-arg">us_id</span>)</span><br />
+      Se cambia el estado  del kanban que contiene las actividades y los User Story.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_kanban">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -2084,6 +2224,74 @@ M&#233;todo que permite asignar un User Story a un Usuario en un Proyecto determ
   </dl>
 </td></tr></table>
 </div>
+<a name="reportar_avance_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reportar_avance_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#reportar_avance_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+ se genera un reporte del avance en el desarrollo del user story especificado.
+ 
+@param request: http request
+@type  request:HtpptRequest  
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param us_id: Id de un user story registrado en el sistema.
+@return: render al template user_history/reportar_avance.html
+  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ver_reporte_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ver_reporte_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#ver_reporte_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+ se muestra un reporte del avance en el desarrollo del user story especificado.
+ 
+@param request: http request
+@type  request:HtpptRequest  
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param us_id: Id de un user story registrado en el sistema.
+@return: render al template user_history/reportar_avance.html
+  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="index_us"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -2176,6 +2384,74 @@ M&#233;todo que nos permite cambiar el estado de un user story especifico.
 @param user_id: Id de un usuario registrado en el sistema.
 @param proyecto_id: Id de un proyecto registrado en el sistema.
 @return: render al template user_history/cambiar_estado.html.
+         
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="notas_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">notas_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#notas_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Se agrega notas al user story que describe mejor el contenido del mismo.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param us_id: Id de un user story registrado en el sistema.
+@return: render al template user_history/agregar_notas.html.
+         
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ver_notas_us"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ver_notas_us</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#ver_notas_us">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Se muestran las notas asociado al user story especificado.
+
+@param request: Http request
+@type  request:HtpptRequest 
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param us_id: Id de un user story registrado en el sistema.
+@return: render al template user_history/ver_notas.html.
          
 
 </pre>
@@ -2353,7 +2629,9 @@ M&#233;todo que nos permite asignar user stories a sprints.
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">asignar_us_sp</span>(<span class="sig-arg">request</span>,
         <span class="sig-arg">sp_id</span>,
-        <span class="sig-arg">lista_user_stories</span>)</span>
+        <span class="sig-arg">lista_user_stories</span>,
+        <span class="sig-arg">lista_usuarios</span>,
+        <span class="sig-arg">lista_horas_por_dia</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="agileApp.views-pysrc.html#asignar_us_sp">source&nbsp;code</a></span>&nbsp;
@@ -2699,6 +2977,74 @@ M&#233;todo que realiza la acci&#243;n de asignar un user story a un flujo dado.
   </dl>
 </td></tr></table>
 </div>
+<a name="visualizar_kanban"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">visualizar_kanban</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#visualizar_kanban">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+ Se visualiza el kanban que contiene las actividades y los User Story.
+
+@param request: Http request
+@type  request:HtpptRequest
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@return: render a flujos/kanban.html.  
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cambiar_estado_kanban"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cambiar_estado_kanban</span>(<span class="sig-arg">request</span>,
+        <span class="sig-arg">user_id</span>,
+        <span class="sig-arg">proyecto_id</span>,
+        <span class="sig-arg">flujo_id</span>,
+        <span class="sig-arg">us_id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="agileApp.views-pysrc.html#cambiar_estado_kanban">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+ Se cambia el estado  del kanban que contiene las actividades y los User Story.
+
+@param request: Http request
+@type  request:HtpptRequest
+@param user_id: Id de un usuario registrado en el sistema.
+@param proyecto_id: Id de un proyecto registrado en el sistema.
+@param flujo_id: Id de un flujo registrado en el sistema.
+@param us_id: Id de un flujo registrado en el sistema.
+@return: render flujos/cambiar_estado_kanban.html.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="saludo_dia"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -2809,7 +3155,7 @@ para realizar una acci&#243;n determinada.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri May 13 20:13:48 2016
+    Generated by Epydoc 3.0.1 on Thu May 26 20:07:36 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

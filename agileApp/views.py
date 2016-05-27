@@ -1704,6 +1704,18 @@ def date_by_adding_business_days(from_date, add_days):
 
 def reportar_avance_us(request, user_id, proyecto_id, us_id):
    
+    """
+     se genera un reporte del avance en el desarrollo del user story especificado.
+     
+    @param request: http request
+    @type  request:HtpptRequest  
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param us_id: Id de un user story registrado en el sistema.
+    @return: render al template user_history/reportar_avance.html
+      
+    """
+   
     user = request.user
     accion = "Desarrollar US"
     
@@ -1750,6 +1762,18 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 
 def ver_reporte_us(request, user_id, proyecto_id, us_id):
+    """
+     se muestra un reporte del avance en el desarrollo del user story especificado.
+     
+    @param request: http request
+    @type  request:HtpptRequest  
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param us_id: Id de un user story registrado en el sistema.
+    @return: render al template user_history/reportar_avance.html
+      
+    """
+    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -1934,7 +1958,19 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
     
-def notas_us(request, user_id, proyecto_id, us_id): 
+def notas_us(request, user_id, proyecto_id, us_id):
+    """
+    Se agrega notas al user story que describe mejor el contenido del mismo.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param us_id: Id de un user story registrado en el sistema.
+    @return: render al template user_history/agregar_notas.html.
+             
+    """
+     
     user = request.user
     accion = "Notas US"
     
@@ -1979,6 +2015,18 @@ def notas_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
     
 def ver_notas_us(request, user_id, proyecto_id, us_id):
+    """
+    Se muestran las notas asociado al user story especificado.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param us_id: Id de un user story registrado en el sistema.
+    @return: render al template user_history/ver_notas.html.
+             
+    """
+
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2863,8 +2911,17 @@ def asignar_us_f(request, f_id, lista_user_stories):
     return fus
 
 def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
-
-
+    """
+     Se visualiza el kanban que contiene las actividades y los User Story.
+    
+    @param request: Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @return: render a flujos/kanban.html.  
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
@@ -2892,7 +2949,18 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
         return HttpResponseRedirect('/index')
     
 def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
-
+    """
+     Se cambia el estado  del kanban que contiene las actividades y los User Story.
+    
+    @param request: Http request
+    @type  request:HtpptRequest
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @param flujo_id: Id de un flujo registrado en el sistema.
+    @param us_id: Id de un flujo registrado en el sistema.
+    @return: render flujos/cambiar_estado_kanban.html.
+    
+    """
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 

@@ -128,8 +128,7 @@
         <span class="summary-sig-arg">apellido</span>,
         <span class="summary-sig-arg">username</span>,
         <span class="summary-sig-arg">password</span>,
-        <span class="summary-sig-arg">email</span>,
-        <span class="summary-sig-arg">activo</span>)</span></td>
+        <span class="summary-sig-arg">email</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_usuario">source&nbsp;code</a></span>
             
@@ -202,7 +201,8 @@
         <span class="summary-sig-arg">vnegocios</span>,
         <span class="summary-sig-arg">vtecnico</span>,
         <span class="summary-sig-arg">size</span>,
-        <span class="summary-sig-arg">user</span>)</span></td>
+        <span class="summary-sig-arg">t_est</span>,
+        <span class="summary-sig-arg">prioridad_SM</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_us">source&nbsp;code</a></span>
             
@@ -236,7 +236,6 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="crear_sprint"></a><span class="summary-sig-name">crear_sprint</span>(<span class="summary-sig-arg">nombre</span>,
-        <span class="summary-sig-arg">duracion</span>,
         <span class="summary-sig-arg">estado</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_sprint">source&nbsp;code</a></span>
@@ -257,6 +256,126 @@
         <span class="summary-sig-arg">proyecto</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_sprint_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_flujo"></a><span class="summary-sig-name">crear_flujo</span>(<span class="summary-sig-arg">nombre</span>,
+        <span class="summary-sig-arg">descripcion</span>,
+        <span class="summary-sig-arg">tipo</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asignar_flujo_proyecto"></a><span class="summary-sig-name">asignar_flujo_proyecto</span>(<span class="summary-sig-arg">flujo</span>,
+        <span class="summary-sig-arg">proyecto</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_flujo_proyecto">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_actividades"></a><span class="summary-sig-name">crear_actividades</span>(<span class="summary-sig-arg">nombre</span>,
+        <span class="summary-sig-arg">descripcion</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_actividades">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asignar_actividad_flujo"></a><span class="summary-sig-name">asignar_actividad_flujo</span>(<span class="summary-sig-arg">actividad</span>,
+        <span class="summary-sig-arg">flujo</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_actividad_flujo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asignar_us_sprint"></a><span class="summary-sig-name">asignar_us_sprint</span>(<span class="summary-sig-arg">sprint</span>,
+        <span class="summary-sig-arg">user_story</span>,
+        <span class="summary-sig-arg">desarrollador</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_us_sprint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crear_tipo"></a><span class="summary-sig-name">crear_tipo</span>(<span class="summary-sig-arg">nombre</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#crear_tipo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asignar_tipo_us"></a><span class="summary-sig-name">asignar_tipo_us</span>(<span class="summary-sig-arg">tipo</span>,
+        <span class="summary-sig-arg">us</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="agileApp.management.commands.populate_db-pysrc.html#asignar_tipo_us">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -291,7 +410,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri May 13 20:13:48 2016
+    Generated by Epydoc 3.0.1 on Thu May 26 20:07:36 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
