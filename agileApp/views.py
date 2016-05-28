@@ -2340,6 +2340,16 @@ def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_hora
         
                 us.id_flujo = flujo.id
                 us.save()
+                
+                actividades = flujo.actividades.all()
+                if actividades:
+                    actividad = actividades[:1].get()
+                    us_ac = us_Actividades(actividad = actividad, us = us)
+                    us_ac.save()
+                    us.f_actividad = actividad.id
+                    us.f_estado = 1
+                    us.save()
+                    
             
     if lista_usuarios and lista_horas_por_dia:
         us_hp = map(None, lista_usuarios, lista_horas_por_dia)
@@ -2571,7 +2581,7 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
     accion = "Crear Actividad"
-    
+    up = flujo.actividades.all()
     staff = verificar_permiso(usuario, accion)
     if staff:
         aid = 1
@@ -2588,6 +2598,7 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 descripcion = cleaned_data.get('descripcion')
+                
                 
                 actividad = Actividades()
                 actividad.nombre = nombre
@@ -2613,7 +2624,7 @@ def crear_actividad(request, user_id, proyecto_id, flujo_id):
                 return render_to_response('flujos/gracias_actividad.html', {'actividad':actividad, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = CrearActividadForm()
-        return render(request, 'flujos/crear_actividades.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto,'staff':staff})
+        return render(request, 'flujos/crear_actividades.html', {'form': form, 'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto,'staff':staff})
     else:
         return HttpResponseRedirect('/index')
 

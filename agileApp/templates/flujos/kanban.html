@@ -30,21 +30,56 @@
       
       {% if up %}
 	  {% for u in up %}
-      	<td>   
+	  	<td>   
          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="500"  height="250">
          	<caption><b>{{u.nombre}}</b></caption>
-         	<tr>
-         
-	
+
          <td>
-          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
+          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="175"  height="350">
           <caption><b>TO DO</b></caption>
             	<tr>
             	<td>
             	{% if us %}
 	  			{% for k in us %}
 	  			{% if k.f_estado == 1 and k.f_actividad == u.id %}
-              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a>
+	  			<div align="center">
+	  			<b> {{k.nombre}} </b>
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	</div>
+              	</br>
+              	&nbsp;
+              	&nbsp;
+              	</br>
+              	
+              	{% endif %}
+              	{% endfor %}
+				{% endif %}
+            	</td>
+            	</tr>
+         </table>
+      	</td> 
+
+		
+		
+
+         <td>
+          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="175"  height="350">
+          <caption><b>DOING</b></caption>
+            	<tr>
+            	<td>
+            	{% if us %}
+	  			{% for k in us %}
+	  			{% if k.f_estado == 2 and k.f_actividad == u.id %}
+	  			<div align="center">
+	  			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			
+	  			<b> {{k.nombre}} </b>
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	</div>
+              	</br>
+              	&nbsp;
+              	&nbsp;
+              	</br>
               	
               	{% endif %}
               	{% endfor %}
@@ -54,41 +89,44 @@
          </table>
       	</td>  
 
-		<td>
-        <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
-        <caption><b>DOING</b></caption>
-        	<tr>
-              {% if us %}
-	  			{% for k in us %}
-	  			{% if k.f_estado == 2 and k.f_actividad == u.id %}
-              	<td>  <li><a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a> </td>
-              	{% endif %}
-              	{% endfor %}
-				{% endif %}    
-            </tr>
-        </table>
-      	</td>  
 
 		<td>
-        <table border="1" align="center" cellspacing="0" cellpadding="5"  width="100"  height="250">
-        <caption><b>DONE</b></caption>
-            <tr>
-              {% if us %}
+          <table border="1" align="center" cellspacing="0" cellpadding="5"  width="175"  height="350">
+          <caption><b>DONE</b></caption>
+            	<tr>
+            	<td>
+            	{% if us %}
 	  			{% for k in us %}
-	  			{% if k.f_estado == 3 and k.f_actividad ==  u.id %}
-              	<td><li><a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}">{{k.nombre}}</a></td>
+	  			{% if k.f_estado == 3 and k.f_actividad == u.id %}
+	  			<div align="center">
+	  			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			<b> {{k.nombre}} </b>
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	</div>
+              	</br>
+              	&nbsp;
+              	&nbsp;
+              	</br>
+              	
               	{% endif %}
               	{% endfor %}
-				{% endif %}    
-            </tr>
-        </table>
-      	</td>
+				{% endif %}
+            	</td>
+            	</tr>
+         </table>
+      	</td> 
 
         </table>
       	</td>
    		
-   		</td>
+   		
+
+	
    	{% endfor %}
+
+   	
+   	
+   	
 	{% endif %}
 </table>
 {% endblock content %}
