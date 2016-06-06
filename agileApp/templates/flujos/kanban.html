@@ -23,7 +23,8 @@
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 
-
+<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}
+						
 <table border="1" align="center" cellspacing="0" cellpadding="5">
 	<caption><b>{{flujo.nombre}}</b></caption>
    	<tr valign="bottom" align="center">
@@ -43,8 +44,11 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 1 and k.f_actividad == u.id %}
 	  			<div align="center">
+	  			{% if k.f_actividad != actividad.id %}
+	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			{% endif %}
 	  			<b> {{k.nombre}} </b>
-              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}" type="submit"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
               	</div>
               	</br>
               	&nbsp;
@@ -71,7 +75,7 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 2 and k.f_actividad == u.id %}
 	  			<div align="center">
-	  			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 	  			
 	  			<b> {{k.nombre}} </b>
               	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
@@ -99,9 +103,14 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 3 and k.f_actividad == u.id %}
 	  			<div align="center">
-	  			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 	  			<b> {{k.nombre}} </b>
+              	{% if k.f_actividad == actividadf.id %}
+              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/tilde.png" width="20" height="20" border="0" title="Modificar"></a>
+              	{%else%}
               	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	{% endif %}
+              	
               	</div>
               	</br>
               	&nbsp;
@@ -119,14 +128,12 @@
         </table>
       	</td>
    		
-   		
-
 	
    	{% endfor %}
 
    	
    	
-   	
+   	</table>
 	{% endif %}
-</table>
+</form>
 {% endblock content %}

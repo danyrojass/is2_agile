@@ -107,7 +107,11 @@
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
 									<td width="10%">Activate/Deactivate</td>
+									<td width="5%">Archivo</td>
+									<td width="5%">Archivo Ver</td>
+									
 									<td width="5%">&nbsp;</td>
+									
 								</tr>
 							</table>
 							<div class="ScrollStyle">
@@ -147,6 +151,9 @@
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_us' user.id proyecto.id us.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:fileAdjunto' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Archivo"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_archivos' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Archivo"></a></div></td>
+											
 											</tr>
 										{% else %}
 											<tr class="itemParTabla"> 
@@ -181,6 +188,9 @@
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:ver_us' user.id proyecto.id us.id %}"><img src="/static/img/ver.png" width="16" height="16" border="0" title="Visualizar"></a></div></td>
 												<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
 												<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:fileAdjunto' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Archivo"></a></div></td>
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_archivos' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Archivo"></a></div></td>
+											
 											</tr>
 										{% endif %}
 									{% endfor %}
