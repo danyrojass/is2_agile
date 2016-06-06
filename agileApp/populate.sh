@@ -38,6 +38,7 @@ read nombreTag
 		if [ "$opcion" -eq "1" ]; then
 			git clone -b $nombreTag https://github.com/danyrojass/is2_agile.git
 			cd /home/dany/AmbienteDesarrollo/is2_agile
+			git checkout $nombreTag
 			
 			rm -r /home/dany/AmbienteDesarrollo/is2_agile/agileApp/migrations/__init__.pyc
 			rm -r /home/dany/AmbienteDesarrollo/is2_agile/agileApp/migrations/0001_initial.py
@@ -48,6 +49,7 @@ read nombreTag
 		elif [ "$opcion" -eq "2" ]; then
 			git clone -b $nombreTag /home/dany/agile/.git
 			cd /home/dany/AmbienteDesarrollo/agile
+			git checkout $nombreTag
 			
 			rm -r /home/dany/AmbienteDesarrollo/agile/agileApp/migrations/__init__.pyc
 			rm -r /home/dany/AmbienteDesarrollo/agile/agileApp/migrations/0001_initial.py
@@ -72,6 +74,7 @@ read nombreTag
 		if [ "$opcion" -eq "1" ]; then
 			git clone -b $nombreTag https://github.com/danyrojass/is2_agile.git
 			cd /home/dany/AmbienteProduccion/is2_agile
+			git checkout $nombreTag
 
 			rm -r /home/dany/AmbienteProduccion/is2_agile/agileApp/migrations/__init__.pyc
 			rm -r /home/dany/AmbienteProduccion/is2_agile/agileApp/migrations/0001_initial.py
@@ -80,6 +83,7 @@ read nombreTag
 		elif [ "$opcion" -eq "2" ]; then
 			git clone -b $nombreTag /home/dany/agile/.git
 			cd /home/dany/AmbienteProduccion/agile
+			git checkout $nombreTag
 
 			rm -r /home/dany/AmbienteProduccion/agile/agileApp/migrations/__init__.pyc
 			rm -r /home/dany/AmbienteProduccion/agile/agileApp/migrations/0001_initial.py

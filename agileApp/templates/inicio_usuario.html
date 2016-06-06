@@ -14,8 +14,8 @@
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' usuario.id proyecto.id %}">Proyecto</a>
 	{% if staff %}	<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
-                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
                     	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
                		</ul>
 	{% endif %}	</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>

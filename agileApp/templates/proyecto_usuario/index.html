@@ -281,8 +281,9 @@
 									<td width="25%">DESCRIPCION</td>
 									<td width="15%">TIPO</td>
 									<td width="10%">ESTADO</td>
-									<td width="5%">Update</td>
-									<td width="10%">Activate/Deactivate</td>
+									<td width="5%">Report</td>
+									<td width="5%">Notes</td>
+									<td width="5%">Kanban</td>
 									<td width="5%">&nbsp;</td>
 								</tr>
 							</table>
@@ -299,27 +300,27 @@
 												{% if us.tipo %}
 													<td width="15%"><div align="center">{{us.tipo}}</div></td>
 												{% else %}
-													<td width="15%">&nbsp;</td>
+													<td width="15%"><div align="center">&nbsp;</div></td>
 												{% endif %}
 												{% if us.estado == 1 %}
-													<td width="10%">Planificado</td>
+													<td width="10%"><div align="center">Planificado</div></td>
 												{% elif us.estado == 2 %}											
-													<td width="10%">En Ejecución</td>
+													<td width="10%"><div align="center">En Ejecución</div></td>
 												{% elif us.estado == 3 %}											
-													<td width="10%">Finalizado</td>
+													<td width="10%"><div align="center">Finalizado</div></td>
 												{% elif us.estado == 4 %}											
-													<td width="10%">Cancelado</td>
+													<td width="10%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												{% if us_us.id == us.id%}									
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-													{% if activo != 1 %}
-														<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
-													{% else %}
-														<td width="10%">&nbsp;</td>
-													{% endif %}
+												{% if not us.id_sprint == None %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
 												{% else %}
 													<td width="5%">&nbsp;</td>
-													<td width="10%">&nbsp;</td>
+												{% endif %}
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
+												{% if us.id_flujo %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id us.id_flujo %}"><img src="/static/img/kanban.jpg" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
 												{% endif %}
 											</tr>
 										{% else %}
@@ -331,28 +332,28 @@
 												{% if us.tipo %}
 													<td width="15%"><div align="center">{{us.tipo}}</div></td>
 												{% else %}
-													<td width="15%">&nbsp;</td>
+													<td width="15%"><div align="center">&nbsp;</div></td>
 												{% endif %}
 												{% if us.estado == 1 %}
-													<td width="10%">Planificado</td>
+													<td width="10%"><div align="center">Planificado</div></td>
 												{% elif us.estado == 2 %}											
-													<td width="10%">En Ejecución</td>
+													<td width="10%"><div align="center">En Ejecución</div></td>
 												{% elif us.estado == 3 %}											
-													<td width="10%">Finalizado</td>
+													<td width="10%"><div align="center">Finalizado</div></td>
 												{% elif us.estado == 4 %}											
-													<td width="10%">Cancelado</td>
+													<td width="10%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												{% if us_us.id == us.id%}									
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:modificar_us' user.id proyecto.id us.id %}"><img src="/static/img/modificar.png" width="16" height="16" border="0" title="Modificar"></a></div></td>
-													{% if activo != 1 %}
-														<td width="10%"><div align="center"><a href="{% url 'agileApp:cambiar_estado_us' user.id proyecto.id us.id %}"><img src="/static/img/restaurar.png" width="16" height="16" border="0" title="Activar/Desactivar"></a></div></td>
-													{% else %}
-														<td width="10%">&nbsp;</td>
-													{% endif %}
+												{% if not us.id_sprint == None %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
 												{% else %}
 													<td width="5%">&nbsp;</td>
-													<td width="10%">&nbsp;</td>
 												{% endif %}
+												<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
+												{% if us.id_flujo %}
+													<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id us.id_flujo %}"><img src="/static/img/kanban.jpg" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
+												{% else %}
+													<td width="5%">&nbsp;</td>
+												{% endif %}											
 											</tr>
 										{% endif %}
 									{% endfor %}

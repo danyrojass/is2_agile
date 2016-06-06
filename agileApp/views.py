@@ -1045,6 +1045,11 @@ def desasignar_usuarios(request, user_id, proyecto_id):
     rol_us_pr.delete()
     us_pr.delete()
     
+    us_sp = Usuarios_Sprint.objects.filter(desarrolladores=usuario)
+    if us_sp:
+        usuario.asignado = False
+        us_sp.delete()
+    
 
 def ver_proyectos(request, proyecto_id):
     """
@@ -1333,7 +1338,7 @@ def eliminar_usuario_proyecto(request, user_id, userd_id, proyecto_id):
             return HttpResponseRedirect('/ingresar')
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         request.session['last_activity'] = str(now)
-        aid = 2   
+        aid = 1  
         saludo = saludo_dia()
         usuario = Usuarios.objects.get(id=userd_id)
         proyecto = Proyectos.objects.get(id=proyecto_id)
@@ -1341,7 +1346,7 @@ def eliminar_usuario_proyecto(request, user_id, userd_id, proyecto_id):
     else:
         return HttpResponseRedirect('/index')
     
-    return render_to_response('proyecto_usuario/gracias.html', {'aid':aid, 'user':user, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+    return render_to_response('proyecto_usuario/gracias.html', {'usuario':usuario, 'aid':aid, 'user':user, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
 def asignar_roles_usuarios_proyecto(request, user_id, proyecto_id):
     """
@@ -1439,6 +1444,7 @@ def crear_us(request, user_id, proyecto_id):
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 descripcion = cleaned_data.get('descripcion')
+                duracion = cleaned_data.get('duracion')
                 prioridad_SM = cleaned_data.get('prioridad_SM')
                 nivel_prioridad = cleaned_data.get('nivel_prioridad')
                 valor_negocios = cleaned_data.get('valor_negocios')
@@ -1457,6 +1463,7 @@ def crear_us(request, user_id, proyecto_id):
                 us = User_Story()
                 us.nombre = nombre
                 us.descripcion = descripcion
+                us.duracion = duracion
                 if staff3:
                     if urgencia*valor_negocios >= 1 and urgencia*valor_negocios <=8:
                         prioridad_SM = 3
@@ -1558,7 +1565,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 cleaned_data = form.cleaned_data
                 descripcion = cleaned_data.get('descripcion')
                 prioridad_SM = cleaned_data.get('prioridad_SM')
-                nivel_prioridad = cleaned_data.get('nivel_prioridad')
+                duracion = cleaned_data.get('duracion')
                 valor_negocios = cleaned_data.get('valor_negocios')
                 urgencia = cleaned_data.get('urgencia')
                 size = cleaned_data.get('size')
@@ -1567,6 +1574,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 
                 if staff7:
                     us.descripcion = descripcion
+                    us.duracion = duracion
                 if staff1:
                     us.valor_negocios = valor_negocios
                 if staff2:
@@ -1635,9 +1643,22 @@ def asignar_us(request, user_id, proyecto_id, us_id):
     for uh in userstories:
         list_usuarios_asginados.append(uh.usuario_asignado)
 
-    usuarios = sp.desarrolladores.all()
-    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US").filter(asignado=False)
-
+    lusuarios = sp.desarrolladores.all().order_by('id')
+    lusuarios = lusuarios.exclude(asignado=True)
+    rol = Roles.objects.all().filter(permisos__nombre="Desarrollo de US")
+    usuario_rol_proyecto = Roles_Usuarios_Proyectos.objects.filter(roles=rol, proyecto=proyecto)
+    urpusuarios = []
+    for urp in usuario_rol_proyecto:
+        urp2 = Roles_Usuarios_Proyectos.objects.get(id=urp.id)
+        urpusuarios.append(urp2.usuarios)
+    usuarios = []
+    for lu in lusuarios:
+        if lu in urpusuarios:
+            usuarios.append(lu)
+    
+    horas = Horas.objects.all().filter(id_sprint = us.id_sprint).order_by('id_usuario')
+    
+    u_h = map(None, usuarios, horas)
     if staff:
         aid = 3
         comprobar(request)
@@ -1662,23 +1683,24 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                     usuario_asignado_anterior = us.usuario_asignado
                     usuario_asignado_anterior.asignado = False
                     usuario_asignado_anterior.save()
-
+                    """
                     ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado_anterior, sprint=sp)
                     ussp.delete()
-
+                    """
                     usuario_asignado.asignado = True
                     usuario_asignado.save()
                     
                     us.usuario_asignado = usuario_asignado
                     us.save()
-
+                """
                 if not usuario_asignado.asignado:
                     duracion = us.tiempo_estimado/usuario_asignado.horas_por_dia.cantidad_diaria
                     duracion = math.ceil(duracion)
                     if duracion > sp.duracion:
                         sp.duracion = duracion      
                         sp.save()
-                
+               
+                """
                 usuario_asignado.asignado = True
                 usuario_asignado.save()
                 
@@ -1689,7 +1711,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
         else:
             form = AsignarUSForm()
-        return render(request, 'user_history/asignar.html', {'form': form, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
+        return render(request, 'user_history/asignar.html', {'form': form, 'u_h':u_h, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
     else:
         return HttpResponseRedirect('/index')
 
@@ -2280,9 +2302,9 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
                 lista_horas_por_dia.remove('')
             
             countusers = len(lista_usuarios)
-            counthours = len(lista_horas_por_dia)
+            counthours = len(lista_horas_por_dia)          
             
-            if lista_user_stories and lista_usuarios and lista_horas_por_dia:
+            if lista_user_stories or (lista_usuarios and lista_horas_por_dia):
                 if countusers == counthours:
                     asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_horas_por_dia)
                     sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)

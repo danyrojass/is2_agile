@@ -125,8 +125,8 @@
 									{% for us in usuarios %}
 										{% if not us in usuarios_sprint %}
 											<tr>
-												<td width="20%"><input type="checkbox" name="lusuarios" id="option{{ us.id }}" value="{{ us.id }}">{{ us }}</td>
-												<td width="80%"><input NAME="lhoras_por_dia" type="number" class="cajaGrande" id="lhoras_por_dia" size="50" maxlength="35"></td>
+												<td width="20%"><input type="checkbox" name="lusuarios"  onclick="document.getElementById('lhoras_por_dia{{ us.id }}').disabled=!this.checked;" id="option{{ us.id }}" value="{{ us.id }}">{{ us }}</td>	
+												<td width="80%"><input NAME="lhoras_por_dia" type="number" class="cajaGrande" id="lhoras_por_dia{{ us.id }}" min="0" max="8" disabled="disabled" ></td>
 											</tr>
 										{% endif%}
 									{% endfor %}

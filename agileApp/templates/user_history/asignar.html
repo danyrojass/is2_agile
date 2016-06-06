@@ -69,10 +69,10 @@
 									<td width="43%">
 										<select id="id_user" name="id_user" class="comboGrande">
 											<option selected="selected" disabled="disabled">--- Selecciona un Usuario ---</option> 
-												{% if usuarios %}
-													{% for u in usuarios %}
+												{% if u_h %}
+													{% for u,h in u_h %}
 														{% if not u in list_usuarios_asginados %}
-															<option value="{{u.id}}" id="id_user">{{u.user}} | {{u.horas_por_dia.cantidad_diaria}} hs/día.</option>
+															<option value="{{u.id}}" id="id_user">{{u.user}} | {{h.cantidad_diaria}} hs/día.</option>
 														{% endif %}
 													{% endfor %}
 												{% endif %}

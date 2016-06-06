@@ -29,10 +29,39 @@
 				<div id="zonaContenido">
 					<div align="center">
 						{% if aid == 1 %}
-							<div id="tituloForm" class="header">USUARIO ELIMINADO</div>
+							<div id="tituloForm" class="header">USUARIO DESASIGNADO DEL PROYECTO</div>
+							<div id="frmBusqueda">
+									<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+									
+										<tr>
+											<td width="15%"><b>ID</b></td>
+											<td width="85%" colspan="2">{{usuario.user.id}}</td>
+									    </tr>
+									    
+										<tr>
+											<td width="15%"><b>Nombre de Usuario</b></td>
+										    <td width="85%" colspan="2">{{usuario.user.username}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Email</b></td>
+										    <td width="85%" colspan="2">{{usuario.user.email}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Nombres</b></td>
+										    <td width="85%" colspan="2">{{usuario.user.first_name}}</td>
+									    </tr>
+									    
+									    <tr>
+											<td width="15%"><b>Apellidos</b></td>
+										    <td width="85%" colspan="2">{{usuario.user.last_name}}</td>
+									    </tr>
+									    
+									</table>
+								</div>
 						{% elif aid == 2 %}
 							<div id="tituloForm" class="header">PROYECTO DEFINIDO</div>
-						
 							<div id="frmBusqueda">
 								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 									<colgroup>

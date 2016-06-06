@@ -39,8 +39,7 @@ class Horas(models.Model):
     cantidad_diaria = models.IntegerField(null=True)
     id_usuario = models.IntegerField(null=True)
     id_sprint = models.IntegerField(null=True)
-    def __str__(self):
-        return self.cantidad_diaria
+
 """
 Clase Usuarios.
 """
