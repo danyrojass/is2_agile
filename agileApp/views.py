@@ -2436,15 +2436,16 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                         if estado==2:
                             us.estado = 2
                             
-                        elif estado==3:
-                            us.estado = 3
+                        elif estado==3 and us.estado==2:
+                            us.estado = 4
+                            us.reestimar = True
                             
                         elif estado==4:
                             us.estado = 4
                             us.reestimar = True
                             
                             usuario_asignado = us.usuario_asignado
-                            usuario_asignado = False
+                            usuario_asignado.asignado = False
                             usuario_asignado.save()
                             
                         us.save()
