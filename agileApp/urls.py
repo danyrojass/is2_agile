@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/modificar$', views.modificar_us, name='modificar_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/asignar', views.asignar_us, name='asignar_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/ver/', views.ver_us, name='ver_us'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/verk/', views.verk, name='verk'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/cambiar_estado/', views.cambiar_estado_us, name='cambiar_estado_us'),
     
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/fileManager/', views.fileAdjunto, name='fileAdjunto'),

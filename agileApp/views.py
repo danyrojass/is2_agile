@@ -1872,6 +1872,41 @@ def ver_us(request, user_id, proyecto_id, us_id):
     else:
         return HttpResponseRedirect('/index')
 
+def verk(request, user_id, proyecto_id, us_id):
+    """
+    Método que nos permite ver los user stories de un proyecto especifico.
+    
+    @param request: Http request
+    @type  request:HtpptRequest 
+    @param user_id: Id de un usuario registrado en el sistema.
+    @param proyecto_id: Id de un proyecto registrado en el sistema.
+    @return: render al template user_history/ver.html.
+             
+    """
+    
+    usuario = request.user
+    proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    accion = "Visualizar US"
+   
+    staff = verificar_permiso(usuario, accion)
+    
+    us = proyecto.user_stories.get(id=us_id)
+        
+    if staff:
+        comprobar(request)
+        if(request.user.is_anonymous()):
+            return HttpResponseRedirect('/ingresar')
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        request.session['last_activity'] = str(now)
+        
+        saludo = saludo_dia()
+        
+        return render(request, 'user_history/ver_k.html', {'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+    else:
+        return HttpResponseRedirect('/index')
+
+
 def cambiar_estado_us(request, user_id, proyecto_id, us_id):
     """
     Método que nos permite cambiar el estado de un user story especifico.
