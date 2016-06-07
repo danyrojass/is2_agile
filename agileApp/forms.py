@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+#!/usr/bin/env python
 from django import forms
 from django.contrib.auth.models import User
 import string
@@ -7,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from agileApp.models import Nota
 
  
-TIPOS = ( 
+TIPOS = (
     ( 'cl', 'Cliente' ),
     ( 'ur', 'Usuario Regular'),
 )

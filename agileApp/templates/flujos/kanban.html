@@ -47,7 +47,7 @@
 	  			{% if k.f_actividad != actividad.id %}
 	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 	  			{% endif %}
-	  			<b> {{k.nombre}} </b>
+	  			<a href="{% url 'agileApp:ver_us' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
               	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}" type="submit"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
               	</div>
               	</br>

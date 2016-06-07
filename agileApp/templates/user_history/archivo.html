@@ -45,11 +45,17 @@
 			}
 		</script>
 	
-
+<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+						<div id="tituloForm" class="header">VISUALIZAR FLUJO </div>
+							<div id="frmBusqueda">
+								<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
 	<form enctype="multipart/form-data" action="{% url 'agileApp:fileAdjunto' user.id proyecto.id hu.id %}" method="post" >
 		{% csrf_token %}
 		
-			<b>Adjuntar archivo</b>
+			<legend><font color="#888888">Adjuntar archivo</font></legend>
 			</br>
 			</br>
 			{% if proyecto.estado != 4 %}
@@ -57,15 +63,25 @@
 					<tr>
 						
 						<td><input type="file" value="file2" name= "file"required/></td>
-						<td><input type="submit" value="Guardar" /> <label style="color: red; font-size: 14pt">{{msg}}</label></td>
+						<td><input type="submit" value="Guardar" /> <label style="color: red; font-size: 12pt">{{msg}}</label></td>
 					</tr>
-					<td>&nbsp;</td>
-					<tr> <td><i><b>Limite 10 MB</b></i><td></tr>
+					<tr> <td><i>Limite 10 MB</i><td></tr>
 				</table>
 			{% endif %}
 	</form>
 	</br>
+	<table width=50%>
+		
+		
 
+		
+		
+</table>	
+						</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+	
 		
 		
 	
@@ -74,3 +90,4 @@
 {% block atras %}
 	<a href="{% url 'apps:huprincipal' proyecto_id hu.id %}">Volver</a>
 {% endblock %}
+		

@@ -24,34 +24,31 @@
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
-
-		<script language="javascript">
-			
-			function crear_us() {
-				location.href="{% url 'agileApp:crear_us' user.id proyecto.id %}";
-			}
-			
-			function limpiar() {
-				document.getElementById("form_busqueda").reset();
-			}
-			
-			var cursor;
-			if (document.all) {
-				// Está utilizando EXPLORER
-				cursor='hand';
-			} else {
-				// Está utilizando MOZILLA/NETSCAPE
-				cursor='pointer';
-			}
-		</script>
-		
-		
-
-				{% if us %}
-	  			{% for k in archivo %}
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>	
+<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+					<div id="tituloForm" class="header">ARCHIVOS</div>
+					<div id="frmBusqueda">
+						<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								{% if us %}
+									{% for k in archivo %}
+									    <td><LI><a href="{% url 'agileApp:send_file' user.id proyecto.id us.id k.id %}" title="Descargar">{{k.filename}}</a></td>
 	  			
-	  			<td><LI><a href="{% url 'agileApp:send_file' user.id proyecto.id us.id k.id %}" title="Descargar">{{k.filename}}</a></td>
-	  			{% endfor %}
-              	{% endif %}
+									{% endfor %}
+								{% else %}
+									 <td width="10%">Sin archivos.</td>
+								{% endif %}
+	
+						</table>
+					</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>		
+		
+
+
               	
           {% endblock %}

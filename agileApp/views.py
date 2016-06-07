@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import sys 
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -23,9 +24,9 @@ from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
     Nota, US_Notas, us_Actividades, archivoAdjunto
 import math
 from django.http import HttpResponse
- 
+  
 def inicio(request): 
-    """
+    """ 
     Ingreso al sistema.
     @param request: Http request
     @type  request:HtpptRequest 
