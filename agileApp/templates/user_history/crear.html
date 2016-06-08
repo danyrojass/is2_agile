@@ -62,17 +62,17 @@
 									
 									<tr>
 										<td width="15%"><b>Valor de Negocios</b></td>
-									    <td width="43%"><input NAME="valor_negocios" type="text" class="cajaGrande" id="valor_negocios" size="50" maxlength="50" value=""></td>
+									    <td width="43%"><input NAME="valor_negocios" type="number" min="1" max="5" class="cajaGrande" id="valor_negocios" size="50" maxlength="50" value=""></td>
 									</tr>
 								
 									<tr>
 										<td width="15%"><b>Urgencia</b></td>
-									    <td width="43%"><input NAME="urgencia" type="text" class="cajaGrande" id="urgencia" size="50" maxlength="50" value=""></td>
+									    <td width="43%"><input NAME="urgencia" type="number" min="1" max="5" class="cajaGrande" id="urgencia" size="50" maxlength="50" value=""></td>
 									</tr>
 									
 									<tr>
 										<td width="15%"><b>Size</b></td>
-									    <td width="43%"><input NAME="size" type="text" class="cajaGrande" id="size" size="50" maxlength="50" value=""></td>
+									    <td width="43%"><input NAME="size" type="number" class="cajaGrande" id="size" size="50" maxlength="50" value=""></td>
 									</tr>	
 								{% else %}
 								<tr>
@@ -89,7 +89,7 @@
 								{% endif %}
 								<tr>
 									<td width="15%"><b>Tiempo Estimado (en hs.)</b></td>
-								    <td width="43%"><input NAME="tiempo_estimado" type="text" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value=""></td>
+								    <td width="43%"><input NAME="tiempo_estimado" type="number" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value=""></td>
 								</tr>
 								
 								{% if staff2 %}

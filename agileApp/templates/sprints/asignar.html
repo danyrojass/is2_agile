@@ -46,7 +46,57 @@
 								<tr>
 									<td width="15%"><b>Duración en Días</b></td>
 								     <td width="43%">{{sp.duracion}}</td>
-								</tr>	
+								</tr>
+								<td>&nbsp;</td>
+					<td>&nbsp;</td>
+								<tr>
+										<td><b><u>DESARROLLADORES</u></b></td>
+								</tr>
+								    
+								    {% if sp_users %}
+										{% for us in sp_users %}
+											<tr>
+												<td width="35%">{{ us.user }} | {{us.horas_por_dia.cantidad_diaria}} hs/día.</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+										<td width="35%">Aún no se asignaron desarrolladores.</td>
+									</tr>
+									{% endif %}
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+								    <tr>
+										<td width="35%"><u><b>URGENTE</b></u></td>
+										<td width="35%"><u><b>MEDIANAMENTE URGENTE</b></u></td>
+										<td width="35%"><u><b>PARA NADA URGENTE</b></u></td>
+									</tr>
+									{% if spus %}
+										{% for p, q, r in spus %}
+									    	<tr>
+												{% if p %}
+													<td width="35%">{{ p }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+												{% if q %}
+													<td width="35%">{{ q }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+												{% if r %}
+													<td width="35%">{{ r }}<br></td>
+												{% else %}
+													<td width="35%"><br></td>
+												{% endif %}
+											</tr>
+									    {% endfor %}
+									{% else %}
+										<tr>
+										<td width="35%">Aún no se asignaron user stories.</td>
+									</tr>
+									{% endif %}
+									
 								
 							</table>
 					</div>

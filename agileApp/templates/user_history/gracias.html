@@ -96,27 +96,27 @@
 											<td><b>Descripción</b></td>
 										    <td colspan="2">{{us.descripcion}}</td>
 									    </tr>
-									    
+									   	
 									    <tr>
 											<td><b>Nivel de Prioridad</b></td>
 										    <td colspan="2">{{us.nivel_prioridad}}</td>
 									    </tr>
-									    
+									    {% if staff %}
 									    <tr>
 											<td><b>Valor de Negocios</b></td>
 										    <td colspan="2">{{us.valor_negocios}}</td>
 									    </tr>
 									    
 									    <tr>
-											<td><b>Valor Técnico</b></td>
-										    <td colspan="2">{{us.valor_tecnico}}</td>
+											<td><b>Urgencia</b></td>
+										    <td colspan="2">{{us.urgencia}}</td>
 									    </tr>
 									    
 									    <tr>
 											<td><b>Size</b></td>
 										    <td colspan="2">{{us.size}}</td>
 									    </tr>
-									    
+									    {% endif %}
 									    <tr>
 											<td><b>Tipo</b></td>
 										    <td colspan="2">{{us.tipo}}</td>

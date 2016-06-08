@@ -304,6 +304,7 @@ class archivoUSForm(forms.Form):
 class CrearSprintForm(forms.Form):
     nombre = forms.CharField(max_length=25)
     estado = forms.IntegerField()
+    duracion = forms.IntegerField()
     
     def __init__(self, *args, **kwargs):
         self.proyecto_id = kwargs.pop('proyecto_id')

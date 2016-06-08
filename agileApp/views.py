@@ -1828,6 +1828,14 @@ def index_us(request, user_id, proyecto_id):
                 
         uh = proyecto.user_stories.all().order_by('id')
         filax = uh.count()
+        
+        lsprints = []
+        for userh in uh:
+            sprint = Sprint.objects.filter(id=userh.id_sprint)
+            if sprint:
+                lsprints.append(sprint.get())
+        
+        uh_sp = map(None, uh, lsprints)
     
         if request.method == 'POST':
             results = proyecto.user_stories.all().exclude(id=usuario.id)
@@ -1854,7 +1862,7 @@ def index_us(request, user_id, proyecto_id):
                 return render_to_response('user_history/results.html', {'user':user, 'proyecto':proyecto, 'saludo':saludo, 'results':results}, context_instance=RequestContext(request))
         else:
             form = BuscarUSForm()
-        return render_to_response('user_history/index.html', {'filax':filax, 'uh':uh, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('user_history/index.html', {'uh_sp':uh_sp, 'filax':filax, 'uh':uh, 'staff':staff, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
 
@@ -2145,10 +2153,12 @@ def crear_sprint(request, user_id, proyecto_id):
                 cleaned_data = form.cleaned_data
                 nombre = cleaned_data.get('nombre')
                 estado = cleaned_data.get('estado')
+                duracion = cleaned_data.get('duracion')
                 
                 sp = Sprint()
                 sp.nombre = nombre
                 sp.estado = estado
+                sp.duracion = duracion
                 
                 sp.save()
                 
@@ -2272,7 +2282,7 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
 
     staff = verificar_permiso(usuario, accion)
     
-    usuarios = proyecto.usuarios.all().filter(asignado=False)
+    usuarios = proyecto.usuarios.all()
     
     sp = proyecto.sprint.get(id=sp_id)
     usuarios_sprint = sp.desarrolladores.all()
@@ -2281,6 +2291,12 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     us2 = proyecto.user_stories.all().filter(prioridad_SM=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
     us3 = proyecto.user_stories.all().filter(prioridad_SM=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
     user_stories = map(None, us1, us2, us3)
+    
+    sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
+    sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
+    sp_us3 = sp.listaUS.all().filter(prioridad_SM=3)
+    spus = map(None, sp_us1, sp_us2, sp_us3)
+    sp_users = sp.desarrolladores.all()
     
     if staff:
         aid = 3
@@ -2321,7 +2337,7 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
                 
             return render_to_response('sprints/gracias.html', {'sp_desarrolladores':sp_desarrolladores, 'sp_us':sp_us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
-        return render(request, 'sprints/asignar.html', {'usuarios_sprint':usuarios_sprint, 'usuarios':usuarios, 'user_stories':user_stories, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
+        return render(request, 'sprints/asignar.html', {'spus':spus, 'sp_users':sp_users, 'usuarios_sprint':usuarios_sprint, 'usuarios':usuarios, 'user_stories':user_stories, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'sp':sp})
     else:
         return HttpResponseRedirect('/index')
 
@@ -2439,14 +2455,26 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                         elif estado==3 and us.estado==2:
                             us.estado = 4
                             us.reestimar = True
-                            
-                        elif estado==4:
-                            us.estado = 4
-                            us.reestimar = True
+                            us.id_sprint = None
                             
                             usuario_asignado = us.usuario_asignado
                             usuario_asignado.asignado = False
                             usuario_asignado.save()
+                                                        
+                            us_sp = US_Sprint.objects.filter(user_story=us, sprint=sp)
+                            us_sp.get().delete()
+                            
+                        elif estado==4:
+                            us.estado = 4
+                            us.reestimar = True
+                            us.id_sprint = None
+                            
+                            usuario_asignado = us.usuario_asignado
+                            usuario_asignado.asignado = False
+                            usuario_asignado.save()
+                                                        
+                            us_sp = US_Sprint.objects.filter(user_story=us, sprint=sp)
+                            us_sp.get().delete()
                             
                         us.save()
                     
