@@ -112,6 +112,29 @@ class User_Story(models.Model):
     def __str__(self):
         return self.nombre
 
+class archivoAdjunto(models.Model):
+    #archivo = models.FileField(upload_to="adjunto")
+    archivo = models.TextField(blank=True)
+    hu = models.ForeignKey(User_Story, null=True, blank=True)
+    filename = models.CharField(max_length = 100, null=True, blank=True)
+    size = models.IntegerField(null=True, blank=True);
+    version = models.IntegerField(default = 1)
+    actual = models.BooleanField(default = True)
+    def __str__(self):
+        return self.filename
+    
+    def __unicode__(self):
+        """Representacion unicode del objeto"""
+        return self.archivo
+    
+    def set_data(self, data):
+        self.archivo = base64.encodestring(data)
+ 
+    def get_data(self):
+        return base64.decodestring(self.archivo)
+ 
+    data = property(get_data, set_data)
+
 class US_Reportes(models.Model):
     user_story = models.ForeignKey(User_Story)
     reporte = models.ForeignKey(Reporte)

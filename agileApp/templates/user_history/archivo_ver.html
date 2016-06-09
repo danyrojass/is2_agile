@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Index de Ejecución{% endblock title %}
+{% block content %}
+	<link href="/static/style1.css" rel="stylesheet" type="text/css" />
+		<div id="welcome" align="center">	
+			{{saludo}}, <a href="{% url 'agileApp:modificar_contrasena' %}">{{user.username}}</a>.</br>
+			Se encuentra en el proyecto: {{proyecto.nombre_largo}}!
+			<br></br>
+			<a href="javascript:history.go(-1)">Atrás</a> | 
+			<a href="javascript:history.go(1)">Adelante</a>
+		</div>
+		
+	<link href="/static/menu1.css" rel="stylesheet" type="text/css" />
+		<nav>
+			<ul id='nav'>
+		  		<li><a href='/'>Inicio</a></li>
+		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
+					<ul>
+                    	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
+                    	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
+                    	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
+               		</ul>
+				</li>
+		  		<li><a href='/cerrar'>Cerrar</a></li>
+    		</ul>
+		</nav>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>	
+<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+			<div id="pagina">
+				<div id="zonaContenido">
+					<div align="center">
+					<div id="tituloForm" class="header">ARCHIVOS</div>
+					<div id="frmBusqueda">
+						<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
+								{% if us %}
+									{% for k in archivo %}
+									    <td><LI><a href="{% url 'agileApp:send_file' user.id proyecto.id us.id k.id %}" title="Descargar">{{k.filename}}</a></td>
+	  									<td><div><a href="{% url 'agileApp:fileAdjunto' user.id proyecto.id us.id %}"><img src="/static/img/eliminar.png" width="16" height="16" border="0" title="Eliminar Archivo"></a></div></td>
+											
+									{% endfor %}
+								{% else %}
+									 <td width="10%">Sin archivos.</td>
+								{% endif %}
+	
+						</table>
+					</div>
+					
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>		
+		
+
+
+              	
+          {% endblock %}

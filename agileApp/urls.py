@@ -31,7 +31,13 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/modificar$', views.modificar_us, name='modificar_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/asignar', views.asignar_us, name='asignar_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/ver/', views.ver_us, name='ver_us'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/verk/', views.verk, name='verk'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/cambiar_estado/', views.cambiar_estado_us, name='cambiar_estado_us'),
+    
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/fileManager/', views.fileAdjunto, name='fileAdjunto'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/visualizar_archivos/', views.visualizar_archivos, name='visualizar_archivos'),
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/send_file/(?P<f_id>\d+)', views.send_file, name='send_file'),
+   
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/generar_reporte/', views.reportar_avance_us, name='reportar_avance_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/ver_reportes/', views.ver_reporte_us, name='ver_reporte_us'),
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/us/(?P<us_id>\d+)/agregar_nota/', views.notas_us, name='notas_us'),
@@ -52,5 +58,5 @@ urlpatterns = [
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/actividad/(?P<actividad_id>\d+)/modificar_actividad/$', views.modificar_actividad, name='modificar_actividad'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/visualizar_kanban/$', views.visualizar_kanban, name='visualizar_kanban'), 
     url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/cambiar_estado_kanban/(?P<us_id>\d+)/$', views.cambiar_estado_kanban, name='cambiar_estado_kanban'), 
-    
+    url(r'^usuario/(?P<user_id>\d+)/proyecto/(?P<proyecto_id>\d+)/flujo/(?P<flujo_id>\d+)/cambiar_estado_kanban1/(?P<us_id>\d+)/$', views.cambiar_estado_kanban1, name='cambiar_estado_kanban1'), 
 ]
