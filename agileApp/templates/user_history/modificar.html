@@ -45,7 +45,7 @@
 		<div id="pagina">
 			<div id="zonaContenido">
 				<div align="center">
-					<div id="tituloForm" class="header">CREAR USER STORY</div>
+					<div id="tituloForm" class="header">MODIFICAR USER STORY</div>
 					<div id="frmBusqueda">
 						<form id="formulario" name="formulario" method="post" action="">{% csrf_token %}{{ form.errors }} 
 							<table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
@@ -87,6 +87,21 @@
 								<tr>
 									<td width="15%"><b>Tiempo Estimado (en hs.)</b></td>
 								    <td width="43%"><input NAME="tiempo_estimado" type="text" class="cajaGrande" id="tiempo_estimado" size="50" maxlength="50" value="{{us.tiempo_estimado}}"></td>
+								</tr>
+								{% endif %}
+								
+								{% if us.reestimar %}
+								<tr>
+									<td><b>Estado</b></td>
+								    <td>
+										<select name="estado" id="estado">
+											<option selected="selected" disabled="disabled">--- Selecciona un Estado ---</option>
+											<option value="1">Planificado</option>
+											<option value="2">En Ejecución</option>
+											<option value="3">Finalizado</option>
+											<option value="4">Cancelado</option>
+										</select> 
+									</td>
 								</tr>
 								{% endif %}
 															

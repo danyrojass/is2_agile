@@ -17,7 +17,7 @@ class Command(BaseCommand):
                    'Modificación de US - Valor Técnico','Modificación de US - Size', 'Modificación de US - Prioridad',
                    'Eliminación de US', 'Administración de Sprints', 'Administración de Flujos',
                    'Consultar lista de Usuarios', 'Cambiar Estado del Usuario', 'Asignación de US',
-                   'Modificación de US - Tipo', 'Asignar Prioridad de Scrum Master al US',
+                   'Modificación de US - Tipo', 'Asignar Prioridad de Scrum Master al US', 'Visualizar Kanban',
                    'Consultar lista de Proyectos/Servicios', 'Modificación de US - Notas', 'Modificación de US - Archivos adjuntos',
                    'Modificación de US - Descripción', 'Consultar estado de Actividades', 'Consultar Recursos Disponibles', 
                    'Desarrollo de US', 'Modificación de US - Tiempo Estimado', 'Modificación de US - Tiempo Real',  
@@ -29,7 +29,7 @@ class Command(BaseCommand):
                    1, 1, 1,
                    1, 1, 1,
                    1, 1, 1,
-                   1, 1,
+                   1, 1, 2,
                    2, 2, 2,
                    2, 2, 2,
                    2, 2, 2,
@@ -74,8 +74,8 @@ class Command(BaseCommand):
         asignar_us_proyecto(us5, proyecto2)
         asignar_us_proyecto(us6, proyecto2)
         
-        sp1 = crear_sprint("Sprint de Prueba Nro.1", 1)
-        sp2 = crear_sprint("Sprint de Prueba Nro.2", 1)
+        sp1 = crear_sprint("Sprint de Prueba Nro.1", 1, 8)
+        sp2 = crear_sprint("Sprint de Prueba Nro.2", 1, 9)
         
         asignar_sprint_proyecto(sp1, proyecto1)
         asignar_sprint_proyecto(sp2, proyecto2)
@@ -203,10 +203,11 @@ def asignar_us_proyecto(us, proyecto):
     us_proy = US_Proyectos(proyecto=proyecto, user_story=us)
     us_proy.save()
 
-def crear_sprint(nombre, estado):
+def crear_sprint(nombre, estado, duracion):
     sp = Sprint()
     sp.nombre = nombre
     sp.estado = estado
+    sp.duracion = duracion
     sp.save()
     return sp
     

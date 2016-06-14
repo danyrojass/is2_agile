@@ -283,6 +283,7 @@ class EditarUSForm(forms.Form):
     size = forms.IntegerField(required=False)
     tiempo_estimado = forms.IntegerField(required=False)
     tipo = forms.CharField(max_length = 50, required=False)
+    estado = forms.IntegerField(required=False)
 
 class AsignarUSForm(forms.Form):
     id_user = forms.IntegerField()
@@ -293,8 +294,7 @@ class CambiarEstadoUSForm(forms.Form):
 
 class ReportarUSForm(forms.Form):
     descripcion = forms.CharField(max_length=50, required=False)
-    horas_faltantes = forms.IntegerField(required=False)
-    porcentaje_alcanzado = forms.IntegerField(required=False)
+    horas_consumidas = forms.IntegerField(required=False)
 
 class archivoUSForm(forms.Form):
     nombre = forms.CharField(max_length=25)

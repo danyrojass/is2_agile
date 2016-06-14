@@ -25,6 +25,22 @@
     		</ul>
 		</nav>
 		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<script language="javascript">
+			
+			function nueva_nota() {
+				location.href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}";
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+		
 			<div id="pagina">
 				<div id="zonaContenido">
 					<div align="center">
@@ -60,13 +76,14 @@
 											</tr>
 										{% endfor %}
 									{% else %}
-										<p>No hay aún notas en este user story.</p>
+										<p>No hay, aún, notas en este user story.</p>
 									{% endif %}
 								    
 								</table>
 							</div>
 							
 							<div id="botonBusqueda">
+									<td style="text-align:left"><a onClick="nueva_nota()" onMouseOver="style.cursor=cursor" class="button" >AGREGAR NOTA</a></td>
         							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
         					</div>
 						</div>

@@ -25,6 +25,22 @@
     		</ul>
 		</nav>
 		<link href="/static/estilos.css" rel="stylesheet" type="text/css" />
+		<script language="javascript">
+			
+			function nuevo_reporte() {
+				location.href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}";
+			}
+			
+			var cursor;
+			if (document.all) {
+				// Está utilizando EXPLORER
+				cursor='hand';
+			} else {
+				// Está utilizando MOZILLA/NETSCAPE
+				cursor='pointer';
+			}
+		</script>
+
 			<div id="pagina">
 				<div id="zonaContenido">
 					<div align="center">
@@ -38,16 +54,34 @@
 										<col width="21%">
 										<col width="21%">
 									</colgroup>
+									<tr>
+										<td><b>User Story</b></td>
+										<td width="36%">{{us.nombre}} hs.</td>									
+									</tr>
+									
+									<tr>
+										<td><b>Tiempo Estimado</b></td>
+										<td width="36%">{{us.tiempo_estimado}} hs.</td>									
+									</tr>
+									
+									<tr>
+										<td><b>Horas Consumidas Reales (por el momento)</b></td>
+										<td width="36%">{{us.horas_consumidas_reales}} hs.</td>									
+									</tr>
+									<tr>
+												<td><b>-----------------------------------------------------------</b></td>								
+											</tr>
 									{% if reportes %}
 										{% for reporte in reportes %}
+											
 											<tr>
-												<td><b>Porcentaje Alcanzado (hasta el momento)</b></td>
-												<td width="36%">{{reporte.porcentaje_alcanzado}}%</td>									
+												<td><b>Reporte Nro.</b></td>
+												<td width="36%">{{forloop.counter}}</td>									
 											</tr>
-																			
+																		
 											<tr>
-												<td><b>Horas Faltantes</b></td>
-												<td width="36%">{{reporte.horas_faltantes}} hs.</td>									
+												<td><b>Horas Consumidas</b></td>
+												<td width="36%">{{reporte.horas_consumidas}} hs.</td>									
 											</tr>
 											
 											<tr>
@@ -65,13 +99,14 @@
 											</tr>
 										{% endfor %}
 									{% else %}
-										<p>No hay aún reportes de este user story.</p>
+										<p>No hay, aún, reportes de este user story.</p>
 									{% endif %}
 								    
 								</table>
 							</div>
 							
 							<div id="botonBusqueda">
+									<td style="text-align:left"><a onClick="nuevo_reporte()" onMouseOver="style.cursor=cursor" class="button" >AGREGAR REPORTE</a></td>
         							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
         					</div>
 						</div>

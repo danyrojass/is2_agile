@@ -5,6 +5,7 @@ Modelos
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+import base64
 
 """
 Clase Permisos.
@@ -67,8 +68,7 @@ class Tipo(models.Model):
 
 class Reporte(models.Model):
     descripcion = models.CharField(max_length = 50, null=True)
-    porcentaje_alcanzado = models.IntegerField(null=True)
-    horas_faltantes = models.IntegerField(null=True)
+    horas_consumidas = models.IntegerField(null=True)
     fecha_reporte = models.DateField(default=timezone.now, null=True)
 
 class Nota(models.Model):
@@ -95,7 +95,6 @@ class User_Story(models.Model):
     urgencia = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
     tiempo_estimado = models.IntegerField(default=0)
-    tiempo_real = models.IntegerField(default=0)
     estado = models.IntegerField(default = 1)
     fecha_creacion = models.DateField(null = True)
     fecha_inicio = models.DateField(null = True)
@@ -108,6 +107,7 @@ class User_Story(models.Model):
     reportes = models.ManyToManyField(Reporte, through="US_Reportes")
     notas = models.ManyToManyField(Nota, through="US_Notas")
     archivos = models.ManyToManyField(Archivo, through="US_Archivos")
+    horas_consumidas_reales = models.IntegerField(default=0)
     
     def __str__(self):
         return self.nombre

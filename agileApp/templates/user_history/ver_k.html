@@ -52,15 +52,10 @@
 										<td><b>Descripción</b></td>
 									    <td colspan="2">{{us.descripcion}}</td>
 								    </tr>
-								    
+								    {% if staff %}
 								    <tr>
 										<td><b>Prioridad del Scrum Master</b></td>
 									    <td colspan="2">{{us.prioridad_SM}}</td>
-								    </tr>
-								    
-								    <tr>
-										<td><b>Nivel de Prioridad</b></td>
-									    <td colspan="2">{{us.nivel_prioridad}}</td>
 								    </tr>
 								    
 								    <tr>
@@ -68,15 +63,21 @@
 									    <td colspan="2">{{us.valor_negocios}}</td>
 								    </tr>
 								    
-								    <tr>
-										<td><b>Valor Técnico</b></td>
-									    <td colspan="2">{{us.valor_tecnico}}</td>
+								     <tr>
+										<td><b>Urgencia</b></td>
+									    <td colspan="2">{{us.urgencia}}</td>
 								    </tr>
-								    
+
 								    <tr>
 										<td><b>Size</b></td>
 									    <td colspan="2">{{us.size}}</td>
 								    </tr>
+								    {% else %}
+								    <tr>
+										<td><b>Nivel de Prioridad</b></td>
+									    <td colspan="2">{{us.nivel_prioridad}}</td>
+								    </tr>
+								    {% endif %}
 								    
 								    <tr>
 										<td><b>Tipo</b></td>
@@ -105,16 +106,7 @@
 							</div>
 							
 							<div id="botonBusqueda">
-						  		
-						  		
-						  		
-						  		<a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"class="button" type="submit">AGREGAR REPORTES</a>
-								<a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"class="button" type="submit">AGREGAR NOTAS</a>
-								<a href="{% url 'agileApp:fileAdjunto' user.id proyecto.id us.id %}"class="button" type="submit">AGREGAR ARCHIVOS</a>
-											</br>
-              								&nbsp;
-              								&nbsp;
-              								</br>				
+
 						  		<a href="{% url 'agileApp:ver_reporte_us' user.id proyecto.id us.id%}" class="button" type="submit">VER REPORTES</a>
 						  		<a href="{% url 'agileApp:ver_notas_us' user.id proyecto.id us.id%}" class="button" type="submit">VER NOTAS</a>
 						  		<a href="{% url 'agileApp:visualizar_archivos' user.id proyecto.id us.id %}"class="button" type="submit">VER ARCHIVOS</a>

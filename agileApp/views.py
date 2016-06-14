@@ -14,7 +14,7 @@ EditarProyectoForm, AsignarRolForm, CambiarEstadoForm, CrearUSForm, BuscarUSForm
 BuscarSprintForm, CrearSprintForm, EditarSprintForm, CambiarEstadoUSForm , BuscarFlujosForm
 from .models import Usuarios, Permisos, Roles, Permisos_Roles, Usuarios, Proyectos, Roles_Usuarios_Proyectos, Flujos_Proyectos,\
 Usuarios_Proyectos, User_Story, US_Proyectos, Tipo, Sprint, Sprint_Proyectos, US_Sprint, Flujos, Actividades, Actividades_Flujos,\
-us_Flujos, Usuarios_Sprint
+us_Flujos, Usuarios_Sprint, archivoAdjunto
 from django.contrib.auth.hashers import make_password
 from agileApp.forms import CambiarEstadoSprintForm, EditarActividadForm, EditarFlujoForm, CrearActividadForm,\
 CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivoUSForm,\
@@ -22,6 +22,7 @@ CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivo
 from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
     Nota, US_Notas, us_Actividades
 import math
+from django.http.response import HttpResponse
  
 def inicio(request): 
     """
@@ -1544,10 +1545,9 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     staff7 = verificar_permiso(usuario, accion7)
     staff8 = verificar_permiso(usuario, accion8)    
     staff9 = verificar_permiso(usuario, accion9)
-    staff10 = verificar_permiso(usuario, accion10)
     
     us = proyecto.user_stories.get(id=us_id)
-    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff9 or staff10:
+    if staff1 or staff2 or staff3 or staff4 or staff5 or staff6 or staff7 or staff9:
         aid = 2
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1570,7 +1570,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                 urgencia = cleaned_data.get('urgencia')
                 size = cleaned_data.get('size')
                 tiempo_estimado = cleaned_data.get('tiempo_estimado')
-                id_user = cleaned_data.get('id_user')
+                estado = cleaned_data.get('estado')
                 
                 if staff7:
                     us.descripcion = descripcion
@@ -1591,18 +1591,9 @@ def modificar_us(request, us_id, user_id, proyecto_id):
                     us.prioridad_SM = prioridad_SM
                 if staff9:
                     us.tiempo_estimado = tiempo_estimado
-                
-                if staff10:
-                    userstories = proyecto.user_stories.all()
-    
-                    for uh in userstories:
-                        list_usuarios_asginados.append(uh.usuario_asignado)
-
-                    usuarios = usuarios.filter(roles__permisos__nombre="Desarrollo de US")
-                    
-                    if id_user:
-                        usuario_asignado = Usuarios.objects.get(id=id_user)
-                        us.usuario_asignado = usuario_asignado
+                if not estado==4:
+                    us.estado = estado
+                    us.reestimar = False
                         
                 us.save()
                 
@@ -1611,7 +1602,7 @@ def modificar_us(request, us_id, user_id, proyecto_id):
             form = EditarUSForm()
         return render(request, 'user_history/modificar.html', {'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff1':staff1, 'staff':staff,\
                                                                'staff2':staff2, 'staff3':staff3, 'staff4':staff4, 'staff5':staff5, 'staff6':staff6, 'staff7':staff7, 'staff8':staff8,\
-                                                               'staff9':staff9, 'staff10':staff10, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
+                                                               'staff9':staff9, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios,})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1747,6 +1738,7 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         usuario = Usuarios.objects.get(id=user_id)
         proyecto = Proyectos.objects.get(id=proyecto_id)
         us = User_Story.objects.get(id=us_id)
+        sprint = Sprint.objects.get(id=us.id_sprint)
     
         if request.method == 'POST':
             form = ReportarUSForm(request.POST)
@@ -1754,20 +1746,38 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
             if form.is_valid():
                 cleaned_data = form.cleaned_data
                 descripcion = cleaned_data.get('descripcion')
-                horas_faltantes = cleaned_data.get('horas_faltantes')
-                porcentaje_alcanzado = cleaned_data.get('porcentaje_alcanzado')
-                
+                horas_consumidas = cleaned_data.get('horas_consumidas')
+                                 
                 reporte = Reporte()
                 reporte.descripcion = descripcion
-                reporte.horas_faltantes = horas_faltantes
-                reporte.porcentaje_alcanzado = porcentaje_alcanzado
+                reporte.horas_consumidas = horas_consumidas
                 reporte.fecha_reporte = datetime.now()
                 reporte.save()
 
                 us_reporte = US_Reportes(user_story=us, reporte=reporte)
                 us_reporte.save()
-                                
-                return render_to_response('user_history/gracias.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+                
+                us.horas_consumidas_reales = us.horas_consumidas_reales + horas_consumidas
+                us.save()
+                
+                if us.horas_consumidas_reales<sprint.duracion*8:
+                    
+                    return render_to_response('user_history/gracias.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+                
+                else:
+                    us_sp = US_Sprint.objects.get(user_story=us, sprint=sprint)
+                    us_sp.delete()
+                    
+                    us.id_sprint = None
+                    us.estado = 4
+                    us.reestimar = True
+                    us.save()
+                    
+                    usuario_asignado = us.usuario_asignado
+                    usuario_asignado.asignado = False
+                    usuario_asignado.save()
+
+                    return render_to_response('user_history/reestimar.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
         else:
             form = ReportarUSForm()
         return render_to_response('user_history/reportar_avance.html', {'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
@@ -1826,7 +1836,7 @@ def index_us(request, user_id, proyecto_id):
         usuario = Usuarios.objects.get(id=user_id)
         proyecto = Proyectos.objects.get(id=proyecto_id)
                 
-        uh = proyecto.user_stories.all().order_by('id')
+        uh = proyecto.user_stories.all().order_by('id_sprint')
         filax = uh.count()
         
         lsprints = []
@@ -1836,6 +1846,7 @@ def index_us(request, user_id, proyecto_id):
                 lsprints.append(sprint.get())
         
         uh_sp = map(None, uh, lsprints)
+        print uh_sp
     
         if request.method == 'POST':
             results = proyecto.user_stories.all().exclude(id=usuario.id)
@@ -1881,13 +1892,14 @@ def ver_us(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Visualizar US"
-   
+    accion = "Creación de US"
+    accion1 = "Visualizar US"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
     us = proyecto.user_stories.get(id=us_id)
         
-    if staff:
+    if staff or staff1:
         comprobar(request)
         if(request.user.is_anonymous()):
             return HttpResponseRedirect('/ingresar')
@@ -1896,7 +1908,7 @@ def ver_us(request, user_id, proyecto_id, us_id):
         
         saludo = saludo_dia()
         
-        return render(request, 'user_history/ver.html', {'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/ver.html', {'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
 
@@ -1915,13 +1927,14 @@ def verk(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Visualizar US"
-   
+    accion = "Creación de US"
+    accion1 = "Visualizar US"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
     us = proyecto.user_stories.get(id=us_id)
         
-    if staff:
+    if staff or staff1:
         comprobar(request)
         if(request.user.is_anonymous()):
             return HttpResponseRedirect('/ingresar')
@@ -1930,21 +1943,11 @@ def verk(request, user_id, proyecto_id, us_id):
         
         saludo = saludo_dia()
         
-        return render(request, 'user_history/ver_k.html', {'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/ver_k.html', {'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
-
+"""
 def cambiar_estado_us(request, user_id, proyecto_id, us_id):
-    """
-    Método que nos permite cambiar el estado de un user story especifico.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @return: render al template user_history/cambiar_estado.html.
-             
-    """
 
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
@@ -2000,7 +2003,7 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
         return render(request, 'user_history/cambiar_estado.html', {'cambio_estado':cambio_estado, 'staff':staff, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
-    
+""" 
 def notas_us(request, user_id, proyecto_id, us_id): 
     user = request.user
     accion = "Notas US"
@@ -2321,10 +2324,13 @@ def asignar_us_sprint(request, user_id, proyecto_id, sp_id):
     sp = proyecto.sprint.get(id=sp_id)
     usuarios_sprint = sp.desarrolladores.all()
     
-    us1 = proyecto.user_stories.all().filter(prioridad_SM=1).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
-    us2 = proyecto.user_stories.all().filter(prioridad_SM=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
-    us3 = proyecto.user_stories.all().filter(prioridad_SM=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
-    user_stories = map(None, us1, us2, us3)
+    if not sp.estado==2:
+        us1 = proyecto.user_stories.all().filter(prioridad_SM=1).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
+        us2 = proyecto.user_stories.all().filter(prioridad_SM=2).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
+        us3 = proyecto.user_stories.all().filter(prioridad_SM=3).exclude(estado=2).exclude(estado=3).filter(id_sprint=None)
+        user_stories = map(None, us1, us2, us3)
+    else:
+        user_stories = None
     
     sp_us1 = sp.listaUS.all().filter(prioridad_SM=1)
     sp_us2 = sp.listaUS.all().filter(prioridad_SM=2)
@@ -2984,12 +2990,14 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
+    
     accion = "Kanban"
-    
+    accion1 = "Ver Kanban"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
     
-    if staff:
+    if staff or staff1:
         comprobar(request)
         if(request.user.is_anonymous()):
             return HttpResponseRedirect('/ingresar')
@@ -3000,9 +3008,12 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
             
         flujo = get_object_or_404(Flujos, id=flujo_id)
         up = flujo.actividades.all()
-        us = flujo.us.all()
+        if staff:
+            us = flujo.us.all()
+        else:
+            user = Usuarios.objects.get(id=usuario.id)
+            us = flujo.us.filter(usuario_asignado=user)
 
-        
         return render(request, 'flujos/kanban.html', {'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
@@ -3024,8 +3035,9 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
     accion = "Kanban"
-   
+    accion1 = "Ver Kanban"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
     flujo = proyecto.flujos.get(id=flujo_id)
     up = flujo.actividades.all()
@@ -3034,7 +3046,7 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
    
     us = flujo.us.all()
     us1 = flujo.us.get(id=us_id)
-    if staff:
+    if staff or staff1:
         aid = 4
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -3067,7 +3079,7 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
         elif us1.f_estado != 3:
             us1.f_estado = estado + 1     
             us1.save()
-        return render_to_response('flujos/kanban.html', {'actividadf':actividadf,'actividad':actividad,'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        return render_to_response('flujos/kanban.html', {'staff':staff, 'actividadf':actividadf,'actividad':actividad,'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/index')
 
@@ -3088,8 +3100,9 @@ def cambiar_estado_kanban1(request, user_id, proyecto_id, flujo_id, us_id):
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
     accion = "Kanban"
-   
+    accion1 = "Ver Kanban"
     staff = verificar_permiso(usuario, accion)
+    staff1 = verificar_permiso(usuario, accion1)
     
     flujo = proyecto.flujos.get(id=flujo_id)
     up = flujo.actividades.all()
@@ -3098,7 +3111,7 @@ def cambiar_estado_kanban1(request, user_id, proyecto_id, flujo_id, us_id):
     
     us = flujo.us.all()
     us1 = flujo.us.get(id=us_id)
-    if staff:
+    if staff or staff1:
         aid = 4
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -3124,7 +3137,7 @@ def cambiar_estado_kanban1(request, user_id, proyecto_id, flujo_id, us_id):
             us1.f_estado = estado - 1     
             us1.save()
             
-        return render_to_response('flujos/kanban.html', {'actividadf':actividadf,'actividad':actividad,'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+        return render_to_response('flujos/kanban.html', {'staff':staff, 'actividadf':actividadf,'actividad':actividad,'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/index')
 
@@ -3133,9 +3146,7 @@ def fileAdjunto(request, user_id,proyecto_id, us_id):
 
     
     usuario = request.user
-    accion1 = "Modificar Actividad"
-   
-
+    saludo = saludo_dia()
     hu = User_Story.objects.get(id=us_id)
     proyecto = Proyectos.objects.get(id = proyecto_id)
     lista = archivoAdjunto.objects.filter(hu_id = us_id,actual = True) 
@@ -3185,7 +3196,7 @@ def fileAdjunto(request, user_id,proyecto_id, us_id):
 
     
     
-    return render_to_response('user_history/archivo.html', {"msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
+    return render_to_response('user_history/archivo.html', {'user':usuario, 'saludo':saludo, "msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
 
 def visualizar_archivos(request, user_id, proyecto_id, us_id):
 
@@ -3575,6 +3586,17 @@ def verificar_permiso(usuario, accion):
         if rol_usuario_profile:
             staff = True
         else:
+            staff = False
+    
+    elif accion=="Ver Kanban":
+        permiso = Permisos.objects.filter(nombre="Visualizar Kanban")
+        rol = Roles.objects.filter(permisos=permiso)
+        rol_usuario_profile = Usuarios.objects.filter(roles=rol, id=us.id)
+        
+        if rol_usuario_profile:
+            staff = True
+        else:
             staff = False 
+    
     return staff
         
