@@ -137,4 +137,14 @@
    	</table>
 	{% endif %}
 </form>
+
+<div id="error" align="center">
+	<br> <br>
+	{% if  envio == False %}
+		
+		 <font color="red"><big><big>¡¡¡ Notificación no Enviada !!!</big></big></font>  
+		
+	{% endif %}
+	
+</div>
 {% endblock content %}

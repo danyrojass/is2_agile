@@ -200,6 +200,7 @@ class Proyectos(models.Model):
     user_stories = models.ManyToManyField(User_Story, through='US_Proyectos')
     sprint = models.ManyToManyField(Sprint, through='Sprint_Proyectos')
     flujos = models.ManyToManyField(Flujos, through='Flujos_Proyectos')
+    id_scrum = models.IntegerField(null=True)
     
     def __str__(self):
         return self.nombre_largo

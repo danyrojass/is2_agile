@@ -22,7 +22,10 @@ CrearFlujosForm, BuscarFlujoForm, CambiarEstadoFlujoForm, ReportarUSForm,archivo
 from agileApp.models import Reporte, US_Reportes, Archivo, US_Archivos, Horas,\
     Nota, US_Notas, us_Actividades
 import math
+from email.mime.text import MIMEText
+import smtplib
 from django.http.response import HttpResponse
+from contextlib import contextmanager
  
 def inicio(request): 
     """
@@ -1009,7 +1012,8 @@ def editar_proyectos(request, proyecto_id):
                     desasignar_usuarios(request, sm.id, proyecto_id)
                     user_profile = Usuarios.objects.get(id=user_id)
                     desasignar_usuarios(request, user_profile.id, proyecto_id)
-                    
+                    proyecto.id_scrum = user_profile.id
+                    proyecto.save()
                     up = Usuarios_Proyectos(proyecto=proyecto, usuarios=user_profile)
                     up.save()
                       
@@ -1499,7 +1503,12 @@ def crear_us(request, user_id, proyecto_id):
                         f_p = Flujos_Proyectos(proyecto=proyecto, flujo=flujo)
                         f_p.save()
                 
-                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
+                envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us.nombre+""" creado por """+ usuario1.user.first_name + "" ""+ usuario1.user.last_name)
+                if envio == None:
+                    envio=False
+                    
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'envio':envio}, context_instance=RequestContext(request))
         else:
             form = CrearUSForm(proyecto_id=proyecto_id)
         return render(request, 'user_history/crear.html', {'tipos':tipos, 'staff3':staff3, 'staff2':staff2, 'staff':staff, 'form': form, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
@@ -1695,11 +1704,15 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 usuario_asignado.asignado = True
                 usuario_asignado.save()
                 
+                envio=enviar_correo(para=[usuario_asignado.user.email], texto="""El user storie """+ us.nombre+""" le fue asignado""")
+                if envio == None:
+                    envio=False
+                
                 ussp = Usuarios_Sprint.objects.get(desarrolladores=usuario_asignado, sprint=sp)
                 ussp.user_story = us
                 ussp.save()
                 
-                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
+                return render_to_response('user_history/gracias.html', {'staff':staff, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'envio':envio}, context_instance=RequestContext(request))
         else:
             form = AsignarUSForm()
         return render(request, 'user_history/asignar.html', {'form': form, 'u_h':u_h, 'list_usuarios_asginados':list_usuarios_asginados, 'usuarios':usuarios, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us, 'staff':staff})
@@ -2456,7 +2469,7 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
     staff = verificar_permiso(usuario, accion)
     
     sp = proyecto.sprint.get(id=sp_id)
-    
+    envio = True
     if staff:
         aid = 4
         comprobar(request)
@@ -2486,12 +2499,23 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                     now=datetime.now()
                             
                     sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, sp.duracion)
-                
+                    
+                    usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
+                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint """+sp.nombre +""" Activado""")
+                    if envio == None:
+                        envio=False
+                        
+                if estado == 3:
+                    usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
+                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint """+sp.nombre +""" Terminado""")
+                    if envio == None:
+                        envio=False
+                                
                 if lista_us:
                     for us in lista_us:
                         if estado==2:
                             us.estado = 2
-                            
+                                
                         elif estado==3 and us.estado==2:
                             us.estado = 4
                             us.reestimar = True
@@ -3046,6 +3070,8 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
    
     us = flujo.us.all()
     us1 = flujo.us.get(id=us_id)
+    
+    envio = True
     if staff or staff1:
         aid = 4
         comprobar(request)
@@ -3063,6 +3089,11 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
              
             us_f = us_Flujos.objects.filter(us=us1, flujo = flujo)
             if us_f:
+                usuario1 = Usuarios.objects.get(id=us1.usuario_asignado.id)
+                envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us1.nombre+""" culminado""")
+                if envio == None:
+                    envio=False
+                        
                 us_f.get().delete()
                 us1.id_flujo = 0
                 us1.estado = 3
@@ -3079,6 +3110,16 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
         elif us1.f_estado != 3:
             us1.f_estado = estado + 1     
             us1.save()
+        
+        ultimo=flujo.actividades.all().reverse()[0]
+        usuario1=Usuarios.objects.get(id=user_id)
+                
+        if ultimo.id==us1.f_actividad and us1.f_estado==3: 
+                            
+            envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us1.nombre+""" culminado""")
+            if envio == None:
+                envio=False
+                
         return render_to_response('flujos/kanban.html', {'staff':staff, 'actividadf':actividadf,'actividad':actividad,'us1':us1,'up':up, 'us':us,'flujo':flujo, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/index')
@@ -3240,6 +3281,48 @@ def send_file(request,user_id,proyecto_id,us_id,f_id):
     
     return response
 
+def enviar_correo(de='server.python.agilepro@gmail.com',password='Python1993',para=['alfbarrios2010@gmail.com'],texto="""Salida"""):
+    """
+    Envía el correo electrónico.
+    
+    @param de: emisor del correo
+    @type  de: str
+    @param password: contraseña del emisor de correo
+    @type  password: str
+    @param para: lista de destinatarios
+    @type  para: list str
+    @param texto:texto a enviar
+    @type  texto: str triple commilla 
+    @return: True si se envio el correo
+    """
+    
+    with ignored(Exception): # se Ingnora Si no se envía la notificación
+        
+        mailserver = smtplib.SMTP("smtp.gmail.com",587)
+        
+        mailserver.ehlo()
+        mailserver.starttls()
+        mailserver.ehlo()
+        
+        mailserver.login(de, password)
+        
+        mensaje = MIMEText(texto)
+        mensaje['Subject'] = "User Storie"
+        mensaje['From'] = de
+        mensaje['To'] = ", ".join(para)
+        
+        mailserver.sendmail(de, para, mensaje.as_string())
+        
+        mailserver.close()
+        
+        return True
+       
+@contextmanager
+def ignored(*exceptions):
+    try:
+        yield
+    except exceptions:
+        pass
 
 def saludo_dia():
     """
