@@ -166,6 +166,8 @@ def asignar_usuarios():
             
             if idx == 5:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto2)
+                proyecto2.id_scrum = usuario.id
+                proyecto2.save()
             else:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto2)
             rup.save()
@@ -176,6 +178,8 @@ def asignar_usuarios():
             
             if idx == 0:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto1)
+                proyecto1.id_scrum = usuario.id
+                proyecto1.save()
             else:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
             rup.save()

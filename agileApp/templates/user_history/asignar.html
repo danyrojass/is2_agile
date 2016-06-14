@@ -88,6 +88,15 @@
 				  		<a class="button" onClick="javascript:history.go(-1);"> CANCELAR</a>
 					</div>
 					</form>
+					<div id="error" align="center">
+								<br> <br>
+								{% if  envio == False %}
+		
+		 							<font color="red"><big><big>¡¡¡ Notificación no Enviada !!!</big></big></font>  
+		
+								{% endif %}
+	
+					</div>
 				</div>
 			</div>
 		</div>
