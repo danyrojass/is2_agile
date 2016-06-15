@@ -45,8 +45,12 @@
 							
 							<div id="botonBusqueda">
         							<p align="center">Los cambios han sido guardados.  <img src="/static/img/disco.png" alt="Guardados"/></p>
-        					</div> 							
+        					</div>
+        					{% if staff %}    							
         						<a href="{% url 'agileApp:index_us' user.id proyecto.id %}" class="button" type="submit">VOLVER</a>
+							{% else %}
+        						<a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}" class="button" type="submit">VOLVER</a>
+							{% endif %}
 						</div>
 					</div>
 				</div>

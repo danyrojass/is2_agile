@@ -65,6 +65,15 @@
 								</tr>
 								
 								<tr>
+									<td width="15%"><b>Usuario Asignado</b></td>
+									{% if us.usuario_asignado %}
+								    	<td width="43%">{{us.usuario_asignado}}</td>
+								    {% else %}
+								    	<td width="43%">No asignado.</td>
+								    {% endif %}
+								</tr>
+								
+								<tr>
 									<td width="15%"><b>Usuario</b></td>
 									<td width="43%">
 										<select id="id_user" name="id_user" class="comboGrande">

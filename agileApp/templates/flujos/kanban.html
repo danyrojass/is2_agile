@@ -44,11 +44,15 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 1 and k.f_actividad == u.id %}
 	  			<div align="center">
-	  			{% if k.f_actividad != actividad.id %}
-	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
-	  			{% endif %}
-	  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
-              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}" type="submit"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			{% if not k.estado == 1 %}
+	  				{% if not k.f_actividad == actividad.id %}
+			  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+			  			{% endif %}
+			  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+		              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}" type="submit"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+              	{% else %}
+			  		<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+              	{% endif %}
               	</div>
               	</br>
               	&nbsp;
@@ -75,10 +79,13 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 2 and k.f_actividad == u.id %}
 	  			<div align="center">
-	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
-	  			
-	  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
-              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+	  			{% if not k.estado == 1 %}
+		  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+		  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+	              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
+	            {% else %}
+			  		<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+              	{% endif %}  	
               	</div>
               	</br>
               	&nbsp;
@@ -103,11 +110,13 @@
 	  			{% for k in us %}
 	  			{% if k.f_estado == 3 and k.f_actividad == u.id %}
 	  			<div align="center">
-	  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
+				<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 	  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
               	
 	  			{% if k.f_actividad == actividadf.id %}
-              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/tilde.png" width="20" height="20" border="0" title="Modificar"></a>
+	  				{% if staff %}
+              			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/tilde.png" width="20" height="20" border="0" title="Modificar"></a>
+              		{% endif %}
               	{%else%}
               	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
               	{% endif %}

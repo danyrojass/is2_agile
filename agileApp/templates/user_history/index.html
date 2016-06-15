@@ -121,6 +121,8 @@
 												<td class="aCentro" width="5%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="5%"><div align="center">{{us.id}}</div></td>
 												{% if not us.prioridad_SM %}
+													<td width="5%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Agregar Urgencia"></a></div></td>
+												{% elif us.reestimar %}
 													<td width="5%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Reestimar"></a></div></td>
 												{% else %}
 													<td width="5%">&nbsp;</td>
@@ -161,6 +163,8 @@
 												<td class="aCentro" width="5%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="5%"><div align="center">{{us.id}}</div></td>
 												{% if not us.prioridad_SM %}
+													<td width="5%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Agregar Urgencia"></a></div></td>
+												{% elif us.reestimar %}
 													<td width="5%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Reestimar"></a></div></td>
 												{% else %}
 													<td width="5%">&nbsp;</td>

@@ -96,6 +96,16 @@ class Command(BaseCommand):
         asignar_flujo_proyecto(f1, proyecto1)
         asignar_flujo_proyecto(f2, proyecto1)
         
+        act1 = crear_actividades("Actividad Nro.1", "Prueba del 15/06")
+        act2 = crear_actividades("Actividad Nro.2", "Prueba del 15/06 (2)")
+        act3 = crear_actividades("Primera Actividad", "Prueba del 15/06")
+        act4 = crear_actividades("Segunda Actividad", "Prueba del 15/06")
+        
+        asignar_actividad_flujo(act1, f1)
+        asignar_actividad_flujo(act2, f1)
+        asignar_actividad_flujo(act3, f2)
+        asignar_actividad_flujo(act4, f2)
+
 def crear_roles(nombre, tipo, observacion):
     rol = Roles()
     rol.nombre = nombre
@@ -166,6 +176,8 @@ def asignar_usuarios():
             
             if idx == 5:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto2)
+                proyecto2.id_scrum = usuario.id
+                proyecto2.save()
             else:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto2)
             rup.save()
@@ -176,6 +188,8 @@ def asignar_usuarios():
             
             if idx == 0:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol1, proyecto=proyecto1)
+                proyecto1.id_scrum = usuario.id
+                proyecto1.save()
             else:
                 rup = Roles_Usuarios_Proyectos(usuarios=usuario, roles=rol2, proyecto=proyecto1)
             rup.save()

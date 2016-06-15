@@ -1504,7 +1504,7 @@ def crear_us(request, user_id, proyecto_id):
                         f_p.save()
                 
                 usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
-                envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us.nombre+""" creado por """+ usuario1.user.first_name + "" ""+ usuario1.user.last_name)
+                envio=enviar_correo(para=[usuario1.user.email], texto="""User Story: """+ us.nombre+""" creado por """+ usuario1.user.first_name + "" ""+ usuario1.user.last_name + """.""")
                 if envio == None:
                     envio=False
                     
@@ -1542,7 +1542,6 @@ def modificar_us(request, us_id, user_id, proyecto_id):
     accion7 = "Modificar US - Descripción"
     accion8 = "Definir Prioridad SM"
     accion9 = "Modificar US - TEst"
-    accion10 = "Modificar US - Desarrollador"
 
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
@@ -1679,6 +1678,11 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 if not us.usuario_asignado:
                     us.usuario_asignado = usuario_asignado
                     us.save()
+                    if sp.estado==1:
+                        hora = Horas.objects.all().filter(id_sprint=sp.id).filter(id_usuario=usuario_asignado.id)
+                        hora = hora.get().cantidad_diaria
+                        sp.saldo = sp.saldo + (hora*sp.duracion)
+                        sp.save()
                 else:
                     usuario_asignado_anterior = us.usuario_asignado
                     usuario_asignado_anterior.asignado = False
@@ -1703,8 +1707,7 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                 """
                 usuario_asignado.asignado = True
                 usuario_asignado.save()
-                
-                envio=enviar_correo(para=[usuario_asignado.user.email], texto="""El user storie """+ us.nombre+""" le fue asignado""")
+                envio=enviar_correo(para=[usuario_asignado.user.email], texto="""El User Story: """+ us.nombre+""" le fue asignado.""")
                 if envio == None:
                     envio=False
                 
@@ -1736,9 +1739,10 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
     user = request.user
     accion = "Desarrollar US"
     
+    staff1 = verificar_permiso(user, accion)
+    accion = "Asignar US"
     staff = verificar_permiso(user, accion)
-    
-    if staff:
+    if staff1:
         aid = 5
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1752,7 +1756,8 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         proyecto = Proyectos.objects.get(id=proyecto_id)
         us = User_Story.objects.get(id=us_id)
         sprint = Sprint.objects.get(id=us.id_sprint)
-    
+        horas_disponibles = us.usuario_asignado.horas_por_dia.cantidad_diaria * sprint.duracion
+        xhoras_disponibles = horas_disponibles - us.horas_consumidas_reales
         if request.method == 'POST':
             form = ReportarUSForm(request.POST)
                 
@@ -1773,9 +1778,11 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
                 us.horas_consumidas_reales = us.horas_consumidas_reales + horas_consumidas
                 us.save()
                 
-                if us.horas_consumidas_reales<sprint.duracion*8:
+                if us.horas_consumidas_reales<horas_disponibles:
                     
-                    return render_to_response('user_history/gracias.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+                    sprint.saldo = sprint.saldo - us.horas_consumidas_reales
+                    sprint.save()
+                    return render_to_response('user_history/gracias.html', {'staff':staff, 'xhoras_disponibles':xhoras_disponibles,'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
                 
                 else:
                     us_sp = US_Sprint.objects.get(user_story=us, sprint=sprint)
@@ -1793,7 +1800,7 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
                     return render_to_response('user_history/reestimar.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
         else:
             form = ReportarUSForm()
-        return render_to_response('user_history/reportar_avance.html', {'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('user_history/reportar_avance.html', {'xhoras_disponibles':xhoras_disponibles, 'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
 
@@ -1806,7 +1813,9 @@ def ver_reporte_us(request, user_id, proyecto_id, us_id):
     staff = verificar_permiso(usuario, accion)
     
     us = proyecto.user_stories.get(id=us_id)
-        
+    sp = proyecto.sprint.all().filter(id=us.id_sprint)
+    if sp:
+        sp = proyecto.sprint.all().get(id=us.id_sprint) 
     if staff:
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -1815,9 +1824,11 @@ def ver_reporte_us(request, user_id, proyecto_id, us_id):
         request.session['last_activity'] = str(now)
         
         saludo = saludo_dia()
+        if sp:
+            horas_disponibles = us.usuario_asignado.horas_por_dia.cantidad_diaria * sp.duracion
         reportes = us.reportes.all()
         
-        return render(request, 'user_history/ver_reportes.html', {'reportes':reportes, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/ver_reportes.html', {'horas_disponibles':horas_disponibles, 'reportes':reportes, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     
@@ -1859,7 +1870,6 @@ def index_us(request, user_id, proyecto_id):
                 lsprints.append(sprint.get())
         
         uh_sp = map(None, uh, lsprints)
-        print uh_sp
     
         if request.method == 'POST':
             results = proyecto.user_stories.all().exclude(id=usuario.id)
@@ -2431,7 +2441,14 @@ def asignar_us_sp(request, sp_id, lista_user_stories, lista_usuarios, lista_hora
         
                 us.id_flujo = flujo.id
                 us.save()
-            
+                
+                f_ac = flujo.actividades.all()
+                actividad = f_ac.order_by("id")[:1].get()
+                if f_ac:
+                    us.f_actividad = actividad.id
+                    us.f_estado = 1
+                    us.save()
+                
     if lista_usuarios and lista_horas_por_dia:
         us_hp = map(None, lista_usuarios, lista_horas_por_dia)
         for user_id, h in us_hp:
@@ -2501,13 +2518,13 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                     sp.fechaFin = date_by_adding_business_days(sp.fechaInicio, sp.duracion)
                     
                     usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
-                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint """+sp.nombre +""" Activado""")
+                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint: """+sp.nombre +""" activado.""")
                     if envio == None:
                         envio=False
                         
                 if estado == 3:
                     usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
-                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint """+sp.nombre +""" Terminado""")
+                    envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint: """+sp.nombre +""" terminado.""")
                     if envio == None:
                         envio=False
                                 
@@ -3014,12 +3031,15 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     flujo = proyecto.flujos.get(id=flujo_id)
+    up = flujo.actividades.all()
     
     accion = "Kanban"
     accion1 = "Ver Kanban"
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
     
+    actividad = up.order_by("id")[:1].get()
+    actividadf = up.order_by("-id")[0]
     
     if staff or staff1:
         comprobar(request)
@@ -3030,15 +3050,13 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
             
         saludo = saludo_dia()
             
-        flujo = get_object_or_404(Flujos, id=flujo_id)
-        up = flujo.actividades.all()
         if staff:
             us = flujo.us.all()
         else:
             user = Usuarios.objects.get(id=usuario.id)
             us = flujo.us.filter(usuario_asignado=user)
 
-        return render(request, 'flujos/kanban.html', {'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        return render(request, 'flujos/kanban.html', {'actividadf':actividadf,'actividad':actividad,'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
     
@@ -3068,11 +3086,13 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
     actividad = up.order_by("id")[:1].get()
     actividadf = up.order_by("-id")[0]
    
-    us = flujo.us.all()
-    us1 = flujo.us.get(id=us_id)
-    
     envio = True
     if staff or staff1:
+        us = flujo.us.filter(id=us_id)
+        if staff:
+            us = flujo.us.all()
+        us1 = flujo.us.get(id=us_id)
+        
         aid = 4
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -3090,7 +3110,7 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
             us_f = us_Flujos.objects.filter(us=us1, flujo = flujo)
             if us_f:
                 usuario1 = Usuarios.objects.get(id=us1.usuario_asignado.id)
-                envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us1.nombre+""" culminado""")
+                envio=enviar_correo(para=[usuario1.user.email], texto="""User Story: """+ us1.nombre+""" culminado.""")
                 if envio == None:
                     envio=False
                         
@@ -3111,12 +3131,12 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
             us1.f_estado = estado + 1     
             us1.save()
         
-        ultimo=flujo.actividades.all().reverse()[0]
+        ultimo=up.order_by("-id")[0]
         usuario1=Usuarios.objects.get(id=user_id)
                 
         if ultimo.id==us1.f_actividad and us1.f_estado==3: 
                             
-            envio=enviar_correo(para=[usuario1.user.email], texto="""User storie """+ us1.nombre+""" culminado""")
+            envio=enviar_correo(para=[usuario1.user.email], texto="""User Story: """+ us1.nombre+""" culminado. Favor, revisar.""")
             if envio == None:
                 envio=False
                 
@@ -3150,9 +3170,12 @@ def cambiar_estado_kanban1(request, user_id, proyecto_id, flujo_id, us_id):
     actividad = up.order_by("id")[:1].get()
     actividadf = up.order_by("-id")[0]
     
-    us = flujo.us.all()
-    us1 = flujo.us.get(id=us_id)
     if staff or staff1:
+        us = flujo.us.filter(id=us_id)
+        if staff:
+            us = flujo.us.all()
+        us1 = flujo.us.get(id=us_id)
+        
         aid = 4
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -3245,7 +3268,7 @@ def visualizar_archivos(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
     us = proyecto.user_stories.get(id=us_id)
-    accion = "Visualizar Flujo"
+    accion = "Ver Kanban"
     
     staff = verificar_permiso(usuario, accion)
     

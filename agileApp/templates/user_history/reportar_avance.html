@@ -14,13 +14,12 @@
 			<ul id='nav'>
 		  		<li><a href='/'>Inicio</a></li>
 		  		<li><a href="{% url 'agileApp:index_proyecto_usuario' user.id proyecto.id %}">Proyecto</a>
-					<ul>
+	{% if staff %}	<ul>
                     	<li><a href="{% url 'agileApp:index_us' user.id proyecto.id %}">Gestión de US</a></li>
                     	<li><a href="{% url 'agileApp:index_sprint' user.id proyecto.id %}">Sprints</a></li>
                     	<li><a href="{% url 'agileApp:index_flujo' user.id proyecto.id %}">Flujos</a></li>
                		</ul>
-				</li>
-				
+	{% endif %}	</li>
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
@@ -50,8 +49,13 @@
 								</tr>
 								
 								<tr>
-									<td><b>Duración Estimada en Horas</b></td>
-									<td width="36%">{{us.tiempo_estimado}}</td>								
+									<td><b>Horas Disponibles</b></td>
+									<td width="36%">{{xhoras_disponibles}} hs.</td>								
+								</tr>
+								
+								<tr>
+									<td><b>Horas Consumidas</b></td>
+									<td width="36%">{{us.horas_consumidas_reales}} hs.</td>								
 								</tr>
 														
 								<tr>
