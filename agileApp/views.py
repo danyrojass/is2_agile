@@ -1758,6 +1758,8 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         sprint = Sprint.objects.get(id=us.id_sprint)
         horas_disponibles = us.usuario_asignado.horas_por_dia.cantidad_diaria * sprint.duracion
         xhoras_disponibles = horas_disponibles - us.horas_consumidas_reales
+        
+        envio = True
         if request.method == 'POST':
             form = ReportarUSForm(request.POST)
                 
@@ -1780,7 +1782,7 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
                 
                 if us.horas_consumidas_reales<horas_disponibles:
                     
-                    sprint.saldo = sprint.saldo - us.horas_consumidas_reales
+                    sprint.saldo = sprint.saldo - horas_consumidas
                     sprint.save()
                     return render_to_response('user_history/gracias.html', {'staff':staff, 'xhoras_disponibles':xhoras_disponibles,'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
                 
@@ -1796,11 +1798,16 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
                     usuario_asignado = us.usuario_asignado
                     usuario_asignado.asignado = False
                     usuario_asignado.save()
+                    
+                    usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
+                    envio=enviar_correo(para=[usuario1.user.email], texto="""El User Story: """+us.nombre +""" sobrepasa las horas consumidas permitidas. Reestimar!.""")
+                    if envio == None:
+                        envio=False
 
-                    return render_to_response('user_history/reestimar.html', {'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
+                    return render_to_response('user_history/reestimar.html', {'envio':envio, 'reporte':reporte, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
         else:
             form = ReportarUSForm()
-        return render_to_response('user_history/reportar_avance.html', {'xhoras_disponibles':xhoras_disponibles, 'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('user_history/reportar_avance.html', {'xhoras_disponibles':xhoras_disponibles, 'staff':staff, 'us':us, 'usuario':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
 
@@ -1814,6 +1821,7 @@ def ver_reporte_us(request, user_id, proyecto_id, us_id):
     
     us = proyecto.user_stories.get(id=us_id)
     sp = proyecto.sprint.all().filter(id=us.id_sprint)
+    horas_disponibles = 0
     if sp:
         sp = proyecto.sprint.all().get(id=us.id_sprint) 
     if staff:
@@ -1828,7 +1836,7 @@ def ver_reporte_us(request, user_id, proyecto_id, us_id):
             horas_disponibles = us.usuario_asignado.horas_por_dia.cantidad_diaria * sp.duracion
         reportes = us.reportes.all()
         
-        return render(request, 'user_history/ver_reportes.html', {'horas_disponibles':horas_disponibles, 'reportes':reportes, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/ver_reportes.html', {'staff':staff, 'horas_disponibles':horas_disponibles, 'reportes':reportes, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     
@@ -1915,7 +1923,7 @@ def ver_us(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Creación de US"
+    accion = "Crear US"
     accion1 = "Visualizar US"
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
@@ -1950,7 +1958,7 @@ def verk(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Creación de US"
+    accion = "Crear US"
     accion1 = "Visualizar US"
     staff = verificar_permiso(usuario, accion)
     staff1 = verificar_permiso(usuario, accion1)
@@ -2029,11 +2037,13 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
 """ 
 def notas_us(request, user_id, proyecto_id, us_id): 
     user = request.user
-    accion = "Notas US"
     
+    accion = "Crear US"
     staff = verificar_permiso(user, accion)
+    accion = "Notas US"
+    staff1 = verificar_permiso(user, accion)
     
-    if staff:
+    if staff or staff1:
         aid = 6
         comprobar(request)
         if(request.user.is_anonymous()):
@@ -2067,7 +2077,7 @@ def notas_us(request, user_id, proyecto_id, us_id):
                 return render_to_response('user_history/gracias.html', {'nota':nota, 'us':us, 'aid':aid, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'staff':staff}, context_instance=RequestContext(request))
         else:
             form = NotasUSForm()
-        return render_to_response('user_history/agregar_notas.html', {'staff':staff, 'us':us, 'user':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
+        return render_to_response('user_history/agregar_notas.html', {'staff':staff, 'us':us, 'usuario':user, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
     else:
         return HttpResponseRedirect('/index')
     
@@ -2075,13 +2085,15 @@ def ver_notas_us(request, user_id, proyecto_id, us_id):
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
-    accion = "Visualizar US"
-   
+    accion = "Crear US"
     staff = verificar_permiso(usuario, accion)
+    
+    accion = "Visualizar US"
+    staff1 = verificar_permiso(usuario, accion)
     
     us = proyecto.user_stories.get(id=us_id)
         
-    if staff:
+    if staff or staff1:
         comprobar(request)
         if(request.user.is_anonymous()):
             return HttpResponseRedirect('/ingresar')
@@ -2091,7 +2103,7 @@ def ver_notas_us(request, user_id, proyecto_id, us_id):
         saludo = saludo_dia()
         notas = us.notas.all()
         
-        return render(request, 'user_history/ver_notas.html', {'notas':notas, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
+        return render(request, 'user_history/ver_notas.html', {'staff':staff, 'notas':notas, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto, 'us':us})
     else:
         return HttpResponseRedirect('/index')
     

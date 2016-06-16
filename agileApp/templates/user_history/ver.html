@@ -107,6 +107,7 @@
 							<div id="botonBusqueda">
 						  		<a href="{% url 'agileApp:ver_reporte_us' user.id proyecto.id us.id%}" class="button" type="submit">VER REPORTES</a>
 						  		<a href="{% url 'agileApp:ver_notas_us' user.id proyecto.id us.id%}" class="button" type="submit">VER NOTAS</a>
+						  		<a href="{% url 'agileApp:fileAdjunto' user.id proyecto.id us.id %}" class="button" type="submit">VER ARCHIVOS</a>
         							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
         					</div>
 						</div>

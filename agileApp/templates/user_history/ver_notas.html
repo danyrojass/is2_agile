@@ -83,7 +83,9 @@
 							</div>
 							
 							<div id="botonBusqueda">
+									{% if us.estado <= 2%}
 									<td style="text-align:left"><a onClick="nueva_nota()" onMouseOver="style.cursor=cursor" class="button" >AGREGAR NOTA</a></td>
+        							{% endif %}
         							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
         					</div>
 						</div>

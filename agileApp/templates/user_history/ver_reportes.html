@@ -111,7 +111,9 @@
 							</div>
 							
 							<div id="botonBusqueda">
-									<td style="text-align:left"><a onClick="nuevo_reporte()" onMouseOver="style.cursor=cursor" class="button" >AGREGAR REPORTE</a></td>
+									{% if us.estado <= 2 %}
+										<td style="text-align:left"><a onClick="nuevo_reporte()" onMouseOver="style.cursor=cursor" class="button" >AGREGAR REPORTE</a></td>
+        							{% endif %}
         							<a class="button" onClick="javascript:history.go(-1);"> ATRÁS</a>
         					</div>
 						</div>

@@ -311,13 +311,18 @@
 												{% elif us.estado == 4 %}											
 													<td width="10%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												{% if us.usuario_asignado.id == user.id%}
-													{% if not us.id_sprint == None %}
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
+												{% if us.usuario_asignado.id == user.id and us.estado == 2 %}
+													{% if us.estado == 2%}
+														{% if not us.id_sprint == None %}
+															<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
+														{% else %}
+															<td width="5%">&nbsp;</td>
+														{% endif %}
+														<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
 													{% else %}
 														<td width="5%">&nbsp;</td>
+														<td width="5%">&nbsp;</td>
 													{% endif %}
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
 													{% if us.id_flujo %}
 														<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id us.id_flujo %}"><img src="/static/img/kanban.jpg" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
 													{% else %}
@@ -349,13 +354,18 @@
 												{% elif us.estado == 4 %}											
 													<td width="10%"><div align="center">Cancelado</div></td>
 												{% endif %}
-												{% if us.usuario_asignado.id == user.id%}
-													{% if not us.id_sprint == None %}
-														<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
+												{% if us.usuario_asignado.id == user.id %}
+													{% if us.estado == 2%}
+														{% if not us.id_sprint == None %}
+															<td width="5%"><div align="center"><a href="{% url 'agileApp:reportar_avance_us' user.id proyecto.id us.id %}"><img src="/static/img/custom-reports.png" width="20" height="20" border="0" title="Reportar Avance"></a></div></td>
+														{% else %}
+															<td width="5%">&nbsp;</td>
+														{% endif %}
+														<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
 													{% else %}
 														<td width="5%">&nbsp;</td>
+														<td width="5%">&nbsp;</td>
 													{% endif %}
-													<td width="5%"><div align="center"><a href="{% url 'agileApp:notas_us' user.id proyecto.id us.id %}"><img src="/static/img/notes.png" width="16" height="16" border="0" title="Notas"></a></div></td>
 													{% if us.id_flujo %}
 														<td width="5%"><div align="center"><a href="{% url 'agileApp:visualizar_kanban' user.id proyecto.id us.id_flujo %}"><img src="/static/img/kanban.jpg" width="16" height="16" border="0" title="Ver Kanban"></a></div></td>
 													{% else %}
