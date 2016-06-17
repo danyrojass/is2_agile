@@ -108,6 +108,7 @@ class User_Story(models.Model):
     notas = models.ManyToManyField(Nota, through="US_Notas")
     archivos = models.ManyToManyField(Archivo, through="US_Archivos")
     horas_consumidas_reales = models.IntegerField(default=0)
+    horas_disponibles = models.IntegerField(default=0)
     
     def __str__(self):
         return self.nombre

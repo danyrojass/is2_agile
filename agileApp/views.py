@@ -1683,6 +1683,8 @@ def asignar_us(request, user_id, proyecto_id, us_id):
                         hora = hora.get().cantidad_diaria
                         sp.saldo = sp.saldo + (hora*sp.duracion)
                         sp.save()
+                        us.horas_disponibles = hora
+                        us.save()
                 else:
                     usuario_asignado_anterior = us.usuario_asignado
                     usuario_asignado_anterior.asignado = False
@@ -1735,17 +1737,7 @@ def date_by_adding_business_days(from_date, add_days):
     return current_date
 
 def reportar_avance_us(request, user_id, proyecto_id, us_id):
-    """
-    Método que permite reportar los avances hechos en los user stories.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/reportar_avance.html
-    """
-    
+   
     user = request.user
     accion = "Desarrollar US"
     
@@ -1766,7 +1758,7 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         proyecto = Proyectos.objects.get(id=proyecto_id)
         us = User_Story.objects.get(id=us_id)
         sprint = Sprint.objects.get(id=us.id_sprint)
-        horas_disponibles = us.usuario_asignado.horas_por_dia.cantidad_diaria * sprint.duracion
+        horas_disponibles = us.horas_disponibles * sprint.duracion
         xhoras_disponibles = horas_disponibles - us.horas_consumidas_reales
         
         envio = True
@@ -1822,19 +1814,6 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 
 def ver_reporte_us(request, user_id, proyecto_id, us_id):
-    
-    """
-    Método que permite ver los reportes de los avances hechos en los user stories.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/ver_reportes.html
-    
-    """
-    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -2059,19 +2038,6 @@ def cambiar_estado_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
 """ 
 def notas_us(request, user_id, proyecto_id, us_id): 
-    """
-    Método que nos permite agregar notas a los user stories.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/agregar_notas.html
-    
-    """
-    
-    
     user = request.user
     
     accion = "Crear US"
@@ -2118,18 +2084,6 @@ def notas_us(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
     
 def ver_notas_us(request, user_id, proyecto_id, us_id):
-    """
-    Método que nos permite ver las notas agregadas a los user stories.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/ver_notas.html
-    
-    """
-    
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
 
@@ -3267,18 +3221,7 @@ def cambiar_estado_kanban1(request, user_id, proyecto_id, flujo_id, us_id):
 
 
 def fileAdjunto(request, user_id,proyecto_id, us_id):
-    """
-    Método que nos permite adjuntar archivos.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/archivo.html
-    
-    """
-    
+
     
     usuario = request.user
     saludo = saludo_dia()
@@ -3334,17 +3277,7 @@ def fileAdjunto(request, user_id,proyecto_id, us_id):
     return render_to_response('user_history/archivo.html', {'user':usuario, 'saludo':saludo, "msg":msg,"lista":lista,'hu_id':us_id,'hu':hu,"proyecto_id":proyecto_id, 'proyecto_nombre':proyecto.nombre_largo, "proyecto":proyecto}, context_instance = RequestContext(request))
 
 def visualizar_archivos(request, user_id, proyecto_id, us_id):
-    """
-    Método que nos permite visualizar los archivos adjuntados.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: render al template user_history/archivo_ver.html.
-    
-    """
+
 
     usuario = request.user
     proyecto = Proyectos.objects.get(id=proyecto_id)
@@ -3373,18 +3306,8 @@ def visualizar_archivos(request, user_id, proyecto_id, us_id):
         return HttpResponseRedirect('/index')
     
 def send_file(request,user_id,proyecto_id,us_id,f_id):
-    """
-    Método que nos permite enviar archivos.
-    
-    @param request: Http request
-    @type  request:HtpptRequest 
-    @param user_id: Id de un usuario registrado en el sistema.
-    @param proyecto_id: Id de un proyecto registrado en el sistema.
-    @param us_id: Id de un user story registrado en el sistema.
-    @return: True si se envió el archivo.
-    
-    """
-    
+
+
     archivo = archivoAdjunto.objects.get(id = f_id)
     data = archivoAdjunto.get_data(archivo)
     file_content = data
