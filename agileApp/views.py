@@ -1173,10 +1173,21 @@ def index_ususario_proyecto(request, user_id, proyecto_id):
     user = request.user
     accion = "Definir Proyectos/Servicios"
     staff = verificar_permiso(user, accion)  
-        
+    
     saludo = saludo_dia()
     usuario = User.objects.get(id=user_id)
     proyecto = Proyectos.objects.get(id=proyecto_id)
+
+    if staff:
+        sprint = proyecto.sprint.all().filter(estado=2)
+        if sprint:
+            sprint = sprint.get()
+            if sprint.fechaFin == datetime.now():
+                usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
+                envio=enviar_correo(para=[usuario1.user.email], texto="""El Sprint: """+sprint.nombre +""" ha expirado.""")
+                if envio == None:
+                    envio=False
+                return render_to_response('inicio_usuario.html', {'envio':envio, 'staff':staff, 'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
 
     return render_to_response('inicio_usuario.html', {'staff':staff, 'usuario':usuario, 'proyecto':proyecto, 'saludo':saludo}, context_instance=RequestContext(request)) 
 
@@ -1228,7 +1239,7 @@ def index_proyecto_usuario(request, user_id, proyecto_id):
     
     pr = map(None, lista_usuarios, lista_roles)
     
-    if staff:    
+    if staff:
         if request.method == 'POST':
             results = proyecto.usuarios.all().exclude(id=usuario.id)
             form = BuscarUserForm(request.POST)
@@ -2541,6 +2552,9 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                     envio=enviar_correo(para=[usuario1.user.email], texto="""Sprint: """+sp.nombre +""" terminado.""")
                     if envio == None:
                         envio=False
+                        
+                    sp.revisar=False
+                    sp.save()
                                 
                 if lista_us:
                     for us in lista_us:
@@ -3070,7 +3084,7 @@ def visualizar_kanban(request, user_id, proyecto_id, flujo_id):
             user = Usuarios.objects.get(id=usuario.id)
             us = flujo.us.filter(usuario_asignado=user)
 
-        return render(request, 'flujos/kanban.html', {'actividadf':actividadf,'actividad':actividad,'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
+        return render(request, 'flujos/kanban.html', {'staff':staff, 'actividadf':actividadf,'actividad':actividad,'flujo':flujo,'us':us,  'up':up, 'usuario':usuario, 'saludo':saludo, 'proyecto':proyecto})
     else:
         return HttpResponseRedirect('/index')
     
@@ -3128,8 +3142,9 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
                 if envio == None:
                     envio=False
                         
-                us_f.get().delete()
-                us1.id_flujo = 0
+                #us_f.get().delete()
+                #us1.id_flujo = 0
+                us.f_estado = 3
                 us1.estado = 3
                 us1.save()
         

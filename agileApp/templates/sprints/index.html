@@ -94,8 +94,9 @@
 								<tr class="cabeceraTabla">
 									<td width="8%">ÍTEM</td>
 									<td width="7%">ID</td>
+									<td width="10%">REVISAR</td>
 									<td width="25%">NOMBRE</td>
-									<td width="35%">ESTADO</td>
+									<td width="25%">ESTADO</td>
 									<td width="5%">Assign</td>
 									<td width="5%">Read</td>
 									<td width="5%">Update</td>
@@ -111,15 +112,20 @@
 											<tr class="itemImparTabla">
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{s.id}}</div></td>
+												{% if s.revisar %}
+													<td width="10%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Revisar. Fecha de expiración cercana."></a></div></td>
+												{% else %}
+													<td width="10%">&nbsp;</td>
+												{% endif %}
 												<td width="25%"><div align="center">{{s.nombre}}</div></td>
 												{% if s.estado == 1 %}
-													<td width="35%"><div align="center">Planificado</div></td>
+													<td width="25%"><div align="center">Planificado</div></td>
 												{% elif s.estado == 2 %}											
-													<td width="35%"><div align="center">En Ejecución</div></td>
+													<td width="25%"><div align="center">En Ejecución</div></td>
 												{% elif s.estado == 3 %}											
-													<td width="35%"><div align="center">Finalizado</div></td>
+													<td width="25%"><div align="center">Finalizado</div></td>
 												{% elif s.estado == 4 %}											
-													<td width="35%"><div align="center">Cancelado</div></td>
+													<td width="25%"><div align="center">Cancelado</div></td>
 												{% endif %}
 												{% if s.estado == 1 or s.estado == 4 or s.estado == 2 %}
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>
@@ -143,15 +149,20 @@
 												
 												<td class="aCentro" width="8%"><div align="center">{{forloop.counter}}</div></td>
 												<td width="7%"><div align="center">{{s.id}}</div></td>
+												{% if s.revisar %}
+													<td width="10%"><div align="center"><a><img src="/static/img/atencion.png" width="16" height="16" border="0" title="Revisar. Fecha de expiración cercana."></a></div></td>
+												{% else %}
+													<td width="10%">&nbsp;</td>
+												{% endif %}
 												<td width="25%"><div align="center">{{s.nombre}}</div></td>
 												{% if s.estado == 1 %}
-													<td width="35%"><div align="center">Planificado</div></td>
+													<td width="25%"><div align="center">Planificado</div></td>
 												{% elif s.estado == 2 %}											
-													<td width="35%"><div align="center">En Ejecución</div></td>
+													<td width="25%"><div align="center">En Ejecución</div></td>
 												{% elif s.estado == 3 %}											
-													<td width="35%"><div align="center">Finalizado</div></td>
+													<td width="25%"><div align="center">Finalizado</div></td>
 												{% elif s.estado == 4 %}											
-													<td width="35%"><div align="center">Cancelado</div></td>
+													<td width="25%"><div align="center">Cancelado</div></td>
 												{% endif %}
 												{% if s.estado == 1 or s.estado == 4 or s.estado == 2 %}
 													<td width="5%"><div align="center"><a href="{% url 'agileApp:asignar_us_sprint' user.id proyecto.id s.id %}"><img src="/static/img/list.png" width="16" height="16" border="0" title="Asignar US"></a></div></td>

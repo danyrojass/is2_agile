@@ -48,7 +48,13 @@
 	  				{% if k.estado == 2 and not k.f_actividad == actividad.id %}
 			  			<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 			  		{% endif %}
-			  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+			  		
+			  		{% if k.estado == 2 %}
+		  				<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+		  			{% else %}
+		  				<a>{{k.nombre}}</a>
+	              	{% endif %}
+	              	
 		            {% if k.estado == 2  %}
 		              	<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}" type="submit"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
 		            {% endif %}
@@ -85,7 +91,13 @@
 	  				{% if k.estado == 2 %}
 		  				<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 		  			{% endif %}
-		  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+		  			
+		  			{% if k.estado == 2 %}
+		  				<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
+		  			{% else %}
+		  				<a>{{k.nombre}}</a>
+	              	{% endif %}
+	              	
 	              	{% if k.estado == 2 %}
 	              		<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha1.png" width="20" height="20" border="0" title="Modificar"></a>
 	            	{% endif %}
@@ -119,11 +131,16 @@
 	  			{% if k.estado == 2 %}
 					<a href="{% url 'agileApp:cambiar_estado_kanban1' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/flecha2.png" width="20" height="20" border="0" title="Modificar"></a>
 	  			{% endif %}
+	  			
+	  			{% if k.estado == 2 %}
 	  			<a href="{% url 'agileApp:verk' user.id proyecto.id k.id %}" type="submit"> {{k.nombre}}</a>
-              	
+	  			{% else %}
+	  			<a>{{k.nombre}}</a>
+              	{% endif %}
+	  			
 	  			{% if k.f_actividad == actividadf.id %}
 	  				{% if staff and k.estado == 2 %}
-              			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/tilde.png" width="20" height="20" border="0" title="Modificar"></a>
+              			<a href="{% url 'agileApp:cambiar_estado_kanban' user.id proyecto.id flujo.id k.id %}"><img src="/static/img/tilde.png" width="20" height="20" border="0" title="Validar"></a>
               		{% endif %}
               	{%else%}
 	              	{% if k.estado == 2%}

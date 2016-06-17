@@ -164,6 +164,7 @@ class Sprint(models.Model):
     fechaFin=models.DateField(null = timezone.now)
     activar=models.BooleanField(default=False)
     saldo=models.IntegerField(default=0)
+    revisar=models.BooleanField(default=False)
 
 class Flujos(models.Model):
     nombre = models.CharField(max_length = 30, null = True)

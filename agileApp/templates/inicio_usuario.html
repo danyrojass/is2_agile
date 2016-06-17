@@ -21,5 +21,13 @@
 		  		<li><a href='/cerrar'>Cerrar</a></li>
     		</ul>
 		</nav>
+		<div id="error" align="center">
+	<br> <br>
+	{% if  envio == False %}
 		
+		 <font color="red"><big><big>¡¡¡ Notificación no Enviada !!!</big></big></font>  
+		
+	{% endif %}
+	
+</div>
 {% endblock content %}
