@@ -12,7 +12,7 @@ echo "2. Local."
 read opcion
 
 echo "Por favor, ingrese el nombre del Tag."
-echo "V4: Tag Nro. 4."
+echo "V5: Tag Nro. 5."
 
 read nombreTag
 	sudo service postgresql restart 

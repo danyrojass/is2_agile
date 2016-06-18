@@ -10,7 +10,18 @@ from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from datetime import timedelta, date, datetime
 from agileApp.models import Proyectos, Reporte,Nota,Flujos,Actividades,Actividades_Flujos, US_Proyectos ,us_Flujos ,US_Sprint ,User_Story ,Usuarios, Sprint ,Usuarios_Proyectos, Roles,Roles_Usuarios_Proyectos, Permisos, Permisos_Roles,\
-    US_Notas, US_Reportes
+    US_Notas, US_Reportes, archivoAdjunto
+
+class ArchivoAdjunto(TestCase):
+    def test_Adjuntar(self):
+        
+        """Prueba para adjuntar un archivo"""
+        adjunto = archivoAdjunto()
+        archivo = 'test.py'
+        hu = 1
+        filename = 'test.py'
+        
+        self.assertTrue(archivoAdjunto.objects.all() > 0, "No se ha guardado el archivo") 
 
 class test_Notas(TestCase):
     def test_CrearNotas(self):
