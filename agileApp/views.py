@@ -2572,6 +2572,8 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                             usuario_asignado = us.usuario_asignado
                             usuario_asignado.asignado = False
                             usuario_asignado.save()
+                            
+                            us.usuario_asignado = None
                                                         
                             us_sp = US_Sprint.objects.filter(user_story=us, sprint=sp)
                             us_sp.get().delete()
@@ -2584,7 +2586,9 @@ def cambiar_estado_sprint(request, user_id, proyecto_id, sp_id):
                             usuario_asignado = us.usuario_asignado
                             usuario_asignado.asignado = False
                             usuario_asignado.save()
-                                                        
+                            
+                            us.usuario_asignado = None
+                                                    
                             us_sp = US_Sprint.objects.filter(user_story=us, sprint=sp)
                             us_sp.get().delete()
                             
@@ -3148,7 +3152,6 @@ def cambiar_estado_kanban(request, user_id, proyecto_id, flujo_id, us_id):
                 #us_f.get().delete()
                 #us1.id_flujo = 0
                 us1.f_estado = 3
-                us1.save()
                 us1.estado = 3
                 us1.save()
         
