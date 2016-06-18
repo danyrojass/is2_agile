@@ -1812,6 +1812,9 @@ def reportar_avance_us(request, user_id, proyecto_id, us_id):
                     usuario_asignado.asignado = False
                     usuario_asignado.save()
                     
+                    us.usuario_asignado = None
+                    us.save()
+                    
                     usuario1=Usuarios.objects.get(id=proyecto.id_scrum)
                     envio=enviar_correo(para=[usuario1.user.email], texto="""El User Story: """+us.nombre +""" sobrepasa las horas consumidas permitidas. Reestimar!.""")
                     if envio == None:
